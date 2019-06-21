@@ -1,7 +1,7 @@
 @extends('layouts.back.master')
 
 @section('title')
-<title>List Makanans | Jembar Sari Rasa</title>
+<title>List Makanan | Jembar Sari Rasa</title>
 @endsection
 
 {{-------------------------------------------- KONTEN ------------------------------------}}
