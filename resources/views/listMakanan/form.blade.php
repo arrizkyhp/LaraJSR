@@ -78,6 +78,26 @@
 
     @endsection
 
+
+    @section('modaltitleEdit2')
+    Tambah Data Jenis Makanan
+    @endsection
+
+    @section('formEdit2')
+  <form action="{{ action('ListMakananController@store') }}" method="POST" id="editForm2">
+
+    {{ csrf_field() }}
+    {{ method_field('GET') }}
+    <div class="form-group">
+      <label for="nama_jenis_makanan">Nama Jenis Makanan</label>
+      <input type="nama_jenis_makanan" name="nama_jenis_makanan" id="nama_jenis_makanan" class="form-control" placeholder="Masukkan Nama Pelanggan" >
+    </div>
+
+
+
+
+    @endsection
+
         {{------------------------------------- Form Delete ----------------------------------}}
 
 

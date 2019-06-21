@@ -58,6 +58,13 @@ class ListMakananController extends Controller
         return response()->json($listMakanan);
     }
 
+    public function getJenisMakanan($id)
+    {
+        $jenisMakanan = JenisListMakanan::find($id);
+
+        return response()->json($jenisMakanan);
+    }
+
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -65,13 +72,28 @@ class ListMakananController extends Controller
             'nama_makanan' => 'required',
         ]);
 
-        $pelanggan = ListMakanan::find($id);
+        $list_makanan = ListMakanan::find($id);
         $list_makanan->id_jenis_makanan = $request->input('id_jenis_makanan');
         $list_makanan->nama_makanan = $request->input('nama_makanan');
 
-        $pelanggan->save();
+        $list_makanan->save();
 
         alert()->success('Berhasil ', 'Data Berhasil diubah')->persistent(' Close ');
-        return redirect('/admin/pelanggan');
+        return redirect('/admin/list_makanan');
+    }
+
+    public function updateJenisMakanan(Request $request, $id)
+    {
+        $this->validate($request, [
+            'nama_jenis_makanan' => 'required',
+        ]);
+
+        $list_makanan = JenisListMakanan::find($id);
+        $list_makanan->nama_jenis_makanan = $request->input('nama_jenis_makanan');
+
+        $list_makanan->save();
+
+        alert()->success('Berhasil ', 'Data Berhasil diubah')->persistent(' Close ');
+        return redirect('/admin/list_makanan');
     }
 }

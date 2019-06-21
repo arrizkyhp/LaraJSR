@@ -49,7 +49,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/list_makanan', 'ListMakananController');
         Route::post('/', 'ListMakananController@storeJenis');
         Route::get('/listMakanan/{id}', 'ListMakananController@update');
+        Route::get('/listJenisMakanan/{id}', 'ListMakananController@updateJenisMakanan');
         Route::get('/getListMakanan/{id}', 'ListMakananController@getListMakanan');
+        Route::get('/getJenisMakanan/{id}', 'ListMakananController@getJenisMakanan');
         // Pesanan
         Route::resource('/pesanan', 'PesananController');
         Route::get('/list_pesanan', 'PesananController@listPesanan');

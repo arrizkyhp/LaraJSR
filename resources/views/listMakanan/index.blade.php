@@ -129,7 +129,7 @@
                       <th style="display:none;">{{ $row->id_jenis_makanan }}</th>
                       <td>{{ $row->nama_jenis_makanan }}</td>
                         <td>
-                         <a href="#" class="btn btn-warning bruh" data-id="{{ $row->id_list_makanan }}"><i class="fa fa-pencil"></i> </a>
+                         <a href="#" class="btn btn-warning bruh" data-id="{{ $row->id_jenis_makanan }}"><i class="fa fa-pencil"></i> </a>
                         <a href="" class="btn btn-danger delete" style="display:inline;"><i class="fa fa-trash"></i></a>
                         </form>
                         </td>
@@ -167,8 +167,10 @@
               type: "get",
               url: "{{url('admin/getListMakanan')}}/"+id,
               success: function (response) {
-                $('#nama_makanan').val(response.nama_makanan);
+                 $('#nama_makanan').val(response.nama_makanan);
                 $('#test').html(response.jenis_makanan.nama_jenis_makanan);
+
+
 
 
               }
@@ -182,8 +184,16 @@
 
          // Start Edit Record
        $(document).on('click','.bruh',function (e) {
+          var id = $(this).data('id');
+            $.ajax({
+              type: "get",
+              url: "{{url('admin/getJenisMakanan')}}/"+id,
+              success: function (response) {
+                $('#nama_jenis_makanan').val(response.nama_jenis_makanan);
+              }
+          });
 
-
+           $('#editForm2').attr('action','/admin/listJenisMakanan/'+id);
             $('#editModal2').modal('show');
 
         });
