@@ -10,3 +10,4 @@ Currently Done :
 - CRUD Jenis Makanan/Minuman
 - Buat Pesanan
 - Lihat Pesanan
+- Delete Pesanan
