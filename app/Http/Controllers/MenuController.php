@@ -82,6 +82,7 @@ class MenuController extends Controller
     public function edit($id)
     {
         $menu = Menu::findOrFail($id);
+
         $detailMenu = DetailMenu::where('id_menu', '=', $id)->get();
 
         $ids = [];
@@ -110,6 +111,7 @@ class MenuController extends Controller
         $menu = Menu::findOrFail($id);
 
 
+
         $menu->id_jenis_pesanan = $request->input('id_jenis_pesanan');
         $menu->nama_menu = $request->input('nama_menu');
         $menu->keterangan = $request->input('keterangan');
@@ -117,16 +119,19 @@ class MenuController extends Controller
 
         $menu->save();
 
-        // if ($menu) {
-        //     $inputDetail['id_menu'] = $request->id_menu;
-        //     foreach ($request->id_list_makanan as $menu_id) {
-        //         $inputDetail['id_list_makanan'] = $menu_id;
-
-        //         $detail = DetailMenu::create($inputDetail);
-        //     }
-        // }
-
         if ($menu) {
+            // Check value yang tidak di select
+            DetailMenu::where('id_menu', $request->id_menu)->whereNotIn('id_list_makanan', $request->id_list_makanan)->delete();
+
+            $inputDetail['id_menu'] = $request->id_menu;
+            foreach ($request->id_list_makanan as $menu_id) {
+                $inputDetail['id_list_makanan'] = $menu_id;
+
+                $detail = DetailMenu::firstOrCreate($inputDetail);
+            }
+        }
+
+        if ($detail) {
             alert()->success('Berhasil', 'Data Berhasil ditambahkan')->persistent('Close');
             return redirect()->back();
         } else {
