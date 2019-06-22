@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Pesanan;
 use App\DetailPesanan;
+use App\ListMakanan;
 use App\Pelanggan;
 use App\Menu;
 use Auth;
@@ -18,8 +19,9 @@ class PesananController extends Controller
         $pesanan = Pesanan::all();
         $menu = Menu::all();
         $pelanggan = Pelanggan::all();
+        $listMakanan = ListMakanan::all();
 
-        return view('pesanan.index', compact('pesanan', 'menu', 'pelanggan'));
+        return view('pesanan.index', compact('pesanan', 'menu', 'pelanggan', 'listMakanan'));
     }
 
     public function listPesanan()
@@ -108,6 +110,22 @@ class PesananController extends Controller
 
         if ($detail) {
             alert()->success('Berhasil', 'Data Berhasil ditambahkan')->persistent('Close');
+            return redirect('admin/list_pesanan');
+        } else {
+            alert()->error('Error', 'Data gagal ditambahkan')->persistent('Close');
+            return redirect()->back();
+        }
+    }
+
+    public function bayar(Request $request)
+    {
+        $pesanan = Pesanan::find($request->id_pesanan);
+        dd($request->all());
+        $pesanan->status = 0;
+        $pesanan->bayar = $request->bayar + $request->bayar_lagi;
+        $status = $pesanan->save();
+        if ($status) {
+            alert()->success('Berhasil', 'Data Berhasil diubah')->persistent('Close');
             return redirect('admin/list_pesanan');
         } else {
             alert()->error('Error', 'Data gagal ditambahkan')->persistent('Close');

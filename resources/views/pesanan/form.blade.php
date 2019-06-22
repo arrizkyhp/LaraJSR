@@ -63,8 +63,19 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="Deskripsi">Deskripsi</label>
-                            <textarea type="textarea" class="form-control {{ $errors->has('id_jenis_pesanan') ? 'is-invalid':'' }}" name="deskripsi" placeholder="Masukkan Deskripsi Menu" required></textarea>
+                            <label for="keterangan">Keterangan</label>
+                            <textarea type="textarea" class="form-control {{ $errors->has('id_jenis_pesanan') ? 'is-invalid':'' }}" name="keterangan" placeholder="Masukkan Keterangan Menu" reu></textarea>
+                        </div>
+
+                         <div class="form-group">
+                            <label for="id_list_makanan">List Makanan/Minuman</label>
+                            <select name="id_list_makanan[]" data-placeholder="Pilih List..." multiple class="standardSelect" required>
+                               @foreach ($listMakanan as $detail_menu)
+                            <option value="{{ $detail_menu->id_list_makanan }}">{{ $detail_menu->nama_makanan}}</option>
+                            @endforeach
+
+                            </select>
+                            {{-- <textarea type="textarea" class="form-control {{ $errors->has('id_jenis_pesanan') ? 'is-invalid':'' }}" name="deskripsi" placeholder="Masukkan Deskripsi Menu" required></textarea> --}}
                         </div>
 
 

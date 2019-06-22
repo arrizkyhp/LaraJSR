@@ -48,7 +48,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active root-ajj"><a href="dashboard">Dashboard</a> / List Pesanan / <a href="pesanan">Pesanan</a></li>
+                            <li class="active root-ajj"><a href="dashboard">Dashboard </a>/ <a href="pesanan">Pesanan</a> / List Pesanan </li>
                         </ol>
                     </div>
                 </div>

@@ -30,7 +30,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active root-ajj"><a href="Dashboard">Dashboard </a>/ <a href="list_pesanan">List Pesanan</a> / Pesanan</li>
+                            <li class="active root-ajj"><a href="Dashboard">Dashboard </a>/ Pesanan<a href="list_pesanan"> / List Pesanan</a></li>
                         </ol>
                     </div>
                 </div>
@@ -263,6 +263,7 @@
     <script src="{{ asset('vendors/formatCurrency/jquery.formatCurrency-1.4.0.min.js') }}"></script>
     <script src="{{ asset('vendors/autonumeric/jquery.number.min.js')  }}"></script>
     <script src="{{ asset('vendors/select2/select2.min.js')  }}"></script>
+    <script src="{{ asset('vendors/chosen/chosen.jquery.min.js')  }}"></script>
 
     <script type="text/javascript">
 
@@ -297,6 +298,12 @@
               setCode();
             });
 
+        // Chosen.js Untuk tambah Menu
+        jQuery(".standardSelect").chosen({
+            disable_search_threshold: 10,
+            no_results_text: "Oops, nothing found!",
+            width: "100%"
+            });
 
 
 

@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/list_pesanan', 'PesananController@listPesanan');
         Route::get('/pesanan/detail/{id}', 'PesananController@detailPesanan');
         Route::get('/getDetailPesanan/{id}', 'PesananController@getDetail');
+        Route::post('/bayar', 'PesananController@bayar');
         // Route::group(['middleware' => 'superadmin'], function () { });
     });
 });
