@@ -59,11 +59,17 @@
                           <div class="form-group">
                           <span  style="margin-right:5px; float:right;"><b> Tanggal Pesan: </b> {{ date('d/m/Y', strtotime($pesanan->tanggal)) }}</span><br>
               <span   style="margin-right:5px; float:right;"><b> Untuk Tanggal : </b> {{ date('d/m/Y', strtotime($pesanan->tanggal_pesanan)) }}</span><br><br>
-              @if ($pesanan->status == 0)
+              {{-- Status Pesanan --}}
+              @if ($pesanan->status_pemesanan == 0)
+              <h3><span class="badge badge-danger" style="margin-right:5px; float:right;" > Belum Selesai </span></h3><br><br>
+              @elseif($pesanan->status_pemesanan == 1)
+              <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Selesai </span></h3><br><br>
+              @endif
+              {{-- Status Bayar --}}
+              @if ($pesanan->status_bayar == 0)
               <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Lunas </span></h3><br><br>
-                @elseif($pesanan->status == 1)
+                @elseif($pesanan->status_bayar == 1)
                 <h3><span class="badge badge-danger" style="margin-right:5px; float:right;" > Belum Lunas </span></h3><br><br>
-
               @endif
                </div>
             </div>
@@ -112,7 +118,7 @@
                     <span class="detailSpan" ><h4><b>Bayar :</b> Rp.{{ number_format($pesanan->bayar,2,',', '.') }}</h4></span>
                     <hr>
                     <span class="detailSpan"><h4><b>Sisa :</b> Rp.{{ number_format($pesanan->total_harga-$pesanan->bayar,2,',', '.') }}</h4></span><br>
-                     @if ($pesanan->status != 0)
+                     @if ($pesanan->status_bayar != 0)
                     <button class="btn btn-primary" style="margin-right:5px; float:right;" data-toggle="modal" data-target="#exampleModal">Bayar</button>
                     @endif
 

@@ -86,7 +86,7 @@
                         <th>Kode Pesanan</th>
                         <th>Nama Pelanggan</th>
                         <th>Tanggal Pesanan</th>
-
+                        <th>Pembayaran</th>
                         <th>Status</th>
                         <th>Aksi</th>
                       </tr>
@@ -97,7 +97,6 @@
                         <th>Kode Pesanan</th>
                         <th>Nama Pelanggan</th>
                         <th>Tanggal Pesanan</th>
-
                         <th>Status</th>
                         <th>Aksi</th>
                       </tr>
@@ -118,10 +117,17 @@
                             @endif
                         </td> --}}
                         <td>
-                            @if($row->status == 0)
+                            @if($row->status_bayar == 0)
                             <span class="badge badge-success" style="margin-right:5px;"> Lunas </span>
-                            @elseif($row->status == 1)
+                            @elseif($row->status_bayar == 1)
                             <span class="badge badge-danger" style="margin-right:5px;"> Belum Lunas </span>
+                            @endif
+                        </td>
+                         <td>
+                            @if($row->status_pesanan == 0)
+                            <span class="badge badge-success" style="margin-right:5px;"> Selesai </span>
+                            @elseif($row->status_pesanan == 1)
+                            <span class="badge badge-danger" style="margin-right:5px;"> Belum Selesai </span>
                             @endif
                         </td>
                         {{-- <td> <label for="" class="badge badge-info">{{ $row->jenis_pesanan->nama_jenis_pesanan }}</label></td>
@@ -129,10 +135,9 @@
                         <td>{{ $row->harga }}</td> --}}
                         <td>
 
-                          <a href="{{ url('admin/pesanan/detail', $row->id_pesanan) }}" class="btn btn-info btnDetail"><i class="fa fa-info"></i> </a>
-
-                        <a href="{{ route('pesanan.edit', $row->id_pesanan) }}" class="btn btn-warning"><i class="fa fa-pencil"></i> </a>
-                        <a href="#" id="delete" class="btn btn-danger delete" style="display:inline;"><i class="fa fa-trash"></i></a>
+                          <a href="{{ url('admin/pesanan/detail', $row->id_pesanan) }}" class="btn btn-info btnDetail" data-toggle="tooltip" data-placement="top" title="Detail Pesanan"><i class="fa fa-info"></i> </a>
+                        <a href="{{ route('pesanan.edit', $row->id_pesanan) }}" class="btn btn-warning"  data-toggle="tooltip" data-placement="top" title="Ubah Pesanan"><i class="fa fa-pencil"></i> </a>
+                        <a href="#" id="delete" class="btn btn-danger delete" style="display:inline;"  data-toggle="tooltip" data-placement="top" title="Hapus Pesanan"><i class="fa fa-trash"></i></a>
                         </form>
                         </td>
                       </tr>
@@ -158,6 +163,8 @@
     <script type="text/javascript">
 
     $(document).ready(function () {
+       $('body').toggleClass('open');
+        $('[data-toggle="tooltip"]').tooltip();
         var table = $('#tabel-data').DataTable();
 
          $('#jenis_pesanan').on('change', function(){
@@ -177,7 +184,7 @@
             console.log(data);
 
 
-            $('#deleteForm').attr('action','/menu/'+data[1]);
+            $('#deleteForm').attr('action','/admin/pesanan/'+data[1]);
             $('#deleteModal').modal('show');
 
         });

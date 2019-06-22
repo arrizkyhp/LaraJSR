@@ -89,11 +89,12 @@ class PesananController extends Controller
         $inputPesanan['tanggal_pesanan'] = $newformat;
         $inputPesanan['total_harga'] = $request->total_harga;
         $inputPesanan['keterangan'] = $request->keterangan;
+        $inputPesanan['status_pesanan'] = 1;
         $inputPesanan['bayar'] = $request->bayar;
         if ($request->total_harga <= $request->bayar) {
-            $inputPesanan['status'] = 0;
+            $inputPesanan['status_bayar'] = 0;
         } else {
-            $inputPesanan['status'] = 1;
+            $inputPesanan['status_bayar'] = 1;
         }
 
         $pemesanan = Pesanan::create($inputPesanan);
@@ -120,8 +121,7 @@ class PesananController extends Controller
     public function bayar(Request $request)
     {
         $pesanan = Pesanan::find($request->id_pesanan);
-        dd($request->all());
-        $pesanan->status = 0;
+        $pesanan->status_bayar = 0;
         $pesanan->bayar = $request->bayar + $request->bayar_lagi;
         $status = $pesanan->save();
         if ($status) {
@@ -131,5 +131,15 @@ class PesananController extends Controller
             alert()->error('Error', 'Data gagal ditambahkan')->persistent('Close');
             return redirect()->back();
         }
+    }
+
+    public function destroy($id)
+    {
+        $pelanggan = Pesanan::find($id);
+        $pelanggan->delete();
+
+        // toast('Data Berhasil Dihapus!', 'success', 'top-right');
+        alert()->success('Berhasil ', 'Data Berhasil dihapus')->persistent(' Close ');
+        return redirect('admin/list_pesanan');
     }
 }
