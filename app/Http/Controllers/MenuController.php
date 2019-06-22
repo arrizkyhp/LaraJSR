@@ -83,9 +83,19 @@ class MenuController extends Controller
     {
         $menu = Menu::findOrFail($id);
         $detailMenu = DetailMenu::where('id_menu', '=', $id)->get();
+
+        $ids = [];
+        if ($detailMenu->count() > 0) {
+            foreach ($detailMenu as $key => $value) {
+                $ids[$key] = $value->id_list_makanan;
+            }
+        }
+        $selectedId = implode(',', $ids);
+
         $listMakanan = ListMakanan::all();
-        // dd($detailMenu);
-        return view('menu.edit', compact('menu', 'detailMenu', 'listMakanan'));
+        // dd($listMakanan);
+        // dd($selectedId);
+        return view('menu.edit', compact('menu', 'detailMenu', 'listMakanan', 'selectedId'));
     }
 
     public function update(Request $request, $id)

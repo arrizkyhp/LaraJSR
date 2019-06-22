@@ -67,7 +67,6 @@
 
        <label for="jenis_makanan">Jenis Makanan</label>
      <select name="id_jenis_makanan"  class="form-control {{ $errors->has('id_jenis_makanan') ? 'is-invalid':'' }}"  required>
-      <option id="test"></option>
         @foreach (\App\JenisListMakanan::all() as $jenis_pesanan)
       <option value="{{ $jenis_pesanan->id_jenis_makanan }}">{{ $jenis_pesanan->nama_jenis_makanan }}</option>
       @endforeach

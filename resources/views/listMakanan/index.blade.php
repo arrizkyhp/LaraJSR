@@ -168,11 +168,8 @@
               url: "{{url('admin/getListMakanan')}}/"+id,
               success: function (response) {
                  $('#nama_makanan').val(response.nama_makanan);
-                $('#test').html(response.jenis_makanan.nama_jenis_makanan);
-
-
-
-
+                var option = '<option value="'+ respones.jenis_makanan.id_jenis_makanan +'">'+response.jenis_makanan.nama_jenis_makanan+'</option>'
+                      $('#id_jenis_makanan').prepend(option);
               }
           });
 

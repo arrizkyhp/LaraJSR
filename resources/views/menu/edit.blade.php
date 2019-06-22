@@ -10,11 +10,16 @@
 
 $(document).ready(function () {
 
- jQuery(".standardSelect").chosen({
-            disable_search_threshold: 10,
-            no_results_text: "Oops, nothing found!",
-            width: "100%"
+            jQuery(".standardSelect").chosen({
+                disable_search_threshold: 10,
+                no_results_text: "Oops, nothing found!",
+                width: "100%"
             });
+            var selectedId = '{{ $selectedId }}';
+            var selectedArr = selectedId.split(',');
+            $('#list_makanan').val(selectedArr);
+            $('.standardSelect').trigger('chosen:updated');
+
  });
     </script>
 @endpush
@@ -95,14 +100,10 @@ $(document).ready(function () {
 
                         <div class="form-group">
                         <label for="Deskripsi">List Makanan/Minuman</label>
-                            <select name="id_list_makanan[]" data-placeholder="Pilih List..." multiple class="standardSelect">
-                                @foreach ($detailMenu as $dMenu)
-                            <option value="{{ $dMenu->list_makanan->id_list_makanan }}" selected>{{ $dMenu->list_makanan->nama_makanan }}</option>
-
-                                    @foreach ($listMakanan as $detail_menu)
-                                <option value="{{ $detail_menu->id_list_makanan }}" >{{ $detail_menu->nama_makanan}}</option>
+                            <select name="id_list_makanan[]" data-placeholder="Pilih List..." multiple class="standardSelect" id="list_makanan">
+                                @foreach ($listMakanan as $detail_menu)
+                                    <option value="{{ $detail_menu->id_list_makanan }}" >{{ $detail_menu->nama_makanan}}</option>
                                  @endforeach
-                             @endforeach
                             </select>
 
                         </div>
