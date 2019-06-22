@@ -45,13 +45,17 @@ Route::group(['middleware' => 'auth'], function () {
         // Menu
         Route::resource('/menu', 'MenuController');
         Route::get('/menu/getInitialCodeById/{id}', 'MenuController@getInitial')->name('getInitial');
-        // List Makanan
+        // List Makanan/Minuman
         Route::resource('/list_makanan', 'ListMakananController');
         Route::post('/', 'ListMakananController@storeJenis');
         Route::get('/listMakanan/{id}', 'ListMakananController@update');
-        Route::get('/listJenisMakanan/{id}', 'ListMakananController@updateJenisMakanan');
+        Route::delete('/list_makanan/{id}', 'ListMakananController@destroy');
         Route::get('/getListMakanan/{id}', 'ListMakananController@getListMakanan');
+        //  Jenis Makanan
         Route::get('/getJenisMakanan/{id}', 'ListMakananController@getJenisMakanan');
+        Route::get('/listJenisMakanan/{id}', 'ListMakananController@updateJenisMakanan');
+        Route::delete('/jenis_makanan/{id}', 'ListMakananController@destroyJenisMakanan');
+
         // Pesanan
         Route::resource('/pesanan', 'PesananController');
         Route::get('/list_pesanan', 'PesananController@listPesanan');

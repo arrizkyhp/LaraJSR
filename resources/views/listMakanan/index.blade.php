@@ -130,7 +130,7 @@
                       <td>{{ $row->nama_jenis_makanan }}</td>
                         <td>
                          <a href="#" class="btn btn-warning bruh" data-id="{{ $row->id_jenis_makanan }}"><i class="fa fa-pencil"></i> </a>
-                        <a href="" class="btn btn-danger delete" style="display:inline;"><i class="fa fa-trash"></i></a>
+                        <a href="#" class="btn btn-danger delete2" style="display:inline;"  data-id="{{ $row->id_jenis_makanan }}"><i class="fa fa-trash"></i></a>
                         </form>
                         </td>
                       </tr>
@@ -197,7 +197,7 @@
         // End Edit Record
 
         // Start Delete Record
-        table.on('click', '.delete', function() {
+         $(document).on('click','.delete',function (e) {
 
             $tr = $(this).closest('tr');
             if ($($tr).hasClass('child')) {
@@ -208,8 +208,18 @@
             console.log(data);
 
 
-            $('#deleteForm').attr('action','/pelanggan/'+data[1]);
+            $('#deleteForm').attr('action','/admin/list_makanan/'+data[1]);
             $('#deleteModal').modal('show');
+
+        });
+        // End Delete Record
+
+         // Start Delete Record
+         $(document).on('click','.delete2',function (e) {
+            var id = $(this).data('id');
+
+            $('#deleteForm2').attr('action','/admin/jenis_makanan/'+id);
+            $('#deleteModal2').modal('show');
 
         });
         // End Delete Record

@@ -82,6 +82,16 @@ class ListMakananController extends Controller
         return redirect('/admin/list_makanan');
     }
 
+    public function destroy($id)
+    {
+        $pelanggan = ListMakanan::find($id);
+        $pelanggan->delete();
+
+        // toast('Data Berhasil Dihapus!', 'success', 'top-right');
+        alert()->success('Berhasil ', 'Data Berhasil dihapus')->persistent(' Close ');
+        return redirect('/admin/list_makanan');
+    }
+
     public function updateJenisMakanan(Request $request, $id)
     {
         $this->validate($request, [
@@ -94,6 +104,16 @@ class ListMakananController extends Controller
         $list_makanan->save();
 
         alert()->success('Berhasil ', 'Data Berhasil diubah')->persistent(' Close ');
+        return redirect('/admin/list_makanan');
+    }
+
+    public function destroyJenisMakanan($id)
+    {
+        $pelanggan = JenisListMakanan::find($id);
+        $pelanggan->delete();
+
+        // toast('Data Berhasil Dihapus!', 'success', 'top-right');
+        alert()->success('Berhasil ', 'Data Berhasil dihapus')->persistent(' Close ');
         return redirect('/admin/list_makanan');
     }
 }

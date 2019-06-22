@@ -114,3 +114,18 @@
 
 
     @endsection
+
+       @section('modaltitleDelete2')
+    Delete Data Pelanggan
+    @endsection
+
+    @section('formDelete2')
+  <form action="/pelanggan" method="POST" id="deleteForm2">
+
+    {{ csrf_field() }}
+    {{ method_field('DELETE') }}
+    <input type="hidden" name="_method" value="DELETE">
+    <p>Apakah Anda Yakin ingin menghapus Data ini ?</p>
+
+
+    @endsection
