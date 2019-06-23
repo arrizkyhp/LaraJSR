@@ -9,3 +9,4 @@ Currently Done :
 - CRUD List Makanan/Minuman
 - CRUD Jenis Makanan/Minuman
 - CRUD Pesanan (-denda)
+- CRUD Peralatan
