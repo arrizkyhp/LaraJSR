@@ -14,15 +14,14 @@
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a href="
-                        dashboard"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                        <a href="{{ asset('admin/dashboard')}}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                     </li>
 
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart""></i>Transaksi</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-cutlery"></i><a href="{{ asset('admin/pesanan')}}">Pesanan</a></li>
-                            <li><i class="fa fa-coffee"></i><a href="{{ asset('admin/list_pesanan')}}">List Pesanan</a></li>
+                            <li><i class="fa fa-bars"></i><a href="{{ asset('admin/list_pesanan')}}">List Pesanan</a></li>
 
                         </ul>
                     </li>
@@ -34,6 +33,7 @@
                             <li><i class="fa fa-coffee"></i><a href="{{ asset('admin/jenis_pesanan')}}">Jenis Pesanan</a></li>
                             <li><i class="fa fa-cutlery"></i><a href="{{ asset('admin/list_makanan')}}">Makanan/Minuman</a></li>
                             <li><i class="fa fa-user"></i><a href="{{ asset('admin/pelanggan')}}">Pelanggan</a></li>
+                            <li><i class="fa fa-bars"></i><a href="{{ asset('admin/peralatan')}}">Peralatan</a></li>
 
                         </ul>
                     </li>

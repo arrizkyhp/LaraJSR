@@ -70,6 +70,9 @@ Route::group(['middleware' => 'auth'], function () {
         // Edit Pesanan
         Route::get('/pesanan/edit/{id}', 'PesananController@edit');
 
+        // Peralata
+        Route::resource('/peralatan', 'PeralatanController');
+
         // Route::group(['middleware' => 'superadmin'], function () { });
     });
 });
