@@ -8,6 +8,4 @@ Currently Done :
 - CRUD Menu Pesanan
 - CRUD List Makanan/Minuman
 - CRUD Jenis Makanan/Minuman
-- Buat Pesanan
-- Lihat Pesanan
-- Delete Pesanan
+- CRUD Pesanan (-denda)
