@@ -60,10 +60,10 @@
                           <span  style="margin-right:5px; float:right;"><b> Tanggal Pesan: </b> {{ date('d/m/Y', strtotime($pesanan->tanggal)) }}</span><br>
               <span   style="margin-right:5px; float:right;"><b> Untuk Tanggal : </b> {{ date('d/m/Y', strtotime($pesanan->tanggal_pesanan)) }}</span><br><br>
               {{-- Status Pesanan --}}
-              @if ($pesanan->status_pemesanan == 0)
-              <h3><span class="badge badge-danger" style="margin-right:5px; float:right;" > Belum Selesai </span></h3><br><br>
-              @elseif($pesanan->status_pemesanan == 1)
+              @if ($pesanan->status_pesanan == 0)
               <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Selesai </span></h3><br><br>
+              @elseif($pesanan->status_pesanan == 1)
+               <h3><span class="badge badge-danger" style="margin-right:5px; float:right;" > Belum Selesai </span></h3><br><br>
               @endif
               {{-- Status Bayar --}}
               @if ($pesanan->status_bayar == 0)

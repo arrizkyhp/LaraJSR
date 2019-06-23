@@ -97,6 +97,7 @@
                         <th>Kode Pesanan</th>
                         <th>Nama Pelanggan</th>
                         <th>Tanggal Pesanan</th>
+                         <th>Pembayaran</th>
                         <th>Status</th>
                         <th>Aksi</th>
                       </tr>
@@ -125,9 +126,9 @@
                         </td>
                          <td>
                             @if($row->status_pesanan == 0)
-                            <span class="badge badge-success" style="margin-right:5px;"> Selesai </span>
+                            <a href="#" class="btn btn-success " data-toggle="tooltip" data-placement="top" title="Pesanan Selesai"><i class="fa fa-check"></i> </a>
                             @elseif($row->status_pesanan == 1)
-                            <span class="badge badge-danger" style="margin-right:5px;"> Belum Selesai </span>
+                             <a href="#" id="konfirm" class="btn btn-danger btnDetail" data-toggle="tooltip" data-placement="top" title="Pesanan Belum Selesai"><i class="fa fa-times"></i> </a>
                             @endif
                         </td>
                         {{-- <td> <label for="" class="badge badge-info">{{ $row->jenis_pesanan->nama_jenis_pesanan }}</label></td>
@@ -136,7 +137,8 @@
                         <td>
 
                           <a href="{{ url('admin/pesanan/detail', $row->id_pesanan) }}" class="btn btn-info btnDetail" data-toggle="tooltip" data-placement="top" title="Detail Pesanan"><i class="fa fa-info"></i> </a>
-                        <a href="{{ route('pesanan.edit', $row->id_pesanan) }}" class="btn btn-warning"  data-toggle="tooltip" data-placement="top" title="Ubah Pesanan"><i class="fa fa-pencil"></i> </a>
+
+                        <a href="{{ url('admin/pesanan/edit', $row->id_pesanan) }}" class="btn btn-warning"  data-toggle="tooltip" data-placement="top" title="Ubah Pesanan"><i class="fa fa-pencil"></i> </a>
                         <a href="#" id="delete" class="btn btn-danger delete" style="display:inline;"  data-toggle="tooltip" data-placement="top" title="Hapus Pesanan"><i class="fa fa-trash"></i></a>
                         </form>
                         </td>
@@ -186,6 +188,24 @@
 
             $('#deleteForm').attr('action','/admin/pesanan/'+data[1]);
             $('#deleteModal').modal('show');
+
+        });
+        // End Delete Record
+
+        // Start Konfirm Record
+        table.on('click', '#konfirm', function() {
+
+            $tr = $(this).closest('tr');
+            if ($($tr).hasClass('child')) {
+                $tr = $tr.prev('.parent');
+            }
+
+            var data = table.row($tr).data();
+            console.log(data);
+
+
+            $('#konfirmForm').attr('action','/admin/selesai_pesanan/'+data[1]);
+            $('#konfirmModal').modal('show');
 
         });
         // End Delete Record

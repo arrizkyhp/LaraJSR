@@ -1,7 +1,7 @@
 @extends('layouts.back.master')
 
 @section('title')
-<title>Pesanan | Jembar Sari Rasa</title>
+<title>Edit Pesanan | Jembar Sari Rasa</title>
 @endsection
 
 @push('css')
@@ -22,7 +22,7 @@
             <div class="col-sm-4 head-content">
                 <div class="page-header float-left">
                     <div lass="page-title">
-                        <h1>Pesanan</h1>
+                        <h1>Edit Pesanan</h1>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active root-ajj"><a href="Dashboard">Dashboard </a>/ Pesanan<a href="list_pesanan"> / List Pesanan</a></li>
+                            <li class="active root-ajj"><a href="/admin/dashboard">Dashboard </a>/<a href="/admin/pesanan"> Pesanan</a><a href="/admin/list_pesanan"> / List Pesanan </a>/ Edit Pesanan</li>
                         </ol>
                     </div>
                 </div>
@@ -54,9 +54,9 @@
 
 
         <div class="content mt-3">
-             <form role="form" action="{{ route('pesanan.store') }}" id="form-submit" method="post" enctype="multipart/form-data">
-              @csrf
-
+             <form role="form" action="{{ route('pesanan.update', $pesanan->id_pesanan) }}" id="form-submit" method="post" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            {{ method_field('PATCH') }}
 
             {{--------------- Detail Pesanan -----------------}}
                   <row>
@@ -69,7 +69,8 @@
                           <label for="alamat">Tanggal Pesanan</label>
                            <div class="input-group">
                           <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="" name="tanggal_pesanan" id="datepicker" class="form-control" autocomplete="off" >
+                          <input type="hidden" name="id_pesanan" value="{{ $pesanan->id_pesanan }}">
+                           <input type="text" name="tanggal_pesanan" id="datepicker" class="form-control" autocomplete="off" value="{{ date('d-m-Y', strtotime($pesanan->tanggal_pesanan)) }}" >
                           </div>
                         </div>
                         <div class="form-group col-lg-6">
@@ -78,10 +79,10 @@
                         {{-- <input type="nama_pelanggan" name="nama_pelanggan" id="nama_pelanggan" class="form-control" id="nama_pelanggan" placeholder="Masukkan Nama Pelanggan" > --}}
                          <div class="input-group">
                           <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                        <select name="id_pelanggan" data-placeholder="Masukan Nama Pelanggan.." class="form-control js-example-basic-multiple" tabindex="1" id="pelanggan_select">
-                                    <option value=""></option>
+                        <select name="id_pelanggan" data-placeholder="Masukan Nama Pelanggan.." class="form-control js-example-basic-multiple" tabindex="1" id="pelanggan_select" >
+
                                     @foreach ($pelanggan as $pelanggans)
-                                        <option value="{{ $pelanggans->id_pelanggan }}">{{ $pelanggans->nama_pelanggan }}</option>
+                                        <option value="{{ $pelanggans->id_pelanggan }}" {{ $pesanan->id_pelanggan == $pelanggans->id_pelanggan ?  'selected' : '' }}  >{{ $pelanggans->nama_pelanggan }}</option>
                                         @endforeach
                         </select>
                       </div>
@@ -89,7 +90,7 @@
 
                          <div class="form-group col-lg-7">
                         <label for="alamat">Alamat</label>
-                        <input type="alamat" id="alamat" class="form-control" id="alamat"  readonly>
+                        <input type="alamat" id="alamat" class="form-control" id="alamat"  value="{{ $pesanan->pelanggan->alamat }}" readonly>
                         </div>
 
                         <div class="form-group col-lg-5">
@@ -97,12 +98,9 @@
                         <label for="no_telepon">No Telepon</label>
                         <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-phone"></i></div>
-                        <input type="no_telepon" id="no_telepon" class="form-control" id="no_telepon" type="number" id="number" min="0" type="number" readonly>
+                        <input type="number" id="no_telepon" class="form-control"  type="number"  min="0" type="number" value="{{ $pesanan->pelanggan->no_telepon }}" readonly>
                         </div>
                         </div>
-
-
-
 
                         <table id="tabel-pesanan" class="table table-striped table-bordered table-hover tabel-responsive tabel-pesanan">
                           <thead>
@@ -116,30 +114,64 @@
                             </tr>
                           </thead>
                           <tbody>
+
+                              @foreach ($detailPesanan as $d)
+                              <tr>
+                                  <td style='display:none;'>
+                                    <input type='hidden' name='id_detail_pesanan[]' value='{{ $d->id_detail_pesanan }}'>
+                                    <input type='hidden' name='id_menu[]' value='{{ $d->id_menu }}'>
+                                    <div class='id-menu'>{{ $d->id_menu }}</div>
+                                </td>
+                                <td>
+                                    <input type='hidden' name='nama_menu[]' value='{{ $d->menu->nama_menu }}'>
+                                    <div class='nama-menu'>{{ $d->menu->nama_menu }}</div>
+                                </td>
+                                <td>
+                                    <input type='hidden' name='jenis_pesanan[]' value='{{ $d->menu->jenis_pesanan->nama_jenis_pesanan }}'>
+                                    {{ $d->menu->jenis_pesanan->nama_jenis_pesanan }}
+                                </td>
+                                <td>
+                                    <input type='hidden' class="quantity" name='quantity[]' value='{{ $d->quantity }}' >
+                                    <div class='qty'>{{ $d->quantity }}</div>
+                                </td>
+                                <td>
+                                    <input type='hidden' name='harga[]' value='{{ $d->harga }}'>
+                                    <div class='harga'>{{ $d->harga }}</div>
+                                </td>
+                                <td>
+                                    <input type='hidden' class="subtotal_input" name='subtotal[]' value='{{ $d->subtotal }}' >
+                                    <div class='subtotal'>{{ $d->subtotal }}</div>
+                                </td>
+                                <td>
+                                    <button type='button' class='btn btn-danger btnDelete'>Delete</button>
+                                </td>
+                            </tr>
+                                @endforeach
                           </tbody>
+
                         </table>
                         {{-- teu bisa ka kanan --}}
                         {{-- Rupiah --}}
                         <div class="col-lg-8">
-                          <textarea cols="25" rows="3" placeholder="Keterangan (jika ada)" name="keterangan"></textarea>
+                        <textarea cols="25" rows="3" placeholder="Keterangan (jika ada)" name="keterangan">{{ $pesanan->keterangan }}</textarea>
                         </div>
                              <div class="form-group col-lg-4" >
                              <div style="float:right;">
-                        <span>Total Harga </span><h2>Rp.<b><span class="grandtotal" class="text-right">0</span></b></h2>
-                        <input type='hidden' name='total_harga' class="total_harga">
+                        <span>Total Harga </span><h2>Rp.<b><span class="grandtotal" class="text-right">{{ number_format($pesanan->total_harga,0,',', '.') }}</span></b></h2>
+                        <input type='hidden' name='total_harga' class="total_harga" value="{{ $pesanan->total_harga }}">
                          </div>
                     </div>
 
                     <div class="form-group col-lg-12" >
                              <div style="float:right;">
                         <span>Bayar (Rp)</span>
-                        <input type="number" id="bayar" name="bayar" class="form-control col-lg-8" min="0" style="float:right;" readonly>
+                        <input type="number" id="bayar" value="{{ $pesanan->bayar }}" name="bayar" class="form-control col-lg-8" min="0" style="float:right;" readonly>
                          </div>
                     </div>
 
                     <div class="form-group col-lg-12">
                       {{-- <button type="button" class="btn btn-primary hasil-pesanan" style="float:right;">Hasil</button> --}}
-                          <button type="submit" class="btn btn-primary btn-submit" id="btn-submit" style="float:right;" disabled>Simpan</button>
+                          <button type="submit" class="btn btn-primary btn-submit" id="btn-submit" style="float:right;" >Simpan</button>
                           <button type="button" class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Pilih Menu</b>
                     </div>
 
@@ -322,7 +354,8 @@
         $(this).closest('tr').remove();
         $('#harga').text('0');
         $('#subtotal').text('0');
-        $("input[type=text], textarea").val("");
+        $('#nama_menu').val('');
+        $('#jenis').val('');
         $('#quantity').attr('readonly', true);
 
 
@@ -362,7 +395,7 @@
 				console.log($(this).val());
         $.ajax({
           type: "get",
-          url: "pelanggan/"+id,
+          url: "/admin/pelanggan/"+id,
           success: function (response) {
 						// console.log(response);
             $('#alamat').val(response.alamat);
@@ -413,7 +446,7 @@
             var subtotal = $("#subtotal").html();
             var quantity = $("#quantity").val();
             var harga = $("#harga").html();
-            var markup = "<tr><td style='display:none;'><input type='hidden' name='id_menu[]' value='"+id_menu+"'><div class='id-menu'>"+ id_menu +"</div></td><td><input type='hidden' name='nama_menu[]' value='"+nama_menu+"'><div class='nama-menu'>"+ nama_menu +"</div></td><td><input type='hidden' name='jenis_pesanan[]' value='"+jenis+"'>" + jenis + "</td><td><input type='hidden' name='quantity[]' value='"+quantity+"'><div class='qty'>" + quantity  + "</div></td><td><input type='hidden' name='harga[]' value='"+harga+"'><div class='harga'>"+ harga +"</div></td><td><input type='hidden' name='subtotal[]' value='"+subtotal+"'><div class='subtotal'>"+ subtotal +"</div></td><td><button type='button' class='btn btn-danger btnDelete'>Delete</button></td></tr>";
+            var markup = "<tr><td style='display:none;'><input type='hidden' name='id_menu[]' value='"+id_menu+"'><div class='id-menu'>"+ id_menu +"</div></td><td><input type='hidden' name='nama_menu[]' value='"+nama_menu+"'><div class='nama-menu'>"+ nama_menu +"</div></td><td><input type='hidden' name='jenis_pesanan[]' value='"+jenis+"'>" + jenis + "</td><td><input type='hidden' name='quantity[]' value='"+quantity+"' class='quantity'><div class='qty'>" + quantity  + "</div></td><td><input type='hidden' name='harga[]' value='"+harga+"'><div class='harga'>"+ harga +"</div></td><td><input type='hidden' name='subtotal[]' value='"+subtotal+"'><div class='subtotal'>"+ subtotal +"</div></td><td><button type='button' class='btn btn-danger btnDelete'>Delete</button></td></tr>";
             var rowCount = $('#tabel-pesanan tr').length;
             var sama = 0;
 
@@ -440,7 +473,12 @@
                     var s = $(this).find(".subtotal").html();
 
                     $(this).find(".qty").html(parseInt(q) + parseInt(quantity));
+                    $(this).find(".quantity").val(parseInt(q) + parseInt(quantity));
                     $(this).find(".subtotal").html(parseInt(s) + parseInt(subtotal));
+                    $(this).find(".subtotal_input").val(parseInt(s) + parseInt(subtotal));
+
+
+
                     clearForm();
                     grandtotal();
 
@@ -495,6 +533,7 @@
              $('#subtotal').text('0');
              $('#nama_menu').val('');
              $('#jenis').val('');
+            //  $("input[type=text], textarea").val("");
              $('#quantity').attr('readonly', true);
              $('.tambah-transaksi').attr('disabled', true);
           }
@@ -504,8 +543,11 @@
           function grandtotal()
           {
             var sum =0;
+            var tambah =0;
             $('#tabel-pesanan tbody tr').each(function(){
             sum += parseInt($('.subtotal',$(this)).text());
+
+
             // test += $('.subtotal).val(col2);
           });
             $('.grandtotal').html(sum).formatCurrency()
