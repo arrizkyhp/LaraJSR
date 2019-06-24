@@ -79,6 +79,7 @@
                         <thead>
                             <th>Nama Perlengkapan</th>
                             <th>Jumlah Perlengkapan</th>
+                            <th>Satuan</th>
                             <th>Harga Sewa Satuan</th>
                             <th>Jumlah</th>
                         </thead>
@@ -87,10 +88,11 @@
                         <tbody>
                             @foreach ($detail as $details)
                             <td>{{ $details->peralatan->nama_peralatan}}</td>
-
                             <td>{{ $details->jumlah_sewa}}</td>
+                            <td>{{ $details->peralatan->satuan}}</td>
                             <td>Rp.{{ number_format($details->peralatan->harga_sewa,0,',', '.') }}</td>
                             <td>Rp.{{ number_format($details->subtotal,0,',', '.') }}</td>
+
 
                         </tbody>
                     </tr>
@@ -108,7 +110,7 @@
                     </div>
                     <div class="col-md-4">
                         <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($penyewaan->total_harga,2,',', '.') }}</h4></span>
-                        <input type="hidden" value="{{ $penyewaan->total_harga }}" id="totalHarga">
+                        <input type="hidden" value="{{ $penyewaan->total_harga }}" id="subtotal">
 
                     </div>
                 </div>
@@ -130,18 +132,20 @@
 
                         <div class="form-row">
                             <input type="hidden" id="id_menu">
-                            <div class="form-group col-md-7">
+                            <div class="form-group col-md-8">
                                 <div class="form-group">
                                     <h3>Barang Kembali</h3>
                                 </div>
 
-                                <table class="table table-striped table-bordered table-kembali">
+                                <table id="table-kembali" class="table table-striped table-bordered table-kembali">
                                     <tr>
                                         <thead>
                                             <th>Nama Perlengkapan</th>
                                             <th>Kembali</th>
                                             <th>Tidak Kembali / Rusak</th>
-                                            <th style='display:none;'>Perlengkapan Tidak Kembali</th>
+                                            <th>Harga Ganti (jika rusak)</th>
+                                            <th>Denda</th>
+                                            <th style='display:none;'>a</th>
                                         </thead>
                                     </tr>
                                      <tbody>
@@ -149,10 +153,13 @@
                                             @foreach ($detail as $details)
                                               <tr>
                                             <td>{{ $details->peralatan->nama_peralatan}}</td>
-                                            <td><input type="number" name="jumlah_kembali[]" value="{{ $details->jumlah_sewa}}" class="form-control jumlah_kembali"></td>
+                                            <td><input type="number" min="0" name="jumlah_kembali[]" value="{{ $details->jumlah_sewa}}" class="form-control jumlah_kembali"></td>
                                             <td><span class="tidak_kembali">0</span></td>
+                                            <td>{{ number_format($details->peralatan->harga_ganti,0,',', '.') }}</td>
+                                            <td class="denda_kembali" >0</td>
                                             <td style='display:none;'>{{ $details->peralatan->harga_sewa }}</td>
                                             <td style='display:none;'>{{ $details->jumlah_sewa }}</td>
+                                            <td style='display:none;'><span class="ganti_harga">{{ $details->peralatan->harga_ganti }}</span></td>
                                              </tr>
                                           @endforeach
 
@@ -161,7 +168,7 @@
                                 </table>
                             </div>
                             <div class="form-group col-md 1"></div>
-                            <div class="form-group col-md-4">
+                            <span class="form-group col-md-3">
                                 <label for="">Tanggal Kembali</label>
                                 <div class="input-group">
                                     <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
@@ -170,11 +177,12 @@
 
                                 <input type="hidden" value="{{ $penyewaan->total_harga }}" id="totalHarga">
                                 <span class="detailSpan" ><h4><b>Bayar :</b> Rp.{{ number_format($penyewaan->bayar,0,',', '.') }}</h4></span>
-                                 <span class="detailSpan" ><h4><b>Denda :</b> Rp.{{ number_format(0,0,',', '.') }}</h4></span>
+                                <input type="hidden" id="bayar" value="{{ $penyewaan->bayar }}">
+                                 <span class="detailSpan" ><h4><b>Denda :</b> Rp.<span class="dendaTotal">{{ number_format(0,0,',', '.') }}</span></h4></span>
                                  <hr>
                                  <div class="form-group">
-                                    <span class="detailSpan"><h4><b>Total Bayar :</b> Rp.{{ number_format($penyewaan->total_harga-$penyewaan->bayar,0,',', '.') }}</h4></span>
-                                    <span class="detailSpan" ><h4><b>Nominal Bayar :</b> Rp.<span id="bayar_nominal">{{ number_format(0,0,',', '.') }}</span></h4></span><br>
+                                    <span class="detailSpan"><h4><b>Total Bayar :</b> Rp.<span id="total_bayar">0</span></h4></span>
+                                    <span class="detailSpan" ><h4><b>Nominal Bayar :</b> Rp.<span id="bayar_nominal">0</span></h4></span><br>
                                     <input type="hidden" value="{{ $penyewaan->id_penyewaan }}" name="id_penyewaan">
                                     <input type="hidden" value="{{ $penyewaan->bayar }}" name="total_harga">
                                     <input type="number" name="bayar_lagi" id="bayar_lagi" class="form-control bayar"  placeholder="Masukkan Jumlah Bayar" ><br>
@@ -228,23 +236,59 @@
             $(this).closest('tr').find("input").each(function() {
                 var id = $(this).val();
 
+
+
+
                 //  $('.bayar').val(id);
                 // Menghitung Baris Kembali
                 var currow = $(this).closest('tr');
-                var col1 = currow.find('td:eq(0)').text();
-                var jumlahPerlengkapan = currow.find('td:eq(1)').find("input").val();
+                var stock = currow.find('td:eq(6)').text();
+                 var ids = currow.find('td:eq(1)').find("input").val();
 
-                var col4 = currow.find('td:eq(3)').text();
-                var jumlahSewa = currow.find('td:eq(4)').text();
+                if(parseInt(ids) > parseInt(stock))
+                {
+                    currow.find('td:eq(1)').find("input").val(parseInt(stock));
+                }
+                var jumlahPerlengkapan = currow.find('td:eq(1)').find("input").val();
+                var jumlahSewa = currow.find('td:eq(6)').text();
+                var hargaGanti = currow.find('td:eq(7)').text();
                 // var result = col4+'\n'+col2;
                 var tidakKembali = jumlahSewa - jumlahPerlengkapan;
-                var col3 = currow.find('td:eq(2)').text(tidakKembali);
-                // alert(result);
+                var denda = tidakKembali * hargaGanti;
+                currow.find('td:eq(2)').text(tidakKembali);
+                currow.find('td:eq(4)').text(denda);
+                grandtotal();
+
 
 
             });
 
     });
+
+     function grandtotal()
+          {
+            var sum = 0;
+            $('.denda_kembali').each(function(){
+                var q = parseInt($(this).html());
+
+                sum += parseInt(q);
+            // test += $('.subtotal).val(col2);
+          });
+        //   alert(sum);
+            var subtotal = $("#subtotal").val();
+            var bayar = $("#bayar").val();
+
+            $('.dendaTotal').html(sum).formatCurrency();
+            var raw = $('.dendaTotal').html().replace(/[^\d,-]/g, '');
+            var raw = raw.replace(",", '');
+
+            var grandtotal = parseInt(raw) + parseInt(subtotal) - parseInt(bayar) ;
+
+            $('#total_bayar').html(grandtotal).formatCurrency();
+
+
+            //  $('.total_harga').val(raw);
+          }
 });
 </script>
 
