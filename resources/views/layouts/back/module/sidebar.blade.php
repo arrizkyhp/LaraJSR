@@ -23,7 +23,7 @@
                             <li><i class="fa fa-cutlery"></i><a href="{{ asset('admin/pesanan')}}">Pesanan</a></li>
                             <li><i class="fa fa-bars"></i><a href="{{ asset('admin/list_pesanan')}}">List Pesanan</a></li>
                             <li><i class="fa fa-glass"></i><a href="{{ asset('admin/penyewaan')}}">Penyewaan</a></li>
-
+                            <li><i class="fa fa-bars"></i><a href="{{ asset('admin/list_penyewaan')}}">List Penyewaan</a></li>
                         </ul>
                     </li>
 

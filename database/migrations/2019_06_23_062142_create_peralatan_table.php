@@ -16,8 +16,10 @@ class CreatePeralatanTable extends Migration
         Schema::create('t_peralatan', function (Blueprint $table) {
             $table->increments('id_peralatan');
             $table->string('nama_peralatan');
+            $table->string('satuan');
             $table->integer('stock');
             $table->integer('harga_sewa');
+            $table->integer('harga_ganti');
             $table->timestamps();
         });
     }

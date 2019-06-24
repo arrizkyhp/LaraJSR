@@ -15,17 +15,21 @@ class PeralatanController extends Controller
 
     public function store(Request $request)
     {
-         $this->validate($request, [
+        $this->validate($request, [
             'nama_peralatan' => 'required',
             'stock' => 'required',
-            'harga_sewa' => 'required'
+            'satuan' => 'required',
+            'harga_sewa' => 'required',
+            'harga_ganti' => 'required'
         ]);
 
         $peralatan = new Peralatan;
 
         $peralatan->nama_peralatan = $request->input('nama_peralatan');
+        $peralatan->satuan = $request->input('satuan');
         $peralatan->stock = $request->input('stock');
         $peralatan->harga_sewa = $request->input('harga_sewa');
+        $peralatan->harga_ganti = $request->input('harga_ganti');
 
         $peralatan->save();
 
@@ -35,21 +39,24 @@ class PeralatanController extends Controller
 
     public function update(Request $request, $id)
     {
-         $this->validate($request, [
+        $this->validate($request, [
             'nama_peralatan' => 'required',
             'stock' => 'required',
-            'harga_sewa' => 'required'
+            'satuan' => 'required',
+            'harga_sewa' => 'required',
+            'harga_ganti' => 'required'
         ]);
 
         $peralatan = Peralatan::find($id);
 
         $peralatan->nama_peralatan = $request->input('nama_peralatan');
+        $peralatan->satuan = $request->input('satuan');
         $peralatan->stock = $request->input('stock');
         $peralatan->harga_sewa = $request->input('harga_sewa');
-
+        $peralatan->harga_ganti = $request->input('harga_ganti');
         $peralatan->save();
 
-         alert()->success('Berhasil ', 'Data Berhasil diubah')->persistent(' Close ');
+        alert()->success('Berhasil ', 'Data Berhasil diubah')->persistent(' Close ');
         return redirect('/admin/peralatan');
     }
 

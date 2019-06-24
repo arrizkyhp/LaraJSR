@@ -18,7 +18,8 @@ class CreatePenyewaanTable extends Migration
             $table->integer('id_pelanggan');
             $table->integer('id_users');
             $table->date('tanggal_penyewaan');
-            $table->date('tanggal_kembali');
+            $table->date('tanggal_akhir');
+            $table->date('tanggal_kembali')->nullable();
             $table->integer('total_harga');
             $table->integer('bayar');
             $table->string('keterangan')->nullable();

@@ -14,6 +14,11 @@
     </div>
 
     <div class="form-group">
+      <label for="satuan">Satuan</label>
+      <input type="text" name="satuan" id="satuan "  class="form-control"  placeholder="Masukkan Satuan (contoh = 'pcs')" >
+    </div>
+
+    <div class="form-group">
       <label for="stock">Stock</label>
       <input type="number" name="stock" min="0"  id="stock " class="form-control" placeholder="Masukkan stock">
     </div>
@@ -21,6 +26,11 @@
     <div class="form-group">
       <label for="harga_sewa">Harga Sewa</label>
       <input type="number" name="harga_sewa" id="harga_sewa "  class="form-control" min="0" placeholder="Masukkan Harga Sewa Peralatan">
+    </div>
+
+    <div class="form-group">
+      <label for="harga_ganti">Harga Ganti</label>
+      <input type="number" name="harga_ganti" id="harga_ganti "  class="form-control" min="0" placeholder="Masukkan Harga Ganti Rugi Peralatan">
     </div>
 
 
@@ -44,6 +54,11 @@
     </div>
 
     <div class="form-group">
+      <label for="satuan">Satuan</label>
+      <input type="text" name="satuan" id="satuan"  class="form-control"  placeholder="Masukkan Satuan (contoh = 'pcs')" >
+    </div>
+
+    <div class="form-group">
       <label for="stock">Stock</label>
       <input type="number" name="stock" min="0"  id="stock" class="form-control" placeholder="Masukkan stock">
     </div>
@@ -51,6 +66,11 @@
     <div class="form-group">
       <label for="harga_sewa">Harga Sewa</label>
       <input type="number" name="harga_sewa" id="harga_sewa"  class="form-control" min="0" placeholder="Masukkan Harga Sewa Peralatan">
+    </div>
+
+    <div class="form-group">
+      <label for="harga_ganti">Harga Ganti</label>
+      <input type="number" name="harga_ganti" id="harga_ganti"  class="form-control" min="0" placeholder="Masukkan Harga Ganti Rugi Peralatan">
     </div>
 
 

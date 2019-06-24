@@ -15,6 +15,7 @@ class Penyewaan extends Model
         'id_pelanggan',
         'id_users',
         'tanggal_penyewaan',
+        'tanggal_akhir',
         'tanggal_kembali',
         'total_harga',
         'bayar',

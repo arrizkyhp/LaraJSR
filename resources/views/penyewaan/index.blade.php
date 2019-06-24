@@ -58,10 +58,10 @@
                             </div>
                         </div>
                         <div class="form-group col-md-6">
-                         <label for="">Tanggal Kembali</label>
+                         <label for="">Sampai Tanggal</label>
                              <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="date" id="tanggal_kembali" class="form-control" name="tanggal_kembali">
+                            <input type="date" id="tanggal_akhir" class="form-control" name="tanggal_akhir">
                             </div>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
                         </div>
                         </div>
                         <div class="form-group col-md-2">
-                            <span style="float:right"><b>Stock</b><h3><span class="badge badge-info"><div id="stock_gudang">null</div></span></h3></span>
+                            <span style="float:right"><b>Stock</b><h3><span class="badge badge-info"><div id="stock_gudang"></div></span></h3></span>
                         </div>
                         <div class="form-group col-md-12">
                             <hr>
@@ -121,8 +121,8 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="nama_pelanggan">Jumlah Sewa</label>
-                                <input type="hidden" id="stock_ghost"  >
-                                <input type="number" id="stock" class="form-control" min="0" placeholder="" readonly>
+                                <input type="hidden" id="stock_ghost">
+                                <input type="number" id="stock" class="form-control" min="0"  readonly>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="harga">Harga</label>
@@ -190,11 +190,7 @@
     <script type="text/javascript">
 
     $(document).ready(function () {
-         @if ($errors->any())
-            @foreach ($errors->all() as $error)
-              toastr.error('{{$error}}')
-            @endforeach
-          @endif
+
         var table = $('#tabel-data').DataTable();
         // Tooltip
         $('[data-toggle="tooltip"]').tooltip();
@@ -205,7 +201,7 @@
     // Button Simpan di Klik
       $('.simpan').click(function(){
         var tanggal_penyewaan = $("#tanggal_penyewaan").val();
-        var tanggal_kembali = $("#tanggal_kembali").val();
+        var tanggal_akhir = $("#tanggal_akhir").val();
         var nama_pelanggan = $("#pelanggan_select").val();
 
          if (tanggal_penyewaan == '') {
@@ -216,11 +212,11 @@
 
             });
            return false;
-         }else if (tanggal_kembali == '') {
+         }else if (tanggal_akhir == '') {
            swal.fire({
               type: 'error',
               title: 'Oops...',
-              text: 'Tanggal Kembali Belum dipilih!',
+              text: 'Tanggal Akhir Belum dipilih!',
 
             });
           return false;
@@ -256,6 +252,7 @@
                 $('#stock').val(response.stock);
                 $('#stock_gudang').html(response.stock);
                 $('#harga').val(response.harga_sewa);
+
 
             }
         });
@@ -295,11 +292,13 @@
             var subtotal = stock * harga;
             var getSubtotal = $('#subtotal').val(subtotal);
             var sama = 0;
-            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' name='jumlah_sewa[]' value='"+stock+"'></td><td>"+harga+"<input type='hidden' name='harga[]' value='"+harga+"'></td><td><div class='subtotal'>"+subtotal+"</div><input type='hidden' name='subtotal[]' value='"+subtotal+"'></td><td><button type='button' class='btn btn-danger btnDelete'>x</button></td></tr>";
+            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' name='jumlah_sewa[]' value='"+stock+"'></td><td>"+harga+"<input type='hidden' name='harga[]' value='"+harga+"'></td><td><div class='subtotal'>"+subtotal+"</div><input type='hidden' name='subtotal[]' value='"+subtotal+"'></td><td><button type='button' class='btn btn-danger btnDelete'>x</button></td></tr>";
             var rowCount = $('#table-penyewaan tr').length;
 
-                if (stock > stock_ghost) {
+
+                if (parseInt(stock) > parseInt(stock_ghost)) {
                     alertStock();
+
                 }else {
 
                 if(rowCount > 1){
@@ -307,16 +306,14 @@
                     $('#table-penyewaan tr').each(function(){
                     var nama_menu = $(this).find(".nama-menu").html();
                     if(nama == nama_menu ){
-
-
                         sama++;
                     var q = $(this).find(".stock").html();
                     var t = $(this).find(".subtotal").html();
 
                     $(this).find(".stock").html(parseInt(q) + parseInt(stock));
-                    $(this).find(".subtotal").html(parseInt(t) + parseInt(getSubtotal));
-
-
+                    $(this).find(".subtotal").html(parseInt(t) + parseInt(subtotal));
+                        formDisabled();
+                        grandtotal();
 
                         return false;
                         }
@@ -344,44 +341,7 @@
 
         });
 
-        // Start Edit Record
-       table.on('click', '.edit', function() {
 
-            $tr = $(this).closest('tr');
-            if ($($tr).hasClass('child')) {
-                $tr = $tr.prev('.parent');
-            }
-
-            var data = table.row($tr).data();
-            console.log(data);
-
-            $('#nama_peralatan').val(data[2]);
-            $('#stock').val(data[3]);
-            $('#harga_sewa').val(data[5]);
-
-            $('#editForm').attr('action','/admin/peralatan/'+data[1]);
-            $('#editModal').modal('show');
-
-        });
-        // End Edit Record
-
-        // Start Delete Record
-        table.on('click', '.delete', function() {
-
-            $tr = $(this).closest('tr');
-            if ($($tr).hasClass('child')) {
-                $tr = $tr.prev('.parent');
-            }
-
-            var data = table.row($tr).data();
-            console.log(data);
-
-
-            $('#deleteForm').attr('action','/admin/peralatan/'+data[1]);
-            $('#deleteModal').modal('show');
-
-        });
-        // End Delete Record
 
         // Function
 
@@ -395,8 +355,8 @@
           }
 
           function formDisabled() {
-            var stock_ghost = $('#stock_ghost').val();
-            var stock = $('#stock').val();
+            var stock_ghost = $('#stock_ghost').val('');
+            var stock = $('#stock').val('');
             var jumlahStock = stock_ghost - stock;
 
             $('#stock').attr('readonly', true);
@@ -404,8 +364,8 @@
             $('.simpan').attr('disabled', false);
             $('#bayar').attr('readonly', false);
             $('#nama_peralatan').val('');
-            $('#stock').val('');
-            $('#stock').attr("placeholder", "");
+            // $('#stock').val('');
+            // $('#stock').attr("placeholder", "");
             $('#harga').val('');
             $('#id_peralatan').val('');
             $('#stock_gudang').html(jumlahStock);

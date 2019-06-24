@@ -76,6 +76,8 @@ Route::group(['middleware' => 'auth'], function () {
         // Penyewaan
         Route::resource('/penyewaan', 'PenyewaanController');
         Route::get('/get_peralatan/{id}', 'PenyewaanController@getPeralatan');
+        Route::get('/list_penyewaan', 'PenyewaanController@listPenyewaan');
+        Route::get('/penyewaan/detail/{id}', 'PenyewaanController@detailPenyewaan');
 
         // Route::group(['middleware' => 'superadmin'], function () { });
     });

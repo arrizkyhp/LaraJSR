@@ -13,6 +13,7 @@ use Auth;
 
 class PenyewaanController extends Controller
 {
+
     public function index()
     {
         $penyewaan = Penyewaan::all();
@@ -30,6 +31,7 @@ class PenyewaanController extends Controller
     public function store(Request $request)
     {
 
+
         $this->validate($request, [
             'id_pelanggan' => 'required|exists:t_pelanggan,id_pelanggan',
             'nama_peralatan' => 'required',
@@ -40,6 +42,8 @@ class PenyewaanController extends Controller
             'total_harga' => 'required',
             'bayar' => 'required',
         ]);
+
+
 
         $last_penyewaan = Penyewaan::orderBy('id_penyewaan', 'desc')->first();
 
@@ -60,7 +64,7 @@ class PenyewaanController extends Controller
         $inputPenyewaan['id_users'] = Auth::user()->id_users;
         // $inputPenyewaan['tanggal'] = Carbon::now()->format('Y-m-d');
         $inputPenyewaan['tanggal_penyewaan'] = $request->tanggal_penyewaan;
-        $inputPenyewaan['tanggal_kembali'] = $request->tanggal_kembali;
+        $inputPenyewaan['tanggal_akhir'] = $request->tanggal_akhir;
         $inputPenyewaan['total_harga'] = $request->total_harga;
         $inputPenyewaan['keterangan'] = $request->keterangan;
         $inputPenyewaan['status_penyewaan'] = 1;
@@ -75,20 +79,52 @@ class PenyewaanController extends Controller
         if ($penyewaan) {
             $inputDetail['id_penyewaan'] = 'SW-' . Carbon::now()->format('dmY') . '-' . $kode;
             foreach ($request->id_peralatan as $key => $peralatan_id) {
-                $inputDetail[ 'id_peralatan'] = $peralatan_id;
+                $inputDetail['id_peralatan'] = $peralatan_id;
                 $inputDetail['jumlah_sewa'] = $request->jumlah_sewa[$key];
-                $inputDetail['harga'] = $request->harga[$key];
+                $inputDetail['harga_sewa'] = $request->harga[$key];
                 $inputDetail['subtotal'] = $request->subtotal[$key];
                 $detail = DetailPenyewaan::create($inputDetail);
             }
         }
 
+        // Kurangi Stock
+
         if ($detail) {
+            $peralatan = Peralatan::findOrFail($request->id_peralatan);
+
+            foreach ($peralatan as $key => $value) {
+                $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
+                $inputPeralatan['nama_peralatan'] = $value->nama_peralatan;
+                $inputPeralatan['harga_sewa'] = $value->harga_sewa;
+                $inputPeralatan['stock'] = $request->stock[$key] - $request->jumlah_sewa[$key];
+
+                $alat = Peralatan::updateOrCreate($inputPeralatanID, $inputPeralatan);
+            }
+        }
+
+
+        if ($alat) {
             alert()->success('Berhasil', 'Data Berhasil ditambahkan')->persistent('Close');
             return redirect('admin/penyewaan');
         } else {
             alert()->error('Error', 'Data gagal ditambahkan')->persistent('Close');
             return redirect()->back();
         }
+    }
+
+    public function listPenyewaan()
+    {
+        $penyewaan = Penyewaan::all();
+        // $data = DB::table('t_pesanan')->join('t_detail_pesanan', 't_detail_pesanan.id_')
+        $detail = DetailPenyewaan::all();
+
+        return view('penyewaan.list.index', compact('penyewaan', 'detail'));
+    }
+
+    public function detailPenyewaan($id)
+    {
+        $penyewaan = Penyewaan::findOrFail($id);
+        $detail = DetailPenyewaan::where('id_penyewaan', '=', $id)->get();
+        return view('penyewaan.list.detail', compact('penyewaan', 'detail'));
     }
 }

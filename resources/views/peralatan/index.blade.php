@@ -58,7 +58,10 @@
                         <th style="display:none;">id</th>
                         <th>Nama Peralatan</th>
                         <th>Stock</th>
+                        <th>Satuan</th>
                         <th>Harga Sewa</th>
+                        <th>Harga Ganti</th>
+                        <th style="display:none;">hs</th>
                         <th style="display:none;">hs</th>
                         <th>Aksi</th>
                       </tr>
@@ -69,7 +72,10 @@
                         <th style="display:none;">id</th>
                         <th>Nama Peralatan</th>
                         <th>Stock</th>
+                        <th>Satuan</th>
                         <th>Harga Sewa</th>
+                        <th>Harga Ganti</th>
+                        <th style="display:none;">hs</th>
                         <th style="display:none;">hs</th>
                         <th>Aksi</th>
                       </tr>
@@ -78,12 +84,15 @@
                          @php $no = 1; @endphp
                         @foreach ($peralatan as $row)
                       <tr>
-                      <td>{{ $no++ }}</td>
-                      <td style="display:none;">{{ $row->id_peralatan }}</td>
-                      <td>{{ $row->nama_peralatan }}</td>
+                        <td>{{ $no++ }}</td>
+                        <td style="display:none;">{{ $row->id_peralatan }}</td>
+                        <td>{{ $row->nama_peralatan }}</td>
+                        <td>{{ $row->satuan }}</td>
                         <td>{{ $row->stock }}</td>
                         <td>Rp.{{ number_format($row->harga_sewa,0,',', '.') }}</td>
+                        <td>Rp.{{ number_format($row->harga_ganti,0,',', '.') }}</td>
                         <td style="display:none;">{{ $row->harga_sewa }}</td>
+                        <td style="display:none;">{{ $row->harga_ganti }}</td>
                         <td>
                         <a href="#" class="btn btn-warning edit"><i class="fa fa-pencil"></i> </a>
                         <a href="#" class="btn btn-danger delete" style="display:inline;"><i class="fa fa-trash"></i></a>
@@ -126,8 +135,10 @@
             console.log(data);
 
             $('#nama_peralatan').val(data[2]);
-            $('#stock').val(data[3]);
-            $('#harga_sewa').val(data[5]);
+            $('#satuan').val(data[3]);
+            $('#stock').val(data[4]);
+            $('#harga_sewa').val(data[7]);
+            $('#harga_ganti').val(data[8]);
 
             $('#editForm').attr('action','/admin/peralatan/'+data[1]);
             $('#editModal').modal('show');
