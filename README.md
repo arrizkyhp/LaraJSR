@@ -10,3 +10,5 @@ Currently Done :
 - CRUD Jenis Makanan/Minuman
 - CRUD Pesanan (-denda)
 - CRUD Peralatan
+- Pengembalian Sewa
+- CRD Penyewaan Peralatan
