@@ -78,6 +78,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/get_peralatan/{id}', 'PenyewaanController@getPeralatan');
         Route::get('/list_penyewaan', 'PenyewaanController@listPenyewaan');
         Route::get('/penyewaan/detail/{id}', 'PenyewaanController@detailPenyewaan');
+        // Pengembalian
+        Route::patch('/penyewaan/pengembalian/{id}', 'PenyewaanController@pengembalian')->name('sewa.kembali');;
 
         // Route::group(['middleware' => 'superadmin'], function () { });
     });

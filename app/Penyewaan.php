@@ -18,6 +18,7 @@ class Penyewaan extends Model
         'tanggal_akhir',
         'tanggal_kembali',
         'total_harga',
+        'total_bayar',
         'bayar',
         'keterangan',
         'status_bayar',
@@ -33,8 +34,19 @@ class Penyewaan extends Model
     {
         return $this->hasOne('\App\Users', 'id_users', 'id_users');
     }
+
     public function detail_penyewaan()
     {
         return $this->hasMany('\App\DetailPenyewaan', 'id_penyewaan');
     }
+
+    public function pengembalian()
+    {
+        return $this->hasMany('\App\Pengembalian', 'id_penyewaan');
+    }
+    // public static function tanggalGanti($value)
+    // {
+    //     // return \Carbon\Carbon::parse($value)->addDays(+1)->format('d-m-Y'); tambah hari
+    //     return \Carbon\Carbon::now()->diffInDays($value);
+    // }
 }

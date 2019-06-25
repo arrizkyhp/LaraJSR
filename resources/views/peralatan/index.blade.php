@@ -87,8 +87,8 @@
                         <td>{{ $no++ }}</td>
                         <td style="display:none;">{{ $row->id_peralatan }}</td>
                         <td>{{ $row->nama_peralatan }}</td>
-                        <td>{{ $row->satuan }}</td>
                         <td>{{ $row->stock }}</td>
+                        <td>{{ $row->satuan }}</td>
                         <td>Rp.{{ number_format($row->harga_sewa,0,',', '.') }}</td>
                         <td>Rp.{{ number_format($row->harga_ganti,0,',', '.') }}</td>
                         <td style="display:none;">{{ $row->harga_sewa }}</td>
@@ -135,8 +135,8 @@
             console.log(data);
 
             $('#nama_peralatan').val(data[2]);
-            $('#satuan').val(data[3]);
-            $('#stock').val(data[4]);
+            $('#satuan').val(data[4]);
+            $('#stock').val(data[3]);
             $('#harga_sewa').val(data[7]);
             $('#harga_ganti').val(data[8]);
 

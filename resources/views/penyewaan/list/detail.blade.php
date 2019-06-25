@@ -44,6 +44,9 @@
 
 
         <div class="content mt-3">
+               <form action="{{ route('sewa.kembali', $penyewaan->id_penyewaan) }}" id="form-submit" method="POST" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            {{ method_field('PATCH') }}
 
         <div class="col-lg-12">
                 <div class="card">
@@ -58,6 +61,7 @@
                 <div class="form-group">
                     <span  style="margin-right:5px; float:right;"><b> Tanggal Pesan: </b> {{ date('d/m/Y', strtotime($penyewaan->tanggal_penyewaan)) }}</span><br>
                     <span   style="margin-right:5px; float:right;"><b> Sampai Tanggal : </b> {{ date('d/m/Y', strtotime($penyewaan->tanggal_akhir)) }}</span><br><br>
+                     <input type="hidden" style="date" id="tanggal_akhir" value="{{ $penyewaan->tanggal_akhir }}" name="tanggal_akhir">
                     {{-- Status Pesanan --}}
                     @if ($penyewaan->status_penyewaan == 0)
                     <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Selesai </span></h3><br><br>
@@ -88,7 +92,7 @@
                         <tbody>
                             @foreach ($detail as $details)
                             <td>{{ $details->peralatan->nama_peralatan}}</td>
-                            <td>{{ $details->jumlah_sewa}}</td>
+                            <td><input type="hidden" value="{{ $details->jumlah_sewa}}" name="jumlah_sewa[]">{{ $details->jumlah_sewa}}</td>
                             <td>{{ $details->peralatan->satuan}}</td>
                             <td>Rp.{{ number_format($details->peralatan->harga_sewa,0,',', '.') }}</td>
                             <td>Rp.{{ number_format($details->subtotal,0,',', '.') }}</td>
@@ -109,8 +113,9 @@
 
                     </div>
                     <div class="col-md-4">
-                        <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($penyewaan->total_harga,2,',', '.') }}</h4></span>
-                        <input type="hidden" value="{{ $penyewaan->total_harga }}" id="subtotal">
+                        <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($penyewaan->total_harga,0,',', '.') }}</h4></span>
+                        <input type="hidden" value="{{ $penyewaan->total_harga }}" id="subtotal" name="subtotal">
+                        <span class="detailSpan" ><h4><b>DP :</b> Rp.{{ number_format($penyewaan->bayar,0,',', '.') }}</h4></span>
 
                     </div>
                 </div>
@@ -152,14 +157,15 @@
 
                                             @foreach ($detail as $details)
                                               <tr>
-                                            <td>{{ $details->peralatan->nama_peralatan}}</td>
+                                            <td><input type="hidden" >{{ $details->peralatan->nama_peralatan}}</td>
                                             <td><input type="number" min="0" name="jumlah_kembali[]" value="{{ $details->jumlah_sewa}}" class="form-control jumlah_kembali"></td>
-                                            <td><span class="tidak_kembali">0</span></td>
+                                            <td><input type="hidden" name="jumlah_rusak[]" id="jumlah_rusak"><span class="tidak_kembali">0</span></td>
                                             <td>{{ number_format($details->peralatan->harga_ganti,0,',', '.') }}</td>
                                             <td class="denda_kembali" >0</td>
                                             <td style='display:none;'>{{ $details->peralatan->harga_sewa }}</td>
                                             <td style='display:none;'>{{ $details->jumlah_sewa }}</td>
                                             <td style='display:none;'><span class="ganti_harga">{{ $details->peralatan->harga_ganti }}</span></td>
+                                            <td style='display:none;'><input type="hidden" name="id_detail_penyewaan[]" value="{{ $details->id_detail_penyewaan }}"></td>
                                              </tr>
                                           @endforeach
 
@@ -170,23 +176,29 @@
                             <div class="form-group col-md 1"></div>
                             <span class="form-group col-md-3">
                                 <label for="">Tanggal Kembali</label>
+
                                 <div class="input-group">
                                     <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                         <input type="date" id="tanggal_kembali" class="form-control" name="tanggal_kembali" value="{{ date('Y-m-d') }}">
                                 </div><br>
 
-                                <input type="hidden" value="{{ $penyewaan->total_harga }}" id="totalHarga">
-                                <span class="detailSpan" ><h4><b>Bayar :</b> Rp.{{ number_format($penyewaan->bayar,0,',', '.') }}</h4></span>
-                                <input type="hidden" id="bayar" value="{{ $penyewaan->bayar }}">
-                                 <span class="detailSpan" ><h4><b>Denda :</b> Rp.<span class="dendaTotal">{{ number_format(0,0,',', '.') }}</span></h4></span>
+                                    <input type="hidden" value="{{ $penyewaan->total_harga }}" id="totalHarga">
+
+                                    <input type="hidden" id="bayar" value="{{ $penyewaan->bayar }}">
+                                    <span class="detailSpan" ><h4><b>Denda Ganti :</b> Rp.<span class="dendaGanti">{{ number_format(0,0,',', '.') }}</span></h4></span>
+                                    <input type="hidden" class="denda_ganti" name="denda_ganti">
+                                    <span class="detailSpan" ><h4><b>Denda Telat :</b> Rp.<span class="dendaTelat">{{ number_format(0,0,',', '.') }}</span></h4></span>
+                                    <input type="hidden" class="denda_telat" name="denda_telat">
                                  <hr>
                                  <div class="form-group">
-                                    <span class="detailSpan"><h4><b>Total Bayar :</b> Rp.<span id="total_bayar">0</span></h4></span>
+                                    <span class="detailSpan" ><h4><b>Total Denda :</b> Rp.<span class="dendaTotal">{{ number_format(0,0,',', '.') }}</span></h4></span>
+                                    <input type="hidden" class="total_denda" name="total_denda">
+                                    <span class="detailSpan"><h4><b>Total Bayar :</b> Rp.<span id="total_bayar">{{ number_format($penyewaan->total_harga-$penyewaan->bayar,0,',', '.') }}</span></h4></span>
                                     <span class="detailSpan" ><h4><b>Nominal Bayar :</b> Rp.<span id="bayar_nominal">0</span></h4></span><br>
                                     <input type="hidden" value="{{ $penyewaan->id_penyewaan }}" name="id_penyewaan">
-                                    <input type="hidden" value="{{ $penyewaan->bayar }}" name="total_harga">
+                                    <input type="hidden" value="{{ $penyewaan->bayar }}" name="bayar_dp">
                                     <input type="number" name="bayar_lagi" id="bayar_lagi" class="form-control bayar"  placeholder="Masukkan Jumlah Bayar" ><br>
-                                    <button class="btn btn-primary" style="margin-right:5px; float:right;" data-toggle="modal" data-target="#exampleModal">Simpan</button>
+                                    <button type="submit" value="submit" class="btn btn-primary" style="margin-right:5px; float:right;">Simpan</button>
 
                                 </div>
                             </div>
@@ -196,6 +208,7 @@
                     </div>
                 </div>
             </div>
+        </form>
          </div>
     </div><!-- /#right-panel -->
 
@@ -231,6 +244,13 @@
 
 
     });
+        // ketika tanggal kembali di ganti
+            $("#tanggal_kembali").on("change", function(e) {
+                tanggalKembali();
+            });
+
+
+
 
     $('.table-kembali').on('change','.jumlah_kembali',function(e){
             $(this).closest('tr').find("input").each(function() {
@@ -261,34 +281,90 @@
 
 
 
+
+
+
             });
 
     });
 
-     function grandtotal()
-          {
-            var sum = 0;
-            $('.denda_kembali').each(function(){
-                var q = parseInt($(this).html());
+            function tanggalKembali()
+            {
+                    var start = $('#tanggal_akhir').val();
+                        var end = $('#tanggal_kembali').val();
 
-                sum += parseInt(q);
-            // test += $('.subtotal).val(col2);
-          });
-        //   alert(sum);
-            var subtotal = $("#subtotal").val();
-            var bayar = $("#bayar").val();
+                        // end - start returns difference in milliseconds
+                        var diff = new Date(Date.parse(end) - Date.parse(start));
 
-            $('.dendaTotal').html(sum).formatCurrency();
-            var raw = $('.dendaTotal').html().replace(/[^\d,-]/g, '');
-            var raw = raw.replace(",", '');
+                        // get days
+                        var days = diff/1000/60/60/24;
+                        var hari = Math.round(days);
+                        // jika hari kurang dari tanggal ketententuan kembali ke 0
+                        if (hari <= 0) {
+                            var hari = 0;
+                        }
+                        var denda = 50000;
+                        var telat = parseInt(hari) * parseInt(denda);
+                        $('.dendaTelat').html(telat).formatCurrency();
+                        var subtotal = $("#subtotal").val();
+                        var bayar = $("#bayar").val();
 
-            var grandtotal = parseInt(raw) + parseInt(subtotal) - parseInt(bayar) ;
+                        var ganti = $(".dendaGanti").html();
+                        var ganti = ganti.replace(".", '');
 
-            $('#total_bayar').html(grandtotal).formatCurrency();
+                        var DendaTotal = parseInt(ganti) + parseInt(telat);
+                        var grandtotal = parseInt(DendaTotal) + parseInt(subtotal) - parseInt(bayar) ;
+
+                        $('.dendaTotal').html(DendaTotal).formatCurrency();
+                        $('.total_denda').val(DendaTotal);
+                        $('.denda_ganti').val(ganti);
+                        $('.denda_telat').val(telat);
+                        $('#total_bayar').html(grandtotal).formatCurrency();
 
 
-            //  $('.total_harga').val(raw);
-          }
+            }
+
+            function grandtotal()
+            {
+                var sum = 0;
+                $('.denda_kembali').each(function(){
+                    var q = parseInt($(this).html());
+
+                    sum += parseInt(q);
+                // test += $('.subtotal).val(col2);
+            });
+            //   alert(sum);
+                var subtotal = $("#subtotal").val();
+                var bayar = $("#bayar").val();
+                var telat = $(".dendaTelat").html();
+                var telat = telat.replace(".", '');
+
+                $('.dendaGanti').html(sum).formatCurrency();
+                var ganti = $('.dendaGanti').html().replace(/[^\d,-]/g, '');
+                var ganti = ganti.replace(",", '');
+
+                // $('.dendaTelat').html(sum).formatCurrency();
+                // var telat = $('.dendaTelat').html().replace(/[^\d,-]/g, '');
+
+
+                var DendaTotal = parseInt(ganti) + parseInt(telat);
+                var grandtotal = parseInt(DendaTotal) + parseInt(subtotal) - parseInt(bayar) ;
+
+                $('.dendaTotal').html(DendaTotal).formatCurrency();
+                $('.total_denda').val(DendaTotal);
+                $('.denda_ganti').val(ganti);
+                $('.denda_telat').val(telat);
+                $('#total_bayar').html(grandtotal).formatCurrency();
+
+
+                //  $('.total_harga').val(raw);
+            }
+
+
+           $('#test').click(function() {
+
+            });
+
 });
 </script>
 

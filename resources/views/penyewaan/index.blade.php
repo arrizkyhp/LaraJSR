@@ -25,7 +25,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active root-ajj"><a href="#">Dashboard</a> / Penyewaan Peralatan</li>
+                            <li class="active root-ajj"><a href="{{ asset('admin/dashboard') }}">Dashboard </a>/ Penyewaan<a href="{{ asset('admin/list_penyewaan') }}"> / List Penyewaan</a>  </li>
                         </ol>
                     </div>
                 </div>
@@ -296,7 +296,7 @@
             var rowCount = $('#table-penyewaan tr').length;
 
 
-                if (parseInt(stock) > parseInt(stock_ghost)) {
+                if ((parseInt(stock) > parseInt(stock_ghost)) || (parseInt(stock) == 0) ) {
                     alertStock();
 
                 }else {

@@ -48,7 +48,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active root-ajj"><a href="dashboard">Dashboard </a>/ <a href="penyewaan">Penyewaan</a> / List Penyewaan </li>
+                            <li class="active root-ajj"><a href="{{ asset('admin/dashboard') }}">Dashboard </a>/ <a href="{{ asset('admin/penyewaan') }}">penyewaan</a> / List Penyewaan </li>
                         </ol>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                    @card
                    @slot('header')
                         Data <strong>Menu</strong>
-                        <a href="pesanan" class="btn btn-primary" style="float:right;"><i class="fa fa-plus-square"></i> Tambah Pesanan </a>
+                        <a href="penyewaan" class="btn btn-primary" style="float:right;"><i class="fa fa-plus-square"></i> Tambah Penyewaan </a>
                    @endslot
                       <table id="tabel-data" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
                     <thead>
@@ -179,7 +179,7 @@
             console.log(data);
 
 
-            $('#deleteForm').attr('action','/admin/pesanan/'+data[1]);
+            $('#deleteForm').attr('action','/admin/penyewaan/'+data[1]);
             $('#deleteModal').modal('show');
 
         });
