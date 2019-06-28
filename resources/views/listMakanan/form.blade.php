@@ -13,9 +13,14 @@
       <input type="text" name="nama_makanan" id="nama_makanan "  class="form-control"  placeholder="Masukkan Nama Makanan/Minuman" >
     </div>
 
+     <div class="form-group">
+      <label for="harga">Harga</label>
+      <input type="number" name="harga"  class="form-control" min="0"  placeholder="Masukkan Harga Makanan/Minuman" >
+    </div>
+
     <div class="form-group">
         <label for="">Jenis Makanan/Minuman</label>
-        <select name="id_jenis_makanan" class="form-control {{ $errors->has('id_jenis_makanan') ? 'is-invalid':'' }}" id="jenis_makanan" required>
+        <select name="id_jenis_makanan" class="form-control {{ $errors->has('id_jenis_makanan') ? 'is-invalid':'' }}"  required>
             @foreach ($jenisMakanan as $row)
         <option value="{{ $row->id_jenis_makanan }}">{{ $row->nama_jenis_makanan }}</option>
         @endforeach
@@ -46,11 +51,11 @@
 
     @endsection
 
-    {{------------------------------------- Form Edit ----------------------------------}}
+    {{----------------------------- -------- Form Edit ----------------------------------}}
 
 
     @section('modaltitleEdit')
-    Tambah Data Jenis Makanan
+    Edit Data asdasd Makanan
     @endsection
 
     @section('formEdit')
@@ -60,14 +65,20 @@
     {{ method_field('GET') }}
     <div class="form-group">
       <label for="nama_makanan">Nama</label>
-      <input type="nama_makanan" name="nama_makanan" id="nama_makanan" class="form-control" id="nama_makanan" placeholder="Masukkan Nama Pelanggan" >
+      <input type="text" name="nama_makanan" id="nama_makanan" class="form-control" id="nama_makanan" placeholder="Masukkan Nama Pelanggan" >
+    </div>
+
+     <div class="form-group">
+      <label for="harga">Harga</label>
+      <input type="number" name="harga" id="harga" class="form-control" placeholder="Masukkan Harga Pelanggan" >
     </div>
 
     <div class="form-group">
 
        <label for="jenis_makanan">Jenis Makanan</label>
-     <select name="id_jenis_makanan"  class="form-control {{ $errors->has('id_jenis_makanan') ? 'is-invalid':'' }}"  required>
-        @foreach (\App\JenisListMakanan::all() as $jenis_pesanan)
+     <select name="id_jenis_makanan" id="id_jenis_makanan"  class="form-control {{ $errors->has('id_jenis_makanan') ? 'is-invalid':'' }}"  required>
+
+      @foreach (\App\JenisListMakanan::all() as $jenis_pesanan)
       <option value="{{ $jenis_pesanan->id_jenis_makanan }}">{{ $jenis_pesanan->nama_jenis_makanan }}</option>
       @endforeach
       </select>

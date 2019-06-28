@@ -7,6 +7,7 @@ use App\JenisPesanan;
 use Illuminate\Http\Request;
 use App\DetailMenu;
 use App\ListMakanan;
+use App\JenisListMakanan;
 
 
 class MenuController extends Controller
@@ -16,6 +17,10 @@ class MenuController extends Controller
         $menu = Menu::all();
         $detailMenu = DetailMenu::all();
         $listMakanan = ListMakanan::all();
+        // $jenisMenu = ListMakanan::with('jenis_makanan', 'nama_jenis_makanan')->orderBy('')->get();
+
+
+
         return view('menu.index', compact('menu', 'detailMenu', 'listMakanan'));
     }
 
@@ -32,7 +37,7 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+
         $this->validate($request, [
             'id_menu' => 'required|unique:t_menu',
             'id_jenis_pesanan' => 'required|exists:t_jenis_pesanan,id_jenis_pesanan',
@@ -44,19 +49,12 @@ class MenuController extends Controller
 
         $menu = new \App\Menu;
 
-        // $menu->id_menu = $request->input('id_menu');
-        // $menu->id_jenis_pesanan = $request->input('id_jenis_pesanan');
-        // $menu->nama_menu = $request->input('nama_menu');
-        // $menu->deskripsi = $request->input('deskripsi');
-        // $menu->harga = $request->input('harga');
-
         $inputMenu['id_menu'] = $request->id_menu;
         $inputMenu['id_jenis_pesanan'] = $request->id_jenis_pesanan;
         $inputMenu['nama_menu'] = $request->nama_menu;
         $inputMenu['harga'] = $request->harga;
         $inputMenu['keterangan'] = $request->keterangan;
-
-
+        $inputMenu['status_peralatan'] = $request-> status_peralatan;
 
 
 
@@ -98,7 +96,16 @@ class MenuController extends Controller
         // dd($selectedId);
         return view('menu.edit', compact('menu', 'detailMenu', 'listMakanan', 'selectedId'));
     }
-
+    public function calculateHarga($ids)
+    {
+        $arrId = explode(',', $ids);
+        $listMakanan = ListMakanan::whereIn('id_list_makanan', $arrId)->get();
+        $harga = 0;
+        foreach ($listMakanan as $v) {
+            $harga += $v->harga;
+        }
+        return $harga;
+    }
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -116,6 +123,12 @@ class MenuController extends Controller
         $menu->nama_menu = $request->input('nama_menu');
         $menu->keterangan = $request->input('keterangan');
         $menu->harga = $request->input('harga');
+
+        if ($request->status_peralatan == "") {
+            $menu->status_peralatan = 0;
+        } elseif ($request->status_peralatan == "on") {
+            $menu->status_peralatan = 1;
+        }
 
         $menu->save();
 

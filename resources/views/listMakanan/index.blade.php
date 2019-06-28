@@ -26,37 +26,23 @@
                 </div>
             </div>
         </div>
-                    {{-- @if(count($errors) >0)
-            <div class="alert alert-danger">
-              <ul>
-                @foreach ($errors->all() as $error)
-              <li>{{$error}}</li>
-                @endforeach
-              </ul>
-            </div>
-            @endif
-
-            @if (\Session::has('success'))
-            <div class="alert alert-success">
-            <p>{{ \Session::get('success') }}</p>
-            </div>
-            @endif --}}
 
 
         <div class="content mt-3">
+              <div class="col-lg-7">
 
-              <div class="col-lg-6">
                    @card
                    @slot('header')
                         Data <strong>Makanan</strong>
                         <button class="btn btn-primary" style="float:right;" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus-square"></i> Tambah </button>
                    @endslot
-                      <table id="tabel-data" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
+                      <table id="tabel-data" class="table table-striped table-bordered table-hover table-responsive" width="100%" cellspacing="0">
                     <thead>
                       <tr>
                         <th>#</th>
                         <th style="display:none;">id</th>
                         <th>Nama Makanan/Minuman</th>
+                        <th>Harga</th>
                         <th>Jenis</th>
                         <th>Aksi</th>
                       </tr>
@@ -66,6 +52,7 @@
                         <th>#</th>
                         <th style="display:none;">id</th>
                         <th>Nama Makanan/Minuman</th>
+                        <th>Harga</th>
                         <th>Jenis</th>
                         <th>Aksi</th>
                       </tr>
@@ -76,12 +63,13 @@
                       <tr>
                       <td>{{ $no++ }}</td>
                       <th style="display:none;">{{ $row->id_list_makanan }}</th>
-                       <td>{{ $row->nama_makanan }}</td>
+                       <td>{{  $row->nama_makanan }}</td>
+                       <td>Rp.{{ number_format($row->harga,0,',', '.')  }}</td>
                       <td>{{ $row->jenis_makanan->nama_jenis_makanan }}</td>
 
 
                         <td>
-                        <a href="#" class="btn btn-warning edit" data-id="{{ $row->id_list_makanan }}"><i class="fa fa-pencil"></i> </a>
+                        <a href="{{ url( '/admin/list_makanan/edit',$row->id_list_makanan ) }}" class="btn btn-warning " data-id="{{ $row->id_list_makanan }}"><i class="fa fa-pencil"></i> </a>
                         <a href="#" class="btn btn-danger delete" style="display:inline;"><i class="fa fa-trash"></i></a>
                         </form>
                         </td>
@@ -89,22 +77,23 @@
                         @endforeach
                          </tbody>
 
-                  </table>
+                    </table>
 
                       @slot('footer')
 
                         @endslot
                       @endcard
 
+              </div>
 
-        </div> <!-- .content -->
-         <div class="col-lg-6">
+         <div class="col-lg-5">
+
                    @card
                    @slot('header')
                         Data <strong>Jenis Makanan</strong>
                         <button class="btn btn-primary" style="float:right;" data-toggle="modal" data-target="#jenisMakananModal"><i class="fa fa-plus-square"></i> Tambah </button>
                    @endslot
-                      <table id="tabel-data" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
+                      <table id="tabel-jenis" class="table table-striped table-bordered table-hover table-responsive" width="100%" cellspacing="0">
                     <thead>
                       <tr>
                         <th>#</th>
@@ -144,7 +133,7 @@
                         @endslot
                       @endcard
 
-
+         </div>
         </div> <!-- .content -->
     </div><!-- /#right-panel -->
 
@@ -156,8 +145,9 @@
     <script type="text/javascript">
 
     $(document).ready(function () {
-            $('body').toggleClass('open');
+
         var table = $('#tabel-data').DataTable();
+
 
         // Start Edit Record
         $(document).on('click','.edit',function (e) {
@@ -168,8 +158,9 @@
               url: "{{url('admin/getListMakanan')}}/"+id,
               success: function (response) {
                  $('#nama_makanan').val(response.nama_makanan);
-                var option = '<option value="'+ respones.jenis_makanan.id_jenis_makanan +'">'+response.jenis_makanan.nama_jenis_makanan+'</option>'
-                      $('#id_jenis_makanan').prepend(option);
+                 var option = '<option value="'+ response.jenis_makanan.id_jenis_makanan +'">'+response.jenis_makanan.nama_jenis_makanan+'</option>'
+                  $('#id_jenis_makanan').prepend(option);
+                  $('#harga').val(response.harga);
               }
           });
 
@@ -179,7 +170,7 @@
         });
         // End Edit Record
 
-         // Start Edit Record
+         // Start Edit Jenis Record
        $(document).on('click','.bruh',function (e) {
           var id = $(this).data('id');
             $.ajax({
@@ -187,6 +178,7 @@
               url: "{{url('admin/getJenisMakanan')}}/"+id,
               success: function (response) {
                 $('#nama_jenis_makanan').val(response.nama_jenis_makanan);
+
               }
           });
 
@@ -221,6 +213,10 @@
             $('#deleteForm2').attr('action','/admin/jenis_makanan/'+id);
             $('#deleteModal2').modal('show');
 
+        });
+
+         $('#list-makanan').on('change',function (e) {
+          alert($('#list-makanan').val());
         });
         // End Delete Record
 

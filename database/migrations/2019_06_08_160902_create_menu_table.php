@@ -19,6 +19,7 @@ class CreateMenuTable extends Migration
             $table->string('nama_menu');
             $table->string('keterangan')->nullable();
             $table->integer('harga');
+            $table->integer('status_peralatan');
             $table->timestamps();
         });
     }

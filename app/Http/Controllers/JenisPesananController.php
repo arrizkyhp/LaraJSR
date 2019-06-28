@@ -25,7 +25,6 @@ class JenisPesananController extends Controller
         $this->validate($request, [
             'nama_jenis_pesanan' => 'required',
             'kode' => 'required',
-            'deskripsi' => 'required',
             'foto' => 'required|mimes:jpeg,png|max:512'
         ]);
 
@@ -41,7 +40,7 @@ class JenisPesananController extends Controller
         $status = \App\JenisPesanan::create($input);
 
         alert()->success('Berhasil', 'Data Berhasil ditambahkan')->persistent('Close');
-        if ($status)  return redirect('/jenis_pesanan');
+        if ($status)  return redirect('/admin/jenis_pesanan');
         else return redirect('/dashboard');
     }
 
@@ -57,7 +56,6 @@ class JenisPesananController extends Controller
         $this->validate($request, [
             'nama_jenis_pesanan' => 'required',
             'kode' => 'required',
-            'deskripsi' => 'required',
             'foto' => 'mimes:jpeg,png|max:512'
         ]);
 

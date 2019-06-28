@@ -20,12 +20,14 @@ class ListMakananController extends Controller
         $this->validate($request, [
             'id_jenis_makanan' => 'required',
             'nama_makanan' => 'required',
+            'harga' => 'required',
 
         ]);
         $list_makanan = new ListMakanan;
 
         $list_makanan->id_jenis_makanan = $request->input('id_jenis_makanan');
         $list_makanan->nama_makanan = $request->input('nama_makanan');
+        $list_makanan->harga = $request->input('harga');
 
         $list_makanan->save();
 
@@ -65,16 +67,27 @@ class ListMakananController extends Controller
         return response()->json($jenisMakanan);
     }
 
+    public function editListMakanan($id)
+    {
+        $listMakanan = ListMakanan::findOrFail($id);
+        $jenisMakanan = JenisListMakanan::all();
+
+        return view('listMakanan.edit', compact('listMakanan', 'jenisMakanan'));
+    }
+
     public function update(Request $request, $id)
     {
+
         $this->validate($request, [
             'id_jenis_makanan' => 'required',
             'nama_makanan' => 'required',
+            'harga' => 'required',
         ]);
 
         $list_makanan = ListMakanan::find($id);
         $list_makanan->id_jenis_makanan = $request->input('id_jenis_makanan');
         $list_makanan->nama_makanan = $request->input('nama_makanan');
+        $list_makanan->harga = $request->input('harga');
 
         $list_makanan->save();
 

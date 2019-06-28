@@ -20,6 +20,22 @@ $(document).ready(function () {
             $('#list_makanan').val(selectedArr);
             $('.standardSelect').trigger('chosen:updated');
 
+             // Get Harga List Makanan
+
+          var harga = 0;
+          $('#list-makanan').on('change',function (e) {
+            var ids = $('#list-makanan').val();
+            $.ajax({
+              type: "get",
+              url: "{{ url('admin/menu/calculate-harga') }}/"+ids,
+              success: function (harga) {
+                $('#harga').val(harga);
+              }
+            });
+
+
+        });
+
  });
     </script>
 @endpush
@@ -100,9 +116,9 @@ $(document).ready(function () {
 
                         <div class="form-group">
                         <label for="Deskripsi">List Makanan/Minuman</label>
-                            <select name="id_list_makanan[]" data-placeholder="Pilih List..." multiple class="standardSelect" id="list_makanan">
+                            <select name="id_list_makanan[]" id="list-makanan" data-placeholder="Pilih List..." multiple class="standardSelect" id="list_makanan">
                                 @foreach ($listMakanan as $detail_menu)
-                                    <option value="{{ $detail_menu->id_list_makanan }}" >{{ $detail_menu->nama_makanan}}</option>
+                                    <option value="{{ $detail_menu->id_list_makanan }}"  data-harga="{{ $detail_menu->harga }}">{{ $detail_menu->nama_makanan}}</option>
                                  @endforeach
                             </select>
 

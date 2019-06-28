@@ -7293,4 +7293,5 @@ span.detailSpan {
 span.detailInfo {
     display: block;
 }
+.dataTables_filter input { width: 300px; }
 

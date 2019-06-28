@@ -192,11 +192,23 @@
     $(document).ready(function () {
 
         var table = $('#tabel-data').DataTable();
+           $('body').toggleClass('open');
         // Tooltip
         $('[data-toggle="tooltip"]').tooltip();
         // Select 2 Pelanggan
         $('.js-example-basic-multiple').select2();
         $('.select-peralatan').select2();
+
+        $('#stock').on('change', function () {
+            var stok = $(this).val();
+            if (stok < 0) {
+            $(this).val(0);
+            }else{
+
+            }
+         });
+
+
 
     // Button Simpan di Klik
       $('.simpan').click(function(){
@@ -282,7 +294,9 @@
      });
 
 
-    // Button Tambah di Klik
+
+
+    // Button Tambah Peralatan di Klik
         $('#button_tambah').on('click', function () {
             var id_peralatan = $('#id_peralatan').val();
             var nama = $('#nama_peralatan').val();

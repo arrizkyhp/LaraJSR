@@ -124,8 +124,11 @@ class PenyewaanController extends Controller
     public function detailPenyewaan($id)
     {
         $penyewaan = Penyewaan::findOrFail($id);
+
         $detail = DetailPenyewaan::where('id_penyewaan', '=', $id)->get();
-        return view('penyewaan.list.detail', compact('penyewaan', 'detail'));
+        $pengembalian = Pengembalian::where('id_penyewaan', '=', $id)->first();
+        // dd($pengembalian);
+        return view('penyewaan.list.detail', compact('penyewaan', 'detail', 'pengembalian'));
     }
 
     public function pengembalian(Request $request, $id)

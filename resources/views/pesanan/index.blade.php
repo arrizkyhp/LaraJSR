@@ -59,7 +59,7 @@
 
 
             {{--------------- Detail Pesanan -----------------}}
-                  <row>
+
              <div class="col-lg-8">
                  <div class="card">
               <div class="card-body">
@@ -78,7 +78,7 @@
                         {{-- <input type="nama_pelanggan" name="nama_pelanggan" id="nama_pelanggan" class="form-control" id="nama_pelanggan" placeholder="Masukkan Nama Pelanggan" > --}}
                          <div class="input-group">
                           <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                        <select name="id_pelanggan" data-placeholder="Masukan Nama Pelanggan.." class="form-control js-example-basic-multiple" tabindex="1" id="pelanggan_select">
+                        <select name="id_pelanggan" data-placeholder="Masukan Nama Pelanggan.." class="form-control js-example-basic-multiple" tabindex="1" id="pelanggan_select" style="width: 80%">
                                     <option value=""></option>
                                     @foreach ($pelanggan as $pelanggans)
                                         <option value="{{ $pelanggans->id_pelanggan }}">{{ $pelanggans->nama_pelanggan }}</option>
@@ -121,12 +121,15 @@
                         {{-- teu bisa ka kanan --}}
                         {{-- Rupiah --}}
                         <div class="col-lg-8">
+
                           <textarea cols="25" rows="3" placeholder="Keterangan (jika ada)" name="keterangan"></textarea>
                         </div>
                              <div class="form-group col-lg-4" >
                              <div style="float:right;">
                         <span>Total Harga </span><h2>Rp.<b><span class="grandtotal" class="text-right">0</span></b></h2>
                         <input type='hidden' name='total_harga' class="total_harga">
+                         <span>Uang Muka </span><h2>Rp.<b><span class="downPaymentOut" class="text-right">0</span></b></h2>
+                        <input type='hidden' name='downPayment' class="downPayment">
                          </div>
                     </div>
 
@@ -149,7 +152,7 @@
             </div>
               </div>
 
-              </row>
+
                    <div class="collapse multi-collapse" id="multiCollapseExample1">
                     @card
                    @slot('header')
@@ -166,6 +169,7 @@
                         <th>List Makanan</th>
                         <th>Harga</th>
                         <th>Aksi</th>
+                        <th style="display:none;">Status Peralatan</th>
                       </tr>
                     </thead>
                     <tfoot>
@@ -177,6 +181,7 @@
                         <th>List Makanan</th>
                         <th>Harga</th>
                         <th>Aksi</th>
+                        <th style="display:none;">Status Peralatan</th>
                       </tr>
                     </tfoot>
                      <tbody>
@@ -194,8 +199,9 @@
                        </td>
                         <td>{{ $row->harga }}</td>
                         <td>
-                        <button type="button" id="menu_data" class="btn btn-info"><i class="fa fa-plus-square"></i> </button>
-												</td>
+                        <button type="button" id="menu_data" class="btn btn-info btnMenu"><i class="fa fa-plus-square"></i> </button>
+                        </td>
+                        <td style="display:none;">{{ $row->status_peralatan }}</td>
 
                       </tr>
                         @endforeach
@@ -231,7 +237,8 @@
                     </div>
                      <div class="form-group">
 											<label for="">Qty</label>
-												<input type="number" id="quantity" class="form-control col-lg-4" min="0" style="float:right;" readonly>
+                        <input type="number" id="quantity" class="form-control col-lg-4" min="50" style="float:right;" readonly><br>
+                          <small id="emailHelp" class="form-text text-muted" >*minimal order 50.</small>
                     </div>
                        <div class="form-group" style="text-align:right">
 											<span >Harga </span><h2>Rp.<b><span id="harga">{{ number_format('0') }}</span></b></h2>
@@ -243,6 +250,59 @@
 
                     <div class="form-group"  style="text-align:right;">
 											<button type="button" class="btn btn-primary tambah-transaksi" style="float:right;" disabled><i class="fa fa-plus-square"></i> Tambah Transaksi </button>
+										</div>
+
+            </div>
+              </div>
+
+            </div>
+               <div class="col-lg-4">
+              <div class="card">
+                <div class="card-header">
+                  <strong class="card-title">Peralatan</strong>
+                  </div>
+
+                  <div class="card-body">
+
+                  <!-- Cart submit form -->
+
+                    <!-- SmartCart element -->
+                    <input type="hidden" id="id_menu">
+                    <div class="form-group ">
+											<label for="">Peralatan</label>
+											  <select id="id_peralatan" name="id_peralatan" data-placeholder="Nama Peralatan.." class="form-control select-peralatan" tabindex="1" id="peralatan_select" style="width: 100%" disabled>
+                            <option value=""></option>
+                            @foreach ($peralatan as $peralatans)
+                            <option value="{{ $peralatans->id_peralatan }}">{{ $peralatans->nama_peralatan }} - {{ $peralatans->stock }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                          <label for="nama_pelanggan">Nama Peralatan</label>
+                              <input type="text" id="nama_peralatan" name="nama_peralatan" class="form-control" placeholder="" readonly>
+                              <input type="hidden" id="id_peralatan" class="form-control" placeholder="" readonly>
+                    </div>
+
+                     <div class="form-group">
+                      <label for="">Qty</label>
+                         <input type="hidden" id="stock_ghost">
+                        <input type="number" id="stock" class="form-control col-lg-4" min="0" style="float:right;" readonly ><br>
+                    </div>
+                    <div class="form-group"  >
+                      <button type="button" id="button_tambah" class="btn btn-primary btn-add pull-right" disabled>Tambah</button><br><br>
+
+                       <table id="table-penyewaan" class="table table-bordered table-responsve table-stripped">
+                          <thead>
+                              <tr>
+                              <th>Nama Peralatan</th>
+                              <th>Qty</th>
+                              <th>Aksi</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
 										</div>
 
             </div>
@@ -322,7 +382,7 @@
         $(this).closest('tr').remove();
         $('#harga').text('0');
         $('#subtotal').text('0');
-        $("input[type=text], textarea").val("");
+        // $("input[type=text], textarea").val("");
         $('#quantity').attr('readonly', true);
 
 
@@ -354,6 +414,7 @@
              });
 
     $('.js-example-basic-multiple').select2();
+    $('.select-peralatan').select2();
 
 
      // on Change Pelanggan
@@ -373,10 +434,13 @@
 
     // JQUERY Ketika Mengklik button Aksi Menu
 
-    $('.table tbody').on('click','.btn',function(){
+    $('.table tbody').on('click','.btnMenu',function(){
       // Membuat form Quantity menjadi tidak Read only
       $('#quantity').attr('readonly', false);
       $('.tambah-transaksi').attr('disabled', false);
+
+
+
 
       // Mendapatkan Value berdasarkan <tr>
       var currow = $(this).closest('tr');
@@ -386,6 +450,12 @@
       var col4 = currow.find('td:eq(3)').text();
       var col5 = currow.find('td:eq(4)').text();
       var col6 = currow.find('td:eq(5)').text();
+      var col7 = currow.find('td:eq(7)').text();
+
+       if (col7 == 1) {
+        $('#id_peralatan').attr('disabled', false);
+        $('#stock').attr('readonly', false);
+      }
 
       // Mengisi Form Pesanan berdasarkan Row yang di pilih
       $('#id_menu').val(col2);
@@ -394,7 +464,8 @@
 
       $('#harga').text(col6);
       $('#subtotal').html(col6);
-      $('#quantity').val('1');
+      $('#quantity').val('50');
+
 
 
 
@@ -468,6 +539,115 @@
 
         });
 
+
+          // get Perlengkapan ketika select
+      $('#id_peralatan').on('change', function () {
+        var id = $(this).val();
+
+        $.ajax({
+            type: "get",
+            url: "{{url('/admin/get_peralatan')}}/"+id,
+            success: function (response) {
+
+                $('#stock').attr('readonly', false);
+                $('#button_tambah').attr('disabled', false);
+                $('#id_peralatan').val(response.id_peralatan);
+                $('#nama_peralatan').val(response.nama_peralatan);
+                $('#stock').val(response.stock);
+                $('#stock_ghost').val(response.stock);
+
+
+            }
+        });
+      });
+
+
+      $('#stock').on('change', function () {
+            var stok = $(this).val();
+            if (stok < 0) {
+            $(this).val(0);
+            }else{
+
+            }
+      });
+
+
+      // Button Tambah Peralatan di Klik
+        $('#button_tambah').on('click', function () {
+            var id_peralatan = $('#id_peralatan').val();
+            var nama = $('#nama_peralatan').val();
+            var stock = $('#stock').val();
+            var stock_ghost = $('#stock_ghost').val();
+            var harga = $('#harga').val();
+            var subtotal = stock * harga;
+            var getSubtotal = $('#subtotal').val(subtotal);
+            var sama = 0;
+            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' name='jumlah_sewa[]' value='"+stock+"'></td><td><button type='button' class='btn btn-danger btnDeletePeralatan'>x</button></td></tr>";
+            var rowCount = $('#table-penyewaan tr').length;
+
+
+                if ((parseInt(stock) > parseInt(stock_ghost)) || (parseInt(stock) == 0) ) {
+                    alertStock();
+
+                }else {
+
+                if(rowCount > 1){
+
+                    $('#table-penyewaan tr').each(function(){
+                    var nama_menu = $(this).find(".nama-menu").html();
+                    if(nama == nama_menu ){
+                        sama++;
+                    var q = $(this).find(".stock").html();
+                    var t = $(this).find(".subtotal").html();
+
+                    $(this).find(".stock").html(parseInt(q) + parseInt(stock));
+                    $(this).find(".subtotal").html(parseInt(t) + parseInt(subtotal));
+                        // formDisabled();
+                        // grandtotal();
+
+                        return false;
+                        }
+
+
+                    });
+
+                }else{
+
+                    $('#table-penyewaan tbody').append(row);
+                    // formDisabled();
+                    // grandtotal();
+                }
+
+                if(sama == 0 && rowCount > 1){
+
+                    $('#table-penyewaan tbody').append(row);
+                    // formDisabled();
+                    // grandtotal();
+
+                }
+
+            }
+
+
+        });
+
+        // Button X di Klik
+
+     $("#table-penyewaan").on('click','.btnDeletePeralatan',function(){
+       var rowCount = $('#table-penyewaan tr').length;
+
+        // if(rowCount == '2'){
+        //    $('#button_tambah').attr('disabled', true);
+        //    $('.tambah_transaksi').attr('disabled', true);
+        // }
+
+        $(this).closest('tr').remove();
+
+
+
+     });
+
+
         // FUNCTION
 
          // Alert
@@ -479,11 +659,20 @@
 
             });
           }
-           function alertSubmit2 (){
+          function alertSubmit2 (){
           swal.fire({
               type: 'error',
               title: 'Oops...',
               text: 'Pilih Pelanggan Terlebih Dahulu!',
+
+            });
+          }
+
+          function alertStock() {
+          swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Stock tidak Cukup!',
 
             });
           }
@@ -512,8 +701,13 @@
             var raw = $('.grandtotal').html().replace(/[^\d,-]/g, '');
             var raw = raw.replace(",", '');
 
+            var dp = 40/100*raw;
 
              $('.total_harga').val(raw);
+            $('.downPaymentOut').html(dp).formatCurrency();
+             $('.downPayment').val(dp);
+
+
           }
 
           function setCode() {

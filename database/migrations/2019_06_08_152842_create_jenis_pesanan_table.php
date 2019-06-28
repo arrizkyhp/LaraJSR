@@ -16,7 +16,8 @@ class CreateJenisPesananTable extends Migration
         Schema::create('t_jenis_pesanan', function (Blueprint $table) {
             $table->increments('id_jenis_pesanan');
             $table->string('nama_jenis_pesanan');
-            $table->string('deskripsi');
+            $table->string('deskripsi')->nullable();
+            $table->string('kode');
             $table->string('foto', 150);
             $table->timestamps();
         });

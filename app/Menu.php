@@ -13,7 +13,7 @@ class Menu extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'id_menu', 'id_jenis_pesanan', 'nama_menu', 'harga', 'deskripsi'
+        'id_menu', 'id_jenis_pesanan', 'nama_menu', 'harga', 'deskripsi', 'status_peralatan'
     ];
 
     public function jenis_pesanan()

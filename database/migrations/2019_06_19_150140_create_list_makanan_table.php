@@ -17,6 +17,7 @@ class CreateListMakananTable extends Migration
             $table->increments('id_list_makanan');
             $table->integer('id_jenis_makanan');
             $table->string('nama_makanan');
+            $table->integer('harga');
             $table->timestamps();
         });
     }

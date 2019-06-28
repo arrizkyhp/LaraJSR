@@ -7,6 +7,7 @@ use App\Pesanan;
 use App\DetailPesanan;
 use App\ListMakanan;
 use App\Pelanggan;
+use App\Peralatan;
 use App\Menu;
 use Auth;
 use DB;
@@ -20,8 +21,9 @@ class PesananController extends Controller
         $menu = Menu::all();
         $pelanggan = Pelanggan::all();
         $listMakanan = ListMakanan::all();
+        $peralatan = Peralatan::all();
 
-        return view('pesanan.index', compact('pesanan', 'menu', 'pelanggan', 'listMakanan'));
+        return view('pesanan.index', compact('pesanan', 'menu', 'pelanggan', 'listMakanan', 'peralatan'));
     }
 
     public function edit($id)

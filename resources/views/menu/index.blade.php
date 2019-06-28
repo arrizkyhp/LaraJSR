@@ -162,6 +162,22 @@
 
         }
 
+        // Get Harga List Makanan
+
+          var harga = 0;
+          $('#list-makanan').on('change',function (e) {
+            var ids = $('#list-makanan').val();
+            $.ajax({
+              type: "get",
+              url: "{{ url('admin/menu/calculate-harga') }}/"+ids,
+              success: function (harga) {
+                $('#harga').val(harga);
+              }
+            });
+
+
+        });
+
     });
 </script>
 

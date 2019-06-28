@@ -124,7 +124,7 @@
                             @if($row->status_penyewaan == 0)
                             <a href="#" class="btn btn-success " data-toggle="tooltip" data-placement="top" title="Penyewaan Selesai"><i class="fa fa-check"></i> </a>
                             @elseif($row->status_penyewaan == 1)
-                             <a href="#" id="konfirm" class="btn btn-danger btnDetail" data-toggle="tooltip" data-placement="top" title="Belum Selesai"><i class="fa fa-times"></i> </a>
+                             <a href="#"  class="btn btn-danger btnDetail" data-toggle="tooltip" data-placement="top" title="Belum Selesai"><i class="fa fa-times"></i> </a>
                             @endif
                         </td>
 

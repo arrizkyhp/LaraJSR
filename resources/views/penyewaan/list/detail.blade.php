@@ -60,7 +60,10 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <span  style="margin-right:5px; float:right;"><b> Tanggal Pesan: </b> {{ date('d/m/Y', strtotime($penyewaan->tanggal_penyewaan)) }}</span><br>
-                    <span   style="margin-right:5px; float:right;"><b> Sampai Tanggal : </b> {{ date('d/m/Y', strtotime($penyewaan->tanggal_akhir)) }}</span><br><br>
+                    <span   style="margin-right:5px; float:right;"><b> Sampai Tanggal : </b> {{ date('d/m/Y', strtotime($penyewaan->tanggal_akhir)) }}</span><br>
+                    @if ($penyewaan->status_penyewaan == 0)
+                        <span   style="margin-right:5px; float:right;"><b> Tanggal Kembali : </b> {{ date('d/m/Y', strtotime($pengembalian->tanggal_kembali)) }}</span><br><br>
+                    @endif
                      <input type="hidden" style="date" id="tanggal_akhir" value="{{ $penyewaan->tanggal_akhir }}" name="tanggal_akhir">
                     {{-- Status Pesanan --}}
                     @if ($penyewaan->status_penyewaan == 0)
@@ -113,14 +116,33 @@
 
                     </div>
                     <div class="col-md-4">
-                        <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($penyewaan->total_harga,0,',', '.') }}</h4></span>
-                        <input type="hidden" value="{{ $penyewaan->total_harga }}" id="subtotal" name="subtotal">
-                        <span class="detailSpan" ><h4><b>DP :</b> Rp.{{ number_format($penyewaan->bayar,0,',', '.') }}</h4></span>
+
+                         @if ($penyewaan->status_penyewaan == 0)
+                                <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($penyewaan->total_harga,0,',', '.') }}</h4></span>
+                                <input type="hidden" value="{{ $penyewaan->total_harga }}" id="subtotal" name="subtotal">
+                                <hr>
+                                <div class="form-group">
+                                <span class="detailSpan" ><h4><b>Total Denda :</b> Rp.<span class="dendaTotal">{{ number_format($pengembalian->total_denda,0,',', '.') }}</span></h4></span>
+                                <input type="hidden" class="total_denda" name="total_denda">
+                                <span class="detailSpan"><h4><b>Total Bayar :</b> Rp.<span id="total_bayar">{{ number_format($penyewaan->total_bayar,0,',', '.') }}</span></h4></span>
+
+                                </div>
+                                @elseif  ($penyewaan->status_penyewaan == 1)
+                                <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($penyewaan->total_harga,0,',', '.') }}</h4></span>
+                                <input type="hidden" value="{{ $penyewaan->total_harga }}" id="subtotal" name="subtotal">
+                                <span class="detailSpan" ><h4><b>DP :</b> Rp.{{ number_format($penyewaan->bayar,0,',', '.') }}</h4></span>
+                            @endif
 
                     </div>
                 </div>
                  <div class="col-md-6">
-                    <button type="button" class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Pengembalian</b>
+                     @if ($penyewaan->status_penyewaan == 0)
+
+                     @else
+                       <button type="button" class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Pengembalian</b>
+
+                     @endif
+
                 </div>
                 <div class="col-md-6">
 
@@ -155,7 +177,26 @@
                                     </tr>
                                      <tbody>
 
-                                            @foreach ($detail as $details)
+                                        @if ($penyewaan->status_penyewaan == 0)
+
+                                         {{-- @foreach ($pengembalian as $details)
+                                              <tr>
+                                            <td><input type="hidden" >{{ $details->peralatan->nama_peralatan}}</td>
+                                            <td><input type="number" min="0" name="jumlah_kembali[]" value="{{ $details->jumlah_sewa}}" class="form-control jumlah_kembali"></td>
+                                            <td><input type="hidden" name="jumlah_rusak[]" id="jumlah_rusak"><span class="tidak_kembali">0</span></td>
+                                            <td>{{ number_format($details->peralatan->harga_ganti,0,',', '.') }}</td>
+                                            <td class="denda_kembali" >0</td>
+                                            <td style='display:none;'>{{ $details->peralatan->harga_sewa }}</td>
+                                            <td style='display:none;'>{{ $details->jumlah_sewa }}</td>
+                                            <td style='display:none;'><span class="ganti_harga">{{ $details->peralatan->harga_ganti }}</span></td>
+                                            <td style='display:none;'><input type="hidden" name="id_detail_penyewaan[]" value="{{ $details->id_detail_penyewaan }}"></td>
+                                             </tr>
+                                          @endforeach --}}
+
+
+                                        @elseif($penyewaan->status_penyewaan == 1)
+
+                                          @foreach ($detail as $details)
                                               <tr>
                                             <td><input type="hidden" >{{ $details->peralatan->nama_peralatan}}</td>
                                             <td><input type="number" min="0" name="jumlah_kembali[]" value="{{ $details->jumlah_sewa}}" class="form-control jumlah_kembali"></td>
@@ -169,6 +210,10 @@
                                              </tr>
                                           @endforeach
 
+
+                                        @endif
+
+
                                     </tbody>
 
                                 </table>
@@ -179,7 +224,7 @@
 
                                 <div class="input-group">
                                     <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                        <input type="date" id="tanggal_kembali" class="form-control" name="tanggal_kembali" value="{{ date('Y-m-d') }}">
+                                        <input type="date" id="tanggal_kembali" class="form-control" name="tanggal_kembali" value="{{  date('Y-m-d') }}">
                                 </div><br>
 
                                     <input type="hidden" value="{{ $penyewaan->total_harga }}" id="totalHarga">

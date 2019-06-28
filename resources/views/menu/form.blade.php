@@ -42,9 +42,12 @@
 
                         <div class="form-group">
                             <label for="Deskripsi">List Makanan/Minuman</label>
-                            <select name="id_list_makanan[]" data-placeholder="Pilih List..." multiple class="standardSelect">
+                            <select name="id_list_makanan[]" id="list-makanan" data-placeholder="Pilih List..." multiple class="standardSelect">
+
                                @foreach ($listMakanan as $detail_menu)
-                            <option value="{{ $detail_menu->id_list_makanan }}">{{ $detail_menu->nama_makanan}}</option>
+
+                            <option value="{{ $detail_menu->id_list_makanan }}" data-harga="{{ $detail_menu->harga }}">{{ $detail_menu->nama_makanan}}</option>
+
                             @endforeach
 
                             </select>
@@ -60,6 +63,14 @@
                         <input type="number" name="harga" id="harga" class="form-control {{ $errors->has('harga') ? 'is-invalid':'' }}" id="harga" min="0" placeholder="Masukkan Harga Menu" requiired>
                          <p class="text-danger">{{ $errors->first('harga') }}</p>
                          </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <span>Dengan Peralatan ?</span>
+                            <input type="hidden" value="0" name="status_peralatan">
+                          <label class="switch switch-3d switch-info mr-3"><input type="checkbox" class="switch-input" name="status_peralatan" value="1"> <span class="switch-label"></span> <span class="switch-handle"></span></label>
+
                         </div>
 
     @endsection

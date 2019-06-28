@@ -9,7 +9,7 @@ class ListMakanan extends Model
     public $primaryKey = 'id_list_makanan';
     protected $table = 't_list_makanan';
     protected $fillable = [
-        'nama_makanan', 'id_jenis_makanan'
+        'nama_makanan', 'id_jenis_makanan', 'harga'
     ];
 
     public function jenis_makanan()
