@@ -74,33 +74,34 @@
                </div>
             </div>
                 </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <tr>
+                            <thead>
+                                <th>Nama Menu</th>
+                                <th>Deskripsi</th>
+                                <th>Quantity</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                            </thead>
+                        </tr>
+                        <tr>
+                            <tbody>
+                                @foreach ($detail as $details)
+                                <td>{{ $details->menu->nama_menu}}</td>
+                                <td>
+                                @foreach ($details->menu->detail_menu as $detail_m)
+                                    <label for="" class="badge badge-info">{{ $detail_m->list_makanan->nama_makanan }}</label>
+                                @endforeach</td>
+                                <td>{{ $details->quantity}}</td>
+                                <td>{{ $details->harga}}</td>
+                                <td>{{ $details->subtotal}}</td>
 
-                <table class="table table-striped table-bordered">
-                    <tr>
-                        <thead>
-                            <th>Nama Menu</th>
-                            <th>Deskripsi</th>
-                            <th>Quantity</th>
-                            <th>Harga</th>
-                            <th>Jumlah</th>
-                        </thead>
-                    </tr>
-                    <tr>
-                        <tbody>
-                            @foreach ($detail as $details)
-                            <td>{{ $details->menu->nama_menu}}</td>
-                            <td>
-                             @foreach ($details->menu->detail_menu as $detail_m)
-                                <label for="" class="badge badge-info">{{ $detail_m->list_makanan->nama_makanan }}</label>
-                            @endforeach</td>
-                            <td>{{ $details->quantity}}</td>
-                            <td>{{ $details->harga}}</td>
-                            <td>{{ $details->subtotal}}</td>
-
-                        </tbody>
-                    </tr>
-                      @endforeach
-                </table>
+                            </tbody>
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
 
                  <div class="form-group">
                     <div class="col-md-8">
@@ -113,21 +114,99 @@
 
                     </div>
                     <div class="col-md-4">
-                    <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($pesanan->total_harga,2,',', '.') }}</h4></span>
-                    <input type="hidden" value="{{ $pesanan->total_harga }}" id="totalHarga">
-                    <span class="detailSpan" ><h4><b>Bayar :</b> Rp.{{ number_format($pesanan->bayar,2,',', '.') }}</h4></span>
-                    <hr>
-                    <span class="detailSpan"><h4><b>Sisa :</b> Rp.{{ number_format($pesanan->total_harga-$pesanan->bayar,2,',', '.') }}</h4></span><br>
-                     @if ($pesanan->status_bayar != 0)
-                    <button class="btn btn-primary" style="margin-right:5px; float:right;" data-toggle="modal" data-target="#exampleModal">Bayar</button>
-                    @endif
+                        <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($pesanan->total_harga,2,',', '.') }}</h4></span>
+                        <input type="hidden" value="{{ $pesanan->total_harga }}" id="totalHarga">
+                        <span class="detailSpan" ><h4><b>Bayar :</b> Rp.{{ number_format($pesanan->bayar,2,',', '.') }}</h4></span>
+                        <hr>
+                        <span class="detailSpan"><h4><b>Sisa :</b> Rp.{{ number_format($pesanan->total_harga-$pesanan->bayar,2,',', '.') }}</h4></span><br>
 
                     </div>
+                    <div class="col-md-6">
+                     @if ($prasmananStatus != null)
+                       <button type="button" class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Peralatan</b>
+                     @endif
+
+                    </div>
+                    <div class="col-md-6">
+                         @if ($pesanan->status_bayar != 0)
+                        <button class="btn btn-primary" style="margin-right:5px; float:right;" data-toggle="modal" data-target="#exampleModal">Bayar</button>
+                        @endif
+                    </div>
                 </div>
-                     </div>
+                </div>
             </div>
 
         </div> <!-- .content -->
+        <div class="col-lg-6">
+           <div class="collapse multi-collapse" id="multiCollapseExample1">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="form-row">
+                            <input type="hidden" id="id_menu">
+                            <div class="form-group col-md-12">
+                                <div class="form-group">
+                                    <h3>Peralatan</h3>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="table-kembali" class="table table-striped table-bordered table-kembali">
+                                        <tr>
+                                        <thead>
+                                                <th>Nama Peralatan</th>
+                                                <th>Jumlah Peralatan</th>
+                                                <th style='display:none;'>a</th>
+                                            </thead>
+                                        </tr>
+                                        <tbody>
+
+                                            @foreach ($prasmanan as $p)
+                                                <tr>
+                                                {{-- <td><input type="hidden" >{{ $details->peralatan->nama_peralatan}}</td>ss --}}
+                                                <td>{{ $p->peralatan->nama_peralatan }}</td>
+                                                <td>{{ $p->jumlah_peralatan }}</td>
+                                                </tr>
+                                            @endforeach
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group col-md 1"></div>
+                            {{-- <span class="form-group col-md-3">
+                                <label for="">Tanggal Kembali</label>
+
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        <input type="date" id="tanggal_kembali" class="form-control" name="tanggal_kembali" value="{{  date('Y-m-d') }}">
+                                </div><br>
+
+                                    <input type="hidden" value="{{ $penyewaan->total_harga }}" id="totalHarga">
+
+                                    <input type="hidden" id="bayar" value="{{ $penyewaan->bayar }}">
+                                    <span class="detailSpan" ><h4><b>Denda Ganti :</b> Rp.<span class="dendaGanti">{{ number_format(0,0,',', '.') }}</span></h4></span>
+                                    <input type="hidden" class="denda_ganti" name="denda_ganti">
+                                    <span class="detailSpan" ><h4><b>Denda Telat :</b> Rp.<span class="dendaTelat">{{ number_format(0,0,',', '.') }}</span></h4></span>
+                                    <input type="hidden" class="denda_telat" name="denda_telat">
+                                 <hr>
+                                 <div class="form-group">
+                                    <span class="detailSpan" ><h4><b>Total Denda :</b> Rp.<span class="dendaTotal">{{ number_format(0,0,',', '.') }}</span></h4></span>
+                                    <input type="hidden" class="total_denda" name="total_denda">
+                                    <span class="detailSpan"><h4><b>Total Bayar :</b> Rp.<span id="total_bayar">{{ number_format($penyewaan->total_harga-$penyewaan->bayar,0,',', '.') }}</span></h4></span>
+                                    <span class="detailSpan" ><h4><b>Nominal Bayar :</b> Rp.<span id="bayar_nominal">0</span></h4></span><br>
+                                    <input type="hidden" value="{{ $penyewaan->id_penyewaan }}" name="id_penyewaan">
+                                    <input type="hidden" value="{{ $penyewaan->bayar }}" name="bayar_dp">
+                                    <input type="number" name="bayar_lagi" id="bayar_lagi" class="form-control bayar"  placeholder="Masukkan Jumlah Bayar" ><br>
+                                    <button type="submit" value="submit" class="btn btn-primary" style="margin-right:5px; float:right;">Simpan</button>
+
+                                </div>
+                            </div> --}}
+
+                    </div>
+
+                    </div>
+                </div>
+            </div>
     </div><!-- /#right-panel -->
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -176,8 +255,6 @@
 
 
     $(document).ready(function () {
-         $('body').toggleClass('open');
-
           $(document).on('click','.btn-simpan',function (e) {
               $('#formTambah').attr('action','/admin/bayar');
           });

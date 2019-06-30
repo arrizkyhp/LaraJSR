@@ -17,11 +17,11 @@ class MenuController extends Controller
         $menu = Menu::all();
         $detailMenu = DetailMenu::all();
         $listMakanan = ListMakanan::all();
+        $jenisListMakanan = JenisListMakanan::orderBy('nama_jenis_makanan', 'asc')->get();
+        $getMakanan = ListMakanan::with('jenis_makanan')->orderBy('nama_makanan', 'asc')->get();
         // $jenisMenu = ListMakanan::with('jenis_makanan', 'nama_jenis_makanan')->orderBy('')->get();
 
-
-
-        return view('menu.index', compact('menu', 'detailMenu', 'listMakanan'));
+        return view('menu.index', compact('menu', 'detailMenu', 'listMakanan', 'jenisListMakanan', 'getMakanan'));
     }
 
     public function show($id)
@@ -54,7 +54,7 @@ class MenuController extends Controller
         $inputMenu['nama_menu'] = $request->nama_menu;
         $inputMenu['harga'] = $request->harga;
         $inputMenu['keterangan'] = $request->keterangan;
-        $inputMenu['status_peralatan'] = $request-> status_peralatan;
+        $inputMenu['status_peralatan'] = $request->status_peralatan;
 
 
 
@@ -82,6 +82,8 @@ class MenuController extends Controller
         $menu = Menu::findOrFail($id);
 
         $detailMenu = DetailMenu::where('id_menu', '=', $id)->get();
+        $jenisListMakanan = JenisListMakanan::orderBy('nama_jenis_makanan', 'asc')->get();
+        $getMakanan = ListMakanan::with('jenis_makanan')->orderBy('nama_makanan', 'asc')->get();
 
         $ids = [];
         if ($detailMenu->count() > 0) {
@@ -94,7 +96,7 @@ class MenuController extends Controller
         $listMakanan = ListMakanan::all();
         // dd($listMakanan);
         // dd($selectedId);
-        return view('menu.edit', compact('menu', 'detailMenu', 'listMakanan', 'selectedId'));
+        return view('menu.edit', compact('menu', 'detailMenu', 'jenisListMakanan', 'selectedId', 'getMakanan'));
     }
     public function calculateHarga($ids)
     {

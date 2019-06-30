@@ -41,15 +41,17 @@
 
 
                         <div class="form-group">
-                            <label for="Deskripsi">List Makanan/Minuman</label>
+                            <label for="Deskripsi">List Makanasn/Minuman</label>
                             <select name="id_list_makanan[]" id="list-makanan" data-placeholder="Pilih List..." multiple class="standardSelect">
-
-                               @foreach ($listMakanan as $detail_menu)
-
-                            <option value="{{ $detail_menu->id_list_makanan }}" data-harga="{{ $detail_menu->harga }}">{{ $detail_menu->nama_makanan}}</option>
-
-                            @endforeach
-
+                              @foreach ($jenisListMakanan as $jenis)
+                                <optgroup label="{{ $jenis->nama_jenis_makanan }}">
+                                    @foreach ($getMakanan as $makanan)
+                                    @if (($jenis->id_jenis_makanan) == ($makanan->jenis_makanan->id_jenis_makanan))
+                                         <option value="{{ $makanan->id_list_makanan }}" data-harga="{{ $makanan->harga }}">{{ $makanan->nama_makanan}}</option>
+                                    @endif
+                                    @endforeach
+                                </optgroup>
+                              @endforeach
                             </select>
                             {{-- <textarea type="textarea" class="form-control {{ $errors->has('id_jenis_pesanan') ? 'is-invalid':'' }}" name="deskripsi" placeholder="Masukkan Deskripsi Menu" required></textarea> --}}
                         </div>
@@ -57,6 +59,7 @@
 
 
                          <div class="form-group">
+
                         <label for="harga">Harga</label>
                          <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-money"></i></div>

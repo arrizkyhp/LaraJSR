@@ -28,6 +28,8 @@ class PeralatanController extends Controller
         $peralatan->nama_peralatan = $request->input('nama_peralatan');
         $peralatan->satuan = $request->input('satuan');
         $peralatan->stock = $request->input('stock');
+        $peralatan->tersedia = $request->input('stock');
+        $peralatan->keluar = 0;
         $peralatan->harga_sewa = $request->input('harga_sewa');
         $peralatan->harga_ganti = $request->input('harga_ganti');
 

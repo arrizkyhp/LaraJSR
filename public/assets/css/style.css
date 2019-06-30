@@ -5228,6 +5228,9 @@
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
     background: #eef0f0;

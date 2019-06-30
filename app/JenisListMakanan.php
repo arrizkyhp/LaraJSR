@@ -11,4 +11,9 @@ class JenisListMakanan extends Model
     protected $fillable = [
         'nama_jenis_makanan'
     ];
+
+    public function list_makanan()
+    {
+        return $this->hasMany('\App\JenisListMakanan', 'id_jenis_makanan', 'id_jenis_makanan');
+    }
 }

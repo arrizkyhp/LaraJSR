@@ -58,6 +58,8 @@
                         <th style="display:none;">id</th>
                         <th>Nama Peralatan</th>
                         <th>Stock</th>
+                        <th>Keluar</th>
+                        <th>Tersedia</th>
                         <th>Satuan</th>
                         <th>Harga Sewa</th>
                         <th>Harga Ganti</th>
@@ -72,6 +74,8 @@
                         <th style="display:none;">id</th>
                         <th>Nama Peralatan</th>
                         <th>Stock</th>
+                        <th>Keluar</th>
+                        <th>Tersedia</th>
                         <th>Satuan</th>
                         <th>Harga Sewa</th>
                         <th>Harga Ganti</th>
@@ -88,6 +92,8 @@
                         <td style="display:none;">{{ $row->id_peralatan }}</td>
                         <td>{{ $row->nama_peralatan }}</td>
                         <td>{{ $row->stock }}</td>
+                        <td>{{ $row->keluar }}</td>
+                        <td>{{ $row->tersedia }}</td>
                         <td>{{ $row->satuan }}</td>
                         <td>Rp.{{ number_format($row->harga_sewa,0,',', '.') }}</td>
                         <td>Rp.{{ number_format($row->harga_ganti,0,',', '.') }}</td>

@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Pesanan;
 use App\DetailPesanan;
 use App\ListMakanan;
+use App\JenisListMakanan;
 use App\Pelanggan;
 use App\Peralatan;
+use App\Prasmanan;
 use App\Menu;
+use App\DetailMenu;
 use Auth;
 use DB;
 use Carbon\Carbon;
@@ -23,23 +26,59 @@ class PesananController extends Controller
         $listMakanan = ListMakanan::all();
         $peralatan = Peralatan::all();
 
-        return view('pesanan.index', compact('pesanan', 'menu', 'pelanggan', 'listMakanan', 'peralatan'));
+        // Menu Form
+        $jenisListMakanan = JenisListMakanan::orderBy('nama_jenis_makanan', 'asc')->get();
+        $getMakanan = ListMakanan::with('jenis_makanan')->orderBy('nama_makanan', 'asc')->get();
+
+        return view('pesanan.index', compact('pesanan', 'menu', 'pelanggan', 'listMakanan', 'peralatan', 'jenisListMakanan', 'getMakanan'));
     }
 
     public function edit($id)
     {
-        $menu = Menu::all();
-        $pelanggan = Pelanggan::all();
-        $listMakanan = ListMakanan::all();
-        $detailPesanan = DetailPesanan::where('id_pesanan', '=', $id)->get();
-        $pesanan = Pesanan::findOrFail($id);
 
-        return view('pesanan.edit.index', compact('pesanan', 'menu', 'pelanggan', 'listMakanan', 'detailPesanan'));
+        // $menu = Menu::all();
+        // $detailMenu = DetailMenu::where('id_menu', '=', $id)->get();
+        // $pelanggan = Pelanggan::all();
+        // $listMakanan = ListMakanan::all();
+        // $detailPesanan = DetailPesanan::where('id_pesanan', '=', $id)->get();
+        // $pesanan = Pesanan::findOrFail($id);
+        // $peralatan = Peralatan::all();
+        // $prasmanan = Prasmanan::where('id_pesanan', '=', $id)->get();
+        // $prasmananStatus = Prasmanan::where('id_pesanan', '=', $id)->first();
+
+        $data['menu'] = Menu::all();
+        $data['detailMenu'] = DetailMenu::where('id_menu', '=', $id)->get();
+        $data['pelanggan'] = Pelanggan::all();
+        $data['listMakanan'] = ListMakanan::all();
+        $data['detailPesanan'] = DetailPesanan::where('id_pesanan', '=', $id)->get();
+        $data['pesanan'] = Pesanan::findOrFail($id);
+        $data['peralatan'] = Peralatan::all();
+
+        // Status Peralatan
+        $data['prasmanan'] = Prasmanan::where('id_pesanan', '=', $id)->get();
+        $data['prasmananStatus'] = Prasmanan::where('id_pesanan', '=', $id)->first();
+
+
+        // Get List Makanan
+        $ids = [];
+        if ($data['detailMenu']->count() > 0) {
+            foreach ($data['detailMenu'] as $key => $value) {
+                $ids[$key] = $value->id_list_makanan;
+            }
+        }
+
+        $data['selectedId'] = implode(',', $ids);
+
+        // Menu Form
+        $data['jenisListMakanan'] = JenisListMakanan::orderBy('nama_jenis_makanan', 'asc')->get();
+        $data['getMakanan'] = ListMakanan::with('jenis_makanan')->orderBy('nama_makanan', 'asc')->get();
+
+        return view('pesanan.edit.index', $data);
     }
 
     public function update(Request $request, $id)
     {
-
+        // dd($request->all());
         $this->validate($request, [
             'nama_menu' => 'required',
             'jenis_pesanan' => 'required',
@@ -65,11 +104,17 @@ class PesananController extends Controller
         // $inputPesanan['tanggal'] = Carbon::now()->format('Y-m-d');
         // Merubah String ke tanggal
 
+        // Jika Uang Bayar Lebih dari Harga
+        if ($request->bayar > $request->total_harga) {
+            $inputPesanan['bayar'] = $request->total_harga;
+        }
+
         if ($request->total_harga <= $request->bayar) {
             $pesanan->status_bayar = 0;
         } else {
             $pesanan->status_bayar = 1;
         }
+
 
         $pesanan->save();
 
@@ -86,6 +131,48 @@ class PesananController extends Controller
                 $detail = DetailPesanan::updateOrCreate($inputDetail, $inputNom);
             }
         }
+
+        // Peralatan
+
+        if (in_array(1, $request->status_peralatan)) {
+
+            // Kurangi Stock
+            $deletePeralatan = Prasmanan::where('id_pesanan', $pesanan->id_pesanan)->whereNotIn('id_peralatan', $request->id_peralatan)->get();
+            // dd($deletePeralatan);
+
+            if ($deletePeralatan->isEmpty()) {
+                $inputPeralatanId['id_pesanan'] = $pesanan->id_pesanan;
+                foreach ($request->id_peralatan as $key => $value) {
+                    $inputPeralatanId['id_peralatan'] = $value;
+                    $inputPeralatan['jumlah_peralatan'] = $request->jumlah_sewa[$key];
+                    Prasmanan::updateOrCreate($inputPeralatanId, $inputPeralatan);
+                }
+
+
+                $peralatan = Peralatan::findOrFail($request->id_peralatan);
+                // dd($peralatan);
+
+                foreach ($peralatan as $key => $value) {
+                    $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
+                    $inputPeralatan['tersedia'] = $value->tersedia - $request->jumlah_sewa[$key];
+                    $inputPeralatan['keluar'] = $request->jumlah_sewa[$key];
+                    // dd($value->keluar);
+                    Peralatan::updateOrCreate($inputPeralatanID, $inputPeralatan);
+                }
+            } else {
+                foreach ($deletePeralatan as $key => $value) {
+                    $id_peralatan = $value->id_peralatan;
+                    $jumlah = $value->jumlah_peralatan;
+                    $value->delete();
+                    // Barang Kembali
+                    $stock = Peralatan::where('id_peralatan', $id_peralatan)->first();
+                    $stock->keluar -= $jumlah;
+                    $stock->tersedia += $jumlah;
+                    $stock->save();
+                }
+            }
+        }
+
 
         if ($detail) {
             alert()->success('Berhasil', 'Data Berhasil ditambahkan')->persistent('Close');
@@ -110,7 +197,10 @@ class PesananController extends Controller
 
         $pesanan = Pesanan::findOrFail($id);
         $detail = DetailPesanan::where('id_pesanan', '=', $id)->get();
-        return view('pesanan.list.detail', compact('pesanan', 'detail'));
+        $prasmanan = Prasmanan::where('id_pesanan', '=', $id)->get();
+        $prasmananStatus = Prasmanan::where('id_pesanan', '=', $id)->first();
+        // dd($prasmananStatus);
+        return view('pesanan.list.detail', compact('pesanan', 'detail', 'prasmanan', 'prasmananStatus'));
     }
 
 
@@ -163,6 +253,13 @@ class PesananController extends Controller
         $inputPesanan['keterangan'] = $request->keterangan;
         $inputPesanan['status_pesanan'] = 1;
         $inputPesanan['bayar'] = $request->bayar;
+
+        // Jika Uang Bayar Lebih dari Harga
+        if ($request->bayar > $request->total_harga) {
+            $inputPesanan['bayar'] = $request->total_harga;
+        }
+
+        // Jika Melunasi
         if ($request->total_harga <= $request->bayar) {
             $inputPesanan['status_bayar'] = 0;
         } else {
@@ -180,6 +277,30 @@ class PesananController extends Controller
                 $detail = DetailPesanan::create($inputDetail);
             }
         }
+
+        // Simpan ke Tabel Prasmanan Jika Ada Peralatan
+
+        if (in_array(1, $request->status_peralatan)) {
+            $inputPeralatan['id_pesanan'] = 'JSR-' . Carbon::now()->format('dmY') . '-' . $kode;
+            foreach ($request->id_peralatan as $key => $value) {
+                $inputPeralatan['id_peralatan'] = $value;
+                $inputPeralatan['jumlah_peralatan'] = $request->jumlah_sewa[$key];
+                $prasmanan = Prasmanan::create($inputPeralatan);
+            }
+
+            // Kurangi Stock
+
+            $peralatan = Peralatan::findOrFail($request->id_peralatan);
+            foreach ($peralatan as $key => $value) {
+                $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
+                $inputPeralatan['tersedia'] = $request->stock[$key] - $request->jumlah_sewa[$key];
+                $inputPeralatan['keluar'] = $request->jumlah_sewa[$key];
+                Peralatan::updateOrCreate($inputPeralatanID, $inputPeralatan);
+            }
+        }
+
+
+
 
         if ($detail) {
             alert()->success('Berhasil', 'Data Berhasil ditambahkan')->persistent('Close');
@@ -216,6 +337,23 @@ class PesananController extends Controller
     {
         $pesanan = Pesanan::find($id);
         $pesanan->status_pesanan = 0;
+        $prasmanan = Prasmanan::where('id_pesanan', '=', $id)->get();
+        $prasmananStatus = Prasmanan::where('id_pesanan', '=', $id)->first();
+
+
+        if ($prasmananStatus != null) {
+
+            foreach ($prasmanan as $key => $value) {
+                $id_peralatan = $value->id_peralatan;
+                $jumlah = $value->jumlah_peralatan;
+                $value->delete();
+                // Barang Kembali
+                $stock = Peralatan::where('id_peralatan', $id_peralatan)->first();
+                $stock->keluar -= $jumlah;
+                $stock->tersedia += $jumlah;
+                $stock->save();
+            }
+        }
         $status = $pesanan->save();
         if ($status) {
             alert()->success('Berhasil', 'Pesanan Selesai')->persistent('Close');
@@ -228,9 +366,27 @@ class PesananController extends Controller
 
     public function destroy($id)
     {
-        $pelanggan = Pesanan::find($id);
+        $pesanan = Pesanan::find($id);
+        $prasmanan = Prasmanan::where('id_pesanan', '=', $id)->get();
+        $prasmananStatus = Prasmanan::where('id_pesanan', '=', $id)->first();
+
+
+        if ($prasmananStatus != null) {
+
+            foreach ($prasmanan as $key => $value) {
+                $id_peralatan = $value->id_peralatan;
+                $jumlah = $value->jumlah_peralatan;
+                $value->delete();
+                // Barang Kembali
+                $stock = Peralatan::where('id_peralatan', $id_peralatan)->first();
+                $stock->keluar -= $jumlah;
+                $stock->tersedia += $jumlah;
+                $stock->save();
+            }
+        }
+
         DetailPesanan::where('id_pesanan', '=', $id)->get()->each->delete();
-        $pelanggan->delete();
+        $pesanan->delete();
 
         // toast('Data Berhasil Dihapus!', 'success', 'top-right');
         alert()->success('Berhasil ', 'Data Berhasil dihapus')->persistent(' Close ');

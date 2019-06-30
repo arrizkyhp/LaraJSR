@@ -18,6 +18,8 @@ class CreatePeralatanTable extends Migration
             $table->string('nama_peralatan');
             $table->string('satuan');
             $table->integer('stock');
+            $table->integer('tersedia');
+            $table->integer('keluar');
             $table->integer('harga_sewa');
             $table->integer('harga_ganti');
             $table->timestamps();

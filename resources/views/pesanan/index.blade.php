@@ -61,153 +61,153 @@
             {{--------------- Detail Pesanan -----------------}}
 
              <div class="col-lg-8">
-                 <div class="card">
-              <div class="card-body">
-                    <div class="form-row">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="form-row">
 
-                        <div class="form-group col-lg-6">
-                          <label for="alamat">Tanggal Pesanan</label>
-                           <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="" name="tanggal_pesanan" id="datepicker" class="form-control" autocomplete="off" >
+                          <div class="form-group col-lg-5">
+                            <label for="alamat">Tanggal Pesanan</label>
+                              <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                  <input type="" name="tanggal_pesanan" id="datepicker" class="form-control" autocomplete="off" style="width: 60%">
+                            </div>
                           </div>
-                        </div>
-                        <div class="form-group col-lg-6">
 
-                        <label for="nama_pelanggan">Nama Pelanggan</label><a href="http://" style="float:right;" data-toggle="modal" data-target="#exampleModal">Tambah Pelanggan Baru</a>
-                        {{-- <input type="nama_pelanggan" name="nama_pelanggan" id="nama_pelanggan" class="form-control" id="nama_pelanggan" placeholder="Masukkan Nama Pelanggan" > --}}
-                         <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                        <select name="id_pelanggan" data-placeholder="Masukan Nama Pelanggan.." class="form-control js-example-basic-multiple" tabindex="1" id="pelanggan_select" style="width: 80%">
-                                    <option value=""></option>
-                                    @foreach ($pelanggan as $pelanggans)
-                                        <option value="{{ $pelanggans->id_pelanggan }}">{{ $pelanggans->nama_pelanggan }}</option>
-                                        @endforeach
-                        </select>
+                          <div class="form-group col-lg-7">
+                            <label for="nama_pelanggan">Nama Pelanggan</label><a href="http://" style="float:right;" data-toggle="modal" data-target="#exampleModal">Tambah Pelanggan Baru</a>
+                            {{-- <input type="nama_pelanggan" name="nama_pelanggan" id="nama_pelanggan" class="form-control" id="nama_pelanggan" placeholder="Masukkan Nama Pelanggan" > --}}
+                            <div class="input-group">
+                              <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                <select name="id_pelanggan" data-placeholder="Masukan Nama Pelanggan.." class="form-control js-example-basic-multiple" tabindex="1" id="pelanggan_select" style="width: 80%">
+                                  <option value=""></option>
+                                  @foreach ($pelanggan as $pelanggans)
+                                    <option value="{{ $pelanggans->id_pelanggan }}">{{ $pelanggans->nama_pelanggan }}</option>
+                                  @endforeach
+                                </select>
+                            </div>
+                          </div>
+
+                          <div class="form-group col-lg-7">
+                            <label for="alamat">Alamat</label>
+                              <input type="alamat" id="alamat" class="form-control" id="alamat"  readonly>
+                          </div>
+
+                          <div class="form-group col-lg-5">
+                            <label for="no_telepon">No Telepon</label>
+                              <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-phone"></i></div>
+                                  <input type="no_telepon" id="no_telepon" class="form-control" id="no_telepon" type="number" id="number" min="0" type="number" readonly>
+                              </div>
+                          </div>
+
+
+
+                          <div class="table-responsive">
+                            <table id="tabel-pesanan" class="table table-striped table-bordered table-hover tabel-pesanan">
+                              <thead>
+                                <tr>
+                                <th>Nama Menu</th>
+                                <th>Jenis Pesanan</th>
+                                <th>Quantity</th>
+                                <th>Harga</th>
+                                <th>Subtotal</th>
+                                <th>Action</th>
+                                </tr>
+                              </thead >
+                              <tbody>
+                              </tbody>
+                            </table>
+                          </div>
+
+                          {{-- Rupiah --}}
+                          <div class="col-lg-8">
+                            <textarea cols="25" rows="3" placeholder="Keterangan (jika ada)" name="keterangan"></textarea>
+                          </div>
+
+                          <div class="form-group col-lg-4" >
+                            <div style="float:right;">
+                              <span>Total Harga </span><h2>Rp.<b><span class="grandtotal" class="text-right">0</span></b></h2>
+                                <input type='hidden' name='total_harga' class="total_harga">
+                              <span>Uang Muka </span><h2>Rp.<b><span class="downPaymentOut" class="text-right">0</span></b></h2>
+                                <input type='hidden' name='downPayment' class="downPayment">
+                            </div>
+                          </div>
+
+                          <div class="form-group col-lg-12" >
+                            <div style="float:right;">
+                              <span>Bayar (Rp)</span>
+                                <input type="number" id="bayar" name="bayar" class="form-control col-lg-8" min="0" style="float:right;" readonly>
+                            </div>
+                          </div>
+
+                          <div class="form-group col-lg-12">
+                            {{-- <button type="button" class="btn btn-primary hasil-pesanan" style="float:right;">Hasil</button> --}}
+                            <button type="submit" class="btn btn-primary btn-submit" id="btn-submit" style="float:right;" disabled>Simpan</button>
+                            <button type="button" class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Pilih Menu</button>
+                          </div>
+
+                        </div>
                       </div>
-                        </div>
-
-                         <div class="form-group col-lg-7">
-                        <label for="alamat">Alamat</label>
-                        <input type="alamat" id="alamat" class="form-control" id="alamat"  readonly>
-                        </div>
-
-                        <div class="form-group col-lg-5">
-
-                        <label for="no_telepon">No Telepon</label>
-                        <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-phone"></i></div>
-                        <input type="no_telepon" id="no_telepon" class="form-control" id="no_telepon" type="number" id="number" min="0" type="number" readonly>
-                        </div>
-                        </div>
-
-
-
-
-                        <table id="tabel-pesanan" class="table table-striped table-bordered table-hover tabel-responsive tabel-pesanan">
-                          <thead>
-                            <tr>
-                              <th>Nama Menu</th>
-                              <th>Jenis Pesanan</th>
-                              <th>Quantity</th>
-                              <th>Harga</th>
-                              <th>Subtotal</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                          </tbody>
-                        </table>
-                        {{-- teu bisa ka kanan --}}
-                        {{-- Rupiah --}}
-                        <div class="col-lg-8">
-
-                          <textarea cols="25" rows="3" placeholder="Keterangan (jika ada)" name="keterangan"></textarea>
-                        </div>
-                             <div class="form-group col-lg-4" >
-                             <div style="float:right;">
-                        <span>Total Harga </span><h2>Rp.<b><span class="grandtotal" class="text-right">0</span></b></h2>
-                        <input type='hidden' name='total_harga' class="total_harga">
-                         <span>Uang Muka </span><h2>Rp.<b><span class="downPaymentOut" class="text-right">0</span></b></h2>
-                        <input type='hidden' name='downPayment' class="downPayment">
-                         </div>
                     </div>
-
-                    <div class="form-group col-lg-12" >
-                             <div style="float:right;">
-                        <span>Bayar (Rp)</span>
-                        <input type="number" id="bayar" name="bayar" class="form-control col-lg-8" min="0" style="float:right;" readonly>
-                         </div>
-                    </div>
-
-                    <div class="form-group col-lg-12">
-                      {{-- <button type="button" class="btn btn-primary hasil-pesanan" style="float:right;">Hasil</button> --}}
-                          <button type="submit" class="btn btn-primary btn-submit" id="btn-submit" style="float:right;" disabled>Simpan</button>
-                          <button type="button" class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Pilih Menu</b>
-                    </div>
-
-                    </div>
-
-
-            </div>
-              </div>
 
 
                    <div class="collapse multi-collapse" id="multiCollapseExample1">
                     @card
                    @slot('header')
-                        Data <strong>Menu</strong>
+                      Data <strong>Menu</strong>
                         <button type="button" class="btn btn-info" style="float:right;" data-toggle="modal" data-target="#exampleModal2"><i class="fa fa-plus-square"></i> Tambah Menu Baru</button>
                    @endslot
-                      <table id="tabel-data" class="table table-striped table-bordered table-hover " width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                       <th>#</th>
-                       <th style="display:none;">id</th>
-                        <th>Nama Menu</th>
-                        <th>Jenis Pesanan</th>
-                        <th>List Makanan</th>
-                        <th>Harga</th>
-                        <th>Aksi</th>
-                        <th style="display:none;">Status Peralatan</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                     <tr>
-                        <th>#</th>
-                        <th style="display:none;">id</th>
-                        <th>Nama Menu</th>
-                        <th>Jenis Pesanan</th>
-                        <th>List Makanan</th>
-                        <th>Harga</th>
-                        <th>Aksi</th>
-                        <th style="display:none;">Status Peralatan</th>
-                      </tr>
-                    </tfoot>
-                     <tbody>
-                         @php $no = 1; @endphp
+
+                   <div class="table-responsive">
+                    <table id="tabel-data" class="table table-striped table-bordered table-hover table-responsive" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th style="display:none;">id</th>
+                          <th>Nama Menu</th>
+                          <th>Jenis Pesanan</th>
+                          <th>List Makanan</th>
+                          <th>Harga</th>
+                          <th>Aksi</th>
+                          <th style="display:none;">Status Peralatan</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>#</th>
+                          <th style="display:none;">id</th>
+                          <th>Nama Menu</th>
+                          <th>Jenis Pesanan</th>
+                          <th>List Makanan</th>
+                          <th>Harga</th>
+                          <th>Aksi</th>
+                          <th style="display:none;">Status Peralatan</th>
+                        </tr>
+                      </tfoot>
+                      <tbody>
+                        @php $no = 1; @endphp
                         @foreach ($menu as $row)
-                      <tr class="sc-product-item">
-                      <td>{{ $no++ }}</td>
-                      <td style="display:none;">{{ $row->id_menu }}</td>
-                       <td >{{ $row->nama_menu }}</td>
-                        <td >{{ $row->jenis_pesanan->nama_jenis_pesanan }}</td>
-                           <td>
-                       @foreach ($row->detail_menu as $detail)
-                         <label for="" class="badge badge-info">{{ $detail->list_makanan->nama_makanan }}</label>
-                       @endforeach
-                       </td>
-                        <td>{{ $row->harga }}</td>
-                        <td>
-                        <button type="button" id="menu_data" class="btn btn-info btnMenu"><i class="fa fa-plus-square"></i> </button>
-                        </td>
-                        <td style="display:none;">{{ $row->status_peralatan }}</td>
-
-                      </tr>
+                          <tr class="sc-product-item">
+                            <td>{{ $no++ }}</td>
+                            <td style="display:none;">{{ $row->id_menu }}</td>
+                            <td >{{ $row->nama_menu }}</td>
+                            <td >{{ $row->jenis_pesanan->nama_jenis_pesanan }}</td>
+                            <td>
+                        @foreach ($row->detail_menu as $detail)
+                            <label for="" class="badge badge-info">{{ $detail->list_makanan->nama_makanan }}</label>
                         @endforeach
-                         </tbody>
+                          </td>
+                          <td>{{ $row->harga }}</td>
+                          <td>
+                          <a href="#cart" id="menu_data" class="btn btn-info btnMenu"><i class="fa fa-plus-square"></i> </a>
+                          </td>
+                          <td style="display:none;">{{ $row->status_peralatan }}</td>
+                          </tr>
+                        @endforeach
+                      </tbody>
 
-                  </table>
+                    </table>
+                  </div>
 
                       @slot('footer')
 
@@ -220,13 +220,16 @@
               {{--------------- Cart-----------------}}
 
             <div class="col-lg-4">
+              <div id="cart">
               <div class="card">
+
               <div class="card-body">
 
                   <!-- Cart submit form -->
 
                     <!-- SmartCart element -->
                     <input type="hidden" id="id_menu">
+                    <input type="hidden" id="status_peralatan">
                     <div class="form-group ">
 											<label for="">Nama Menu</label>
 												<input type="text" id="nama_menu" class="form-control " readonly>
@@ -254,44 +257,44 @@
 
             </div>
               </div>
-
+                </div>
             </div>
-               <div class="col-lg-4">
-              <div class="card">
-                <div class="card-header">
-                  <strong class="card-title">Peralatan</strong>
+
+            {{-- Card Peralatan --}}
+
+            <div class="collapse multi-collapse" id="multiCollapseExample2">
+              <div class="col-lg-4">
+                <div class="card">
+                  <div class="card-header">
+                    <strong class="card-title">Peralatan</strong>
                   </div>
 
                   <div class="card-body">
-
-                  <!-- Cart submit form -->
-
-                    <!-- SmartCart element -->
                     <input type="hidden" id="id_menu">
                     <div class="form-group ">
 											<label for="">Peralatan</label>
 											  <select id="id_peralatan" name="id_peralatan" data-placeholder="Nama Peralatan.." class="form-control select-peralatan" tabindex="1" id="peralatan_select" style="width: 100%" disabled>
                             <option value=""></option>
                             @foreach ($peralatan as $peralatans)
-                            <option value="{{ $peralatans->id_peralatan }}">{{ $peralatans->nama_peralatan }} - {{ $peralatans->stock }}</option>
+                            <option value="{{ $peralatans->id_peralatan }}">{{ $peralatans->nama_peralatan }} - {{ $peralatans->tersedia }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="form-group">
-                          <label for="nama_pelanggan">Nama Peralatan</label>
-                              <input type="text" id="nama_peralatan" name="nama_peralatan" class="form-control" placeholder="" readonly>
-                              <input type="hidden" id="id_peralatan" class="form-control" placeholder="" readonly>
+                      <label for="nama_pelanggan">Nama Peralatan</label>
+                          <input type="text" id="nama_peralatan" name="nama_peralatan" class="form-control" placeholder="" readonly>
+                          <input type="hidden" id="id_peralatan" class="form-control" placeholder="" readonly>
                     </div>
 
-                     <div class="form-group">
-                      <label for="">Qty</label>
-                         <input type="hidden" id="stock_ghost">
-                        <input type="number" id="stock" class="form-control col-lg-4" min="0" style="float:right;" readonly ><br>
+                    <div class="form-group">
+                    <label for="">Qty</label>
+                        <input type="hidden" id="stock_ghost">
+                      <input type="number" id="stock" class="form-control col-lg-4" min="0" style="float:right;" readonly ><br>
                     </div>
+
                     <div class="form-group"  >
                       <button type="button" id="button_tambah" class="btn btn-primary btn-add pull-right" disabled>Tambah</button><br><br>
-
                        <table id="table-penyewaan" class="table table-bordered table-responsve table-stripped">
                           <thead>
                               <tr>
@@ -304,10 +307,9 @@
                           </tbody>
                         </table>
 										</div>
-
-            </div>
+                  </div>
+                </div>
               </div>
-
             </div>
 
           </form>
@@ -332,7 +334,7 @@
     // DataTables
 
     $(document).ready(function () {
-      $('body').toggleClass('open');
+      // $('body').toggleClass('open');
       var table = $('#tabel-data').DataTable();
       // $('#harga').number( true, 4 );
 
@@ -340,12 +342,16 @@
       $('.btn-submit').click(function(){
         var tanggal_pesanan = $("#datepicker").val();
         var nama_pelanggan = $("#pelanggan_select").val();
+        var bayar = $("#bayar").val();
 
          if (tanggal_pesanan == '') {
            alertSubmit1();
            return false;
          }else if (nama_pelanggan == '') {
           alertSubmit2();
+          return false;
+        }else if (bayar == '') {
+          alertSubmit3();
           return false;
         }else {
            return true;
@@ -372,6 +378,18 @@
 
      $("#tabel-pesanan").on('click','.btnDelete',function(){
        var rowCount = $('#tabel-pesanan tr').length;
+
+        var currow = $(this).closest('tr');
+        var col2 = currow.find('td:eq(1)').text();
+
+
+        if (col2 == 1) {
+
+        $('#multiCollapseExample2').collapse('hide')
+        $('#id_peralatan').attr('disabled', true);
+        $('#stock').attr('readonly', true);
+
+        }
 
         if(rowCount == '2'){
           $('#bayar').attr('readonly', true);
@@ -438,9 +456,7 @@
       // Membuat form Quantity menjadi tidak Read only
       $('#quantity').attr('readonly', false);
       $('.tambah-transaksi').attr('disabled', false);
-
-
-
+      //  $(window).scrollTop(0);
 
       // Mendapatkan Value berdasarkan <tr>
       var currow = $(this).closest('tr');
@@ -453,6 +469,7 @@
       var col7 = currow.find('td:eq(7)').text();
 
        if (col7 == 1) {
+         $('#multiCollapseExample2').collapse('show');
         $('#id_peralatan').attr('disabled', false);
         $('#stock').attr('readonly', false);
       }
@@ -461,9 +478,9 @@
       $('#id_menu').val(col2);
       $('#nama_menu').val(col3);
       $('#jenis').val(col4);
-
       $('#harga').text(col6);
       $('#subtotal').html(col6);
+      $('#status_peralatan').val(col7);
       $('#quantity').val('50');
 
 
@@ -475,6 +492,25 @@
     });
 
 
+        // Get Harga List Makanan
+
+        var harga = 0;
+        $('#list-makanan').on('change',function (e) {
+
+          var ids = $('#list-makanan').val();
+          $.ajax({
+            type: "get",
+            url: "{{ url('admin/menu/calculate-harga') }}/"+ids,
+            success: function (harga) {
+              $('#harga_menu').val(harga);
+
+            }
+          });
+
+
+        });
+
+
     // Tambah Transaksi
 
       $(".tambah-transaksi").click(function(){
@@ -483,12 +519,11 @@
             var jenis = $("#jenis").val();
             var subtotal = $("#subtotal").html();
             var quantity = $("#quantity").val();
+            var status = $("#status_peralatan").val();
             var harga = $("#harga").html();
-            var markup = "<tr><td style='display:none;'><input type='hidden' name='id_menu[]' value='"+id_menu+"'><div class='id-menu'>"+ id_menu +"</div></td><td><input type='hidden' name='nama_menu[]' value='"+nama_menu+"'><div class='nama-menu'>"+ nama_menu +"</div></td><td><input type='hidden' name='jenis_pesanan[]' value='"+jenis+"'>" + jenis + "</td><td><input type='hidden' name='quantity[]' value='"+quantity+"'><div class='qty'>" + quantity  + "</div></td><td><input type='hidden' name='harga[]' value='"+harga+"'><div class='harga'>"+ harga +"</div></td><td><input type='hidden' name='subtotal[]' value='"+subtotal+"'><div class='subtotal'>"+ subtotal +"</div></td><td><button type='button' class='btn btn-danger btnDelete'>Delete</button></td></tr>";
+            var markup = "<tr><td style='display:none;'><input type='hidden' name='id_menu[]' value='"+id_menu+"'><div class='id-menu'>"+ id_menu +"</div></td><td style='display:none;'><input type='hidden' name='status_peralatan[]' value='"+status+"'><div class='id-menu'>"+ status +"</div></td><td><input type='hidden' name='nama_menu[]' value='"+nama_menu+"'><div class='nama-menu'>"+ nama_menu +"</div></td><td><input type='hidden' name='jenis_pesanan[]' value='"+jenis+"'>" + jenis + "</td><td><input type='hidden' name='quantity[]' value='"+quantity+"'><div class='qty'>" + quantity  + "</div></td><td><input type='hidden' name='harga[]' value='"+harga+"'><div class='harga'>"+ harga +"</div></td><td><input type='hidden' name='subtotal[]' value='"+subtotal+"'><div class='subtotal'>"+ subtotal +"</div></td><td><button type='button' class='btn btn-danger btnDelete'>Delete</button></td></tr>";
             var rowCount = $('#tabel-pesanan tr').length;
             var sama = 0;
-
-
 
           // Cek Apakah Menu Sudah dipilih
 
@@ -540,7 +575,7 @@
         });
 
 
-          // get Perlengkapan ketika select
+      // get Perlengkapan ketika select
       $('#id_peralatan').on('change', function () {
         var id = $(this).val();
 
@@ -553,8 +588,8 @@
                 $('#button_tambah').attr('disabled', false);
                 $('#id_peralatan').val(response.id_peralatan);
                 $('#nama_peralatan').val(response.nama_peralatan);
-                $('#stock').val(response.stock);
-                $('#stock_ghost').val(response.stock);
+                $('#stock').val(response.tersedia);
+                $('#stock_ghost').val(response.tersedia);
 
 
             }
@@ -585,7 +620,6 @@
             var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' name='jumlah_sewa[]' value='"+stock+"'></td><td><button type='button' class='btn btn-danger btnDeletePeralatan'>x</button></td></tr>";
             var rowCount = $('#table-penyewaan tr').length;
 
-
                 if ((parseInt(stock) > parseInt(stock_ghost)) || (parseInt(stock) == 0) ) {
                     alertStock();
 
@@ -602,6 +636,7 @@
 
                     $(this).find(".stock").html(parseInt(q) + parseInt(stock));
                     $(this).find(".subtotal").html(parseInt(t) + parseInt(subtotal));
+                      $('#button_tambah').attr('disabled', true);
                         // formDisabled();
                         // grandtotal();
 
@@ -614,6 +649,7 @@
                 }else{
 
                     $('#table-penyewaan tbody').append(row);
+                      $('#button_tambah').attr('disabled', true);
                     // formDisabled();
                     // grandtotal();
                 }
@@ -621,6 +657,7 @@
                 if(sama == 0 && rowCount > 1){
 
                     $('#table-penyewaan tbody').append(row);
+                      $('#button_tambah').attr('disabled', true);
                     // formDisabled();
                     // grandtotal();
 
@@ -637,7 +674,7 @@
        var rowCount = $('#table-penyewaan tr').length;
 
         // if(rowCount == '2'){
-        //    $('#button_tambah').attr('disabled', true);
+           $('#button_tambah').attr('disabled', true);
         //    $('.tambah_transaksi').attr('disabled', true);
         // }
 
@@ -664,6 +701,14 @@
               type: 'error',
               title: 'Oops...',
               text: 'Pilih Pelanggan Terlebih Dahulu!',
+
+            });
+          }
+           function alertSubmit3 (){
+          swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Isi Jumlah Bayar terlebih Dahulu!',
 
             });
           }

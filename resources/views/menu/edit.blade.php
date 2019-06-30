@@ -17,7 +17,7 @@ $(document).ready(function () {
             });
             var selectedId = '{{ $selectedId }}';
             var selectedArr = selectedId.split(',');
-            $('#list_makanan').val(selectedArr);
+            $('#list-makanan').val(selectedArr);
             $('.standardSelect').trigger('chosen:updated');
 
              // Get Harga List Makanan
@@ -116,10 +116,16 @@ $(document).ready(function () {
 
                         <div class="form-group">
                         <label for="Deskripsi">List Makanan/Minuman</label>
-                            <select name="id_list_makanan[]" id="list-makanan" data-placeholder="Pilih List..." multiple class="standardSelect" id="list_makanan">
-                                @foreach ($listMakanan as $detail_menu)
-                                    <option value="{{ $detail_menu->id_list_makanan }}"  data-harga="{{ $detail_menu->harga }}">{{ $detail_menu->nama_makanan}}</option>
-                                 @endforeach
+                            <select name="id_list_makanan[]" id="list-makanan" data-placeholder="Pilih List..." multiple class="standardSelect">
+                                  @foreach ($jenisListMakanan as $jenis)
+                                <optgroup label="{{ $jenis->nama_jenis_makanan }}">
+                                    @foreach ($getMakanan as $makanan)
+                                    @if (($jenis->id_jenis_makanan) == ($makanan->jenis_makanan->id_jenis_makanan))
+                                         <option value="{{ $makanan->id_list_makanan }}" data-harga="{{ $makanan->harga }}">{{ $makanan->nama_makanan}}</option>
+                                    @endif
+                                    @endforeach
+                                </optgroup>
+                              @endforeach
                             </select>
 
                         </div>
