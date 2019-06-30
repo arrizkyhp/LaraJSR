@@ -28,4 +28,8 @@ class Pesanan extends Model
     {
         return $this->hasOne('\App\Users', 'id_users', 'id_users');
     }
+    public function bayar()
+    {
+        return $this->hasMany('\App\Bayar', 'id_pesanan');
+    }
 }

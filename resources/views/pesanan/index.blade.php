@@ -65,13 +65,24 @@
                       <div class="card-body">
                         <div class="form-row">
 
-                          <div class="form-group col-lg-5">
+                           <div class="form-group col-lg-6">
+                             <label for="">Tanggal</label>
+                             <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="" id="tanggal_penyewaan" class="form-control" name="tanggal" value="{{ date('d-m-Y') }}">
+
+                            </div>
+                          </div>
+
+                          <div class="form-group col-lg-6">
                             <label for="alamat">Tanggal Pesanan</label>
                               <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                  <input type="" name="tanggal_pesanan" id="datepicker" class="form-control" autocomplete="off" style="width: 60%">
+                                  <input type="" name="tanggal_pesanan" id="datepicker" class="form-control datepicker" autocomplete="off" style="width: 60%">
                             </div>
                           </div>
+
+
 
                           <div class="form-group col-lg-7">
                             <label for="nama_pelanggan">Nama Pelanggan</label><a href="http://" style="float:right;" data-toggle="modal" data-target="#exampleModal">Tambah Pelanggan Baru</a>
@@ -87,12 +98,12 @@
                             </div>
                           </div>
 
-                          <div class="form-group col-lg-7">
+                          <div class="form-group col-lg-6">
                             <label for="alamat">Alamat</label>
                               <input type="alamat" id="alamat" class="form-control" id="alamat"  readonly>
                           </div>
 
-                          <div class="form-group col-lg-5">
+                          <div class="form-group col-lg-6">
                             <label for="no_telepon">No Telepon</label>
                               <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-phone"></i></div>
@@ -326,6 +337,7 @@
     <script src="{{ asset('vendors/autonumeric/jquery.number.min.js')  }}"></script>
     <script src="{{ asset('vendors/select2/select2.min.js')  }}"></script>
     <script src="{{ asset('vendors/chosen/chosen.jquery.min.js')  }}"></script>
+    <script src="{{ asset('vendors/chosen/chosen.jquery.min.js')  }}"></script>
 
     <script type="text/javascript">
 
@@ -339,10 +351,15 @@
       // $('#harga').number( true, 4 );
 
 
+
+
+
       $('.btn-submit').click(function(){
         var tanggal_pesanan = $("#datepicker").val();
         var nama_pelanggan = $("#pelanggan_select").val();
         var bayar = $("#bayar").val();
+        var statusAlat = $("#status_peralatan").val();
+        var peralatan = $('#table-penyewaan tr').length;
 
          if (tanggal_pesanan == '') {
            alertSubmit1();
@@ -353,6 +370,9 @@
         }else if (bayar == '') {
           alertSubmit3();
           return false;
+        }else if ((statusAlat == 1) && (peralatan == 1)) {
+            alertSubmit4();
+            return false;
         }else {
            return true;
          }
@@ -428,8 +448,14 @@
 
     // DatePicker
       $( "#datepicker" ).datepicker({
-               dateFormat: "dd-mm-yy"
+               dateFormat: "dd-mm-yy",
+                minDate: "+0d +0w"
              });
+
+        $( "#tanggal_penyewaan" ).datepicker({
+          dateFormat: "dd-mm-yy",
+          maxDate: "+0d +0w"
+        });
 
     $('.js-example-basic-multiple').select2();
     $('.select-peralatan').select2();
@@ -521,7 +547,7 @@
             var quantity = $("#quantity").val();
             var status = $("#status_peralatan").val();
             var harga = $("#harga").html();
-            var markup = "<tr><td style='display:none;'><input type='hidden' name='id_menu[]' value='"+id_menu+"'><div class='id-menu'>"+ id_menu +"</div></td><td style='display:none;'><input type='hidden' name='status_peralatan[]' value='"+status+"'><div class='id-menu'>"+ status +"</div></td><td><input type='hidden' name='nama_menu[]' value='"+nama_menu+"'><div class='nama-menu'>"+ nama_menu +"</div></td><td><input type='hidden' name='jenis_pesanan[]' value='"+jenis+"'>" + jenis + "</td><td><input type='hidden' name='quantity[]' value='"+quantity+"'><div class='qty'>" + quantity  + "</div></td><td><input type='hidden' name='harga[]' value='"+harga+"'><div class='harga'>"+ harga +"</div></td><td><input type='hidden' name='subtotal[]' value='"+subtotal+"'><div class='subtotal'>"+ subtotal +"</div></td><td><button type='button' class='btn btn-danger btnDelete'>Delete</button></td></tr>";
+            var markup = "<tr><td style='display:none;'><input type='hidden' class='id_peralatan' name='id_menu[]' value='"+id_menu+"'><div class='id-menu'>"+ id_menu +"</div></td><td style='display:none;'><input type='hidden' name='status_peralatan[]' value='"+status+"'><div class='id-menu'>"+ status +"</div></td><td><input type='hidden' name='nama_menu[]' value='"+nama_menu+"'><div class='nama-menu'>"+ nama_menu +"</div></td><td><input type='hidden' name='jenis_pesanan[]' value='"+jenis+"'>" + jenis + "</td><td><input type='hidden' name='quantity[]' value='"+quantity+"'><div class='qty'>" + quantity  + "</div></td><td><input type='hidden' name='harga[]' value='"+harga+"'><div class='harga'>"+ harga +"</div></td><td><input type='hidden' name='subtotal[]' value='"+subtotal+"'><div class='subtotal'>"+ subtotal +"</div></td><td><button type='button' class='btn btn-danger btnDelete'>Delete</button></td></tr>";
             var rowCount = $('#tabel-pesanan tr').length;
             var sama = 0;
 
@@ -710,6 +736,13 @@
               title: 'Oops...',
               text: 'Isi Jumlah Bayar terlebih Dahulu!',
 
+            });
+          }
+            function alertSubmit4 (){
+          swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Isi Peralatan terlebih Dahulu!',
             });
           }
 

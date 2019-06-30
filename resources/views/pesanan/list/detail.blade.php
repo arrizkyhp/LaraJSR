@@ -56,9 +56,12 @@
               <span class="detailInfo"><b> Operator : </b> {{ $pesanan->user->name }}</span><br><br>
                     </div>
                      <div class="col-md-6">
-                          <div class="form-group">
-                          <span  style="margin-right:5px; float:right;"><b> Tanggal Pesan: </b> {{ date('d/m/Y', strtotime($pesanan->tanggal)) }}</span><br>
-              <span   style="margin-right:5px; float:right;"><b> Untuk Tanggal : </b> {{ date('d/m/Y', strtotime($pesanan->tanggal_pesanan)) }}</span><br><br>
+                        <div class="form-group">
+                        <span  style="margin-right:5px; float:right;"><b> Tanggal Pesan: </b> {{ date('d/m/Y', strtotime($pesanan->tanggal)) }}</span><br>
+                        <span   style="margin-right:5px; float:right;"><b> Untuk Tanggal : </b> {{ date('d/m/Y', strtotime($pesanan->tanggal_pesanan)) }}</span><br>
+                        @if ($pesanan->status_bayar == 0)
+                        <span   style="margin-right:5px; float:right;"><b> Tanggal Pelunasan : </b> {{ date('d/m/Y', strtotime($tanggalBayar->tanggal_bayar)) }}</span><br><br>
+                        @endif
               {{-- Status Pesanan --}}
               @if ($pesanan->status_pesanan == 0)
               <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Selesai </span></h3><br><br>
@@ -116,9 +119,9 @@
                     <div class="col-md-4">
                         <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($pesanan->total_harga,2,',', '.') }}</h4></span>
                         <input type="hidden" value="{{ $pesanan->total_harga }}" id="totalHarga">
-                        <span class="detailSpan" ><h4><b>Bayar :</b> Rp.{{ number_format($pesanan->bayar,2,',', '.') }}</h4></span>
+                        <span class="detailSpan" ><h4><b>Bayar :</b> Rp.{{ number_format($jumlahBayar,2,',', '.') }}</h4></span>
                         <hr>
-                        <span class="detailSpan"><h4><b>Sisa :</b> Rp.{{ number_format($pesanan->total_harga-$pesanan->bayar,2,',', '.') }}</h4></span><br>
+                        <span class="detailSpan"><h4><b>Sisa :</b> Rp.{{ number_format($pesanan->total_harga- $jumlahBayar,2,',', '.') }}</h4></span><br>
 
                     </div>
                     <div class="col-md-6">
@@ -131,6 +134,7 @@
                          @if ($pesanan->status_bayar != 0)
                         <button class="btn btn-primary" style="margin-right:5px; float:right;" data-toggle="modal" data-target="#exampleModal">Bayar</button>
                         @endif
+                         <button type="button"  style="margin-right:5px; float:right;" class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">History Bayar</b>
                     </div>
                 </div>
                 </div>
@@ -173,34 +177,54 @@
                                 </div>
                             </div>
                             <div class="form-group col-md 1"></div>
-                            {{-- <span class="form-group col-md-3">
-                                <label for="">Tanggal Kembali</label>
 
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                        <input type="date" id="tanggal_kembali" class="form-control" name="tanggal_kembali" value="{{  date('Y-m-d') }}">
-                                </div><br>
+                    </div>
 
-                                    <input type="hidden" value="{{ $penyewaan->total_harga }}" id="totalHarga">
+                    </div>
+                </div>
+            </div>
+    </div><!-- /#right-panel -->
+     <div class="col-lg-6">
+           <div class="collapse multi-collapse" id="multiCollapseExample2">
+                <div class="card">
+                    <div class="card-body">
 
-                                    <input type="hidden" id="bayar" value="{{ $penyewaan->bayar }}">
-                                    <span class="detailSpan" ><h4><b>Denda Ganti :</b> Rp.<span class="dendaGanti">{{ number_format(0,0,',', '.') }}</span></h4></span>
-                                    <input type="hidden" class="denda_ganti" name="denda_ganti">
-                                    <span class="detailSpan" ><h4><b>Denda Telat :</b> Rp.<span class="dendaTelat">{{ number_format(0,0,',', '.') }}</span></h4></span>
-                                    <input type="hidden" class="denda_telat" name="denda_telat">
-                                 <hr>
-                                 <div class="form-group">
-                                    <span class="detailSpan" ><h4><b>Total Denda :</b> Rp.<span class="dendaTotal">{{ number_format(0,0,',', '.') }}</span></h4></span>
-                                    <input type="hidden" class="total_denda" name="total_denda">
-                                    <span class="detailSpan"><h4><b>Total Bayar :</b> Rp.<span id="total_bayar">{{ number_format($penyewaan->total_harga-$penyewaan->bayar,0,',', '.') }}</span></h4></span>
-                                    <span class="detailSpan" ><h4><b>Nominal Bayar :</b> Rp.<span id="bayar_nominal">0</span></h4></span><br>
-                                    <input type="hidden" value="{{ $penyewaan->id_penyewaan }}" name="id_penyewaan">
-                                    <input type="hidden" value="{{ $penyewaan->bayar }}" name="bayar_dp">
-                                    <input type="number" name="bayar_lagi" id="bayar_lagi" class="form-control bayar"  placeholder="Masukkan Jumlah Bayar" ><br>
-                                    <button type="submit" value="submit" class="btn btn-primary" style="margin-right:5px; float:right;">Simpan</button>
-
+                        <div class="form-row">
+                            <input type="hidden" id="id_menu">
+                            <div class="form-group col-md-12">
+                                <div class="form-group">
+                                    <h3>History Bayar</h3>
                                 </div>
-                            </div> --}}
+                                <div class="table-responsive">
+                                    <table id="table-kembali" class="table table-striped table-bordered table-kembali">
+                                        <tr>
+                                        <thead>
+                                                <th>Tanggal Bayar</th>
+                                                <th>Bayar</th>
+                                                <th>Keterangan</th>
+                                                <th style='display:none;'>a</th>
+                                            </thead>
+                                        </tr>
+                                        <tbody>
+
+                                            @foreach ($bayar as $b)
+                                                <tr>
+                                                {{-- <td><input type="hidden" >{{ $details->peralatan->nama_peralatan}}</td>ss --}}
+                                                <td>{{ date('d/m/Y', strtotime($b->tanggal_bayar)) }}</td>
+                                                <td style="text-align: right;">Rp.{{ number_format($b->bayar,0,',', '.') }}</td>
+                                                <td>{{ $b->keterangan }}</td>
+                                                </tr>
+                                            @endforeach
+                                            <td>Jumlah</td>
+                                            <td style="text-align: right;">Rp.{{ number_format($jumlahBayar,0,',', '.') }}</td>
+                                            <td></td>
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group col-md 1"></div>
 
                     </div>
 
@@ -223,16 +247,26 @@
 
                         {{ csrf_field() }}
                         <div class="form-group">
+                             <label for="">Tanggal Bayar</label>
+                             <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="date" id="tanggal_bayar" class="form-control" name="tanggal_bayar" value="{{ date('Y-m-d') }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             Nominal
                             <div style="text-align: right;">
                                 <h2 >Rp.<b><span id="bayar_nominal">{{ number_format('0') }}</span></b></h2>
                             </div>
                             <input type="hidden" value="{{ $pesanan->id_pesanan }}" name="id_pesanan">
-                            <input type="hidden" value="{{ $pesanan->bayar }}" name="total_harga">
+                            <input type="hidden" value="{{ $pesanan->total_harga }}" name="total_harga">
                             <label for="nama_pelanggan">Bayar</label>
                             <input type="number" name="bayar_lagi" id="bayar_lagi" class="form-control bayar"  placeholder="Masukkan Jumlah Bayar" >
 
-
+                        </div>
+                        <div class="form-group">
+                            <label>Keterangan</label>
+                            <textarea name="keterangan" class="form-control"></textarea>
                         </div>
                   </div>
             <div class="modal-footer">

@@ -20,7 +20,6 @@ class CreatePesananTable extends Migration
             $table->date('tanggal');
             $table->date('tanggal_pesanan');
             $table->integer('total_harga');
-            $table->integer('bayar');
             $table->string('keterangan')->nullable();
             $table->integer('status_bayar');
             $table->integer('status_pesanan');

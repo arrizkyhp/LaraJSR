@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pesanan;
+use App\Bayar;
 use App\DetailPesanan;
 use App\ListMakanan;
 use App\JenisListMakanan;
@@ -53,7 +54,7 @@ class PesananController extends Controller
         $data['detailPesanan'] = DetailPesanan::where('id_pesanan', '=', $id)->get();
         $data['pesanan'] = Pesanan::findOrFail($id);
         $data['peralatan'] = Peralatan::all();
-
+        $data['jumlahBayar'] = Bayar::where('id_pesanan', '=', $id)->sum('bayar');
         // Status Peralatan
         $data['prasmanan'] = Prasmanan::where('id_pesanan', '=', $id)->get();
         $data['prasmananStatus'] = Prasmanan::where('id_pesanan', '=', $id)->first();
@@ -78,6 +79,7 @@ class PesananController extends Controller
 
     public function update(Request $request, $id)
     {
+
         // dd($request->all());
         $this->validate($request, [
             'nama_menu' => 'required',
@@ -99,21 +101,6 @@ class PesananController extends Controller
         $pesanan->total_harga = $request->input('total_harga');
         $pesanan->keterangan = $request->input('keterangan');
         $pesanan->status_pesanan = 1;
-        $pesanan->bayar = $request->input('bayar');
-        // $inputPesanan['id_users'] = Auth::user()->id_users;
-        // $inputPesanan['tanggal'] = Carbon::now()->format('Y-m-d');
-        // Merubah String ke tanggal
-
-        // Jika Uang Bayar Lebih dari Harga
-        if ($request->bayar > $request->total_harga) {
-            $inputPesanan['bayar'] = $request->total_harga;
-        }
-
-        if ($request->total_harga <= $request->bayar) {
-            $pesanan->status_bayar = 0;
-        } else {
-            $pesanan->status_bayar = 1;
-        }
 
 
         $pesanan->save();
@@ -154,7 +141,7 @@ class PesananController extends Controller
 
                 foreach ($peralatan as $key => $value) {
                     $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
-                    $inputPeralatan['tersedia'] = $value->tersedia - $request->jumlah_sewa[$key];
+                    $inputPeralatan['tersedia'] = $request->jumlah_tersedia[$key];
                     $inputPeralatan['keluar'] = $request->jumlah_sewa[$key];
                     // dd($value->keluar);
                     Peralatan::updateOrCreate($inputPeralatanID, $inputPeralatan);
@@ -197,10 +184,14 @@ class PesananController extends Controller
 
         $pesanan = Pesanan::findOrFail($id);
         $detail = DetailPesanan::where('id_pesanan', '=', $id)->get();
+        $bayar = Bayar::where('id_pesanan', $id)->get();
+        // mendapatkan tanggal bayar terbaru
+        $tanggalBayar = Bayar::where('id_pesanan', $id)->orderBy('id_bayar', 'desc')->first();;
+        $jumlahBayar = Bayar::where('id_pesanan', '=', $id)->sum('bayar');
         $prasmanan = Prasmanan::where('id_pesanan', '=', $id)->get();
         $prasmananStatus = Prasmanan::where('id_pesanan', '=', $id)->first();
         // dd($prasmananStatus);
-        return view('pesanan.list.detail', compact('pesanan', 'detail', 'prasmanan', 'prasmananStatus'));
+        return view('pesanan.list.detail', compact('pesanan', 'detail', 'jumlahBayar', 'prasmanan', 'prasmananStatus', 'bayar', 'tanggalBayar'));
     }
 
 
@@ -244,20 +235,36 @@ class PesananController extends Controller
         $inputPesanan['id_pesanan'] = 'JSR-' . Carbon::now()->format('dmY') . '-' . $kode;
         $inputPesanan['id_pelanggan'] = $request->id_pelanggan;
         $inputPesanan['id_users'] = Auth::user()->id_users;
-        $inputPesanan['tanggal'] = Carbon::now()->format('Y-m-d');
+        // $inputPesanan['tanggal'] = Carbon::now()->format('Y-m-d');
+
         // Merubah String ke tanggal
+        $getTanggal = strtotime($request->tanggal);
+        $newformatTanggal = date('Y-m-d', $getTanggal);
+        $inputPesanan['tanggal'] = $newformatTanggal;
+
         $time = strtotime($request->tanggal_pesanan);
         $newformat = date('Y-m-d', $time);
         $inputPesanan['tanggal_pesanan'] = $newformat;
+
+
         $inputPesanan['total_harga'] = $request->total_harga;
         $inputPesanan['keterangan'] = $request->keterangan;
         $inputPesanan['status_pesanan'] = 1;
-        $inputPesanan['bayar'] = $request->bayar;
+
+
+
+        // Bayar
+        $inputBayar['id_pesanan'] = 'JSR-' . Carbon::now()->format('dmY') . '-' . $kode;
+        $inputBayar['tanggal_bayar'] = Carbon::now()->format('Y-m-d');
+        $inputBayar['keterangan'] = 'Pembayaran Awal';
 
         // Jika Uang Bayar Lebih dari Harga
         if ($request->bayar > $request->total_harga) {
-            $inputPesanan['bayar'] = $request->total_harga;
+            $inputBayar['bayar'] = $request->total_harga;
+        } else {
+            $inputBayar['bayar'] = $request->bayar;
         }
+
 
         // Jika Melunasi
         if ($request->total_harga <= $request->bayar) {
@@ -267,6 +274,8 @@ class PesananController extends Controller
         }
 
         $pemesanan = Pesanan::create($inputPesanan);
+        Bayar::create($inputBayar);
+
         if ($pemesanan) {
             $inputDetail['id_pesanan'] = 'JSR-' . Carbon::now()->format('dmY') . '-' . $kode;
             foreach ($request->id_menu as $key => $menu_id) {
@@ -313,17 +322,25 @@ class PesananController extends Controller
 
     public function bayar(Request $request)
     {
+        // dd($request->all());
         $pesanan = Pesanan::find($request->id_pesanan);
+        $jumlahBayar = Bayar::where('id_pesanan', '=', $request->id_pesanan)->sum('bayar');
 
-        $pesanan->bayar = $pesanan->bayar + $request->bayar_lagi;
+        $inputBayar['id_pesanan'] = $request->id_pesanan;
+        $inputBayar['bayar'] = $request->bayar_lagi;
+        $inputBayar['tanggal_bayar'] = $request->tanggal_bayar;
+        $inputBayar['keterangan'] = $request->keterangan;
+        $bayarHitung = $jumlahBayar + $request->bayar_lagi;
 
-        if ($pesanan->bayar >= $pesanan->total_harga) {
+
+        if ($bayarHitung >= $request->total_harga) {
             $pesanan->status_bayar = 0;
         } else {
             $pesanan->status_bayar = 1;
         }
 
-        $status = $pesanan->save();
+        $pesanan->save();
+        $status = Bayar::create($inputBayar);;
         if ($status) {
             alert()->success('Berhasil', 'Data Berhasil diubah')->persistent('Close');
             return redirect()->back();
@@ -377,7 +394,8 @@ class PesananController extends Controller
                 $id_peralatan = $value->id_peralatan;
                 $jumlah = $value->jumlah_peralatan;
                 $value->delete();
-                // Barang Kembali
+
+
                 $stock = Peralatan::where('id_peralatan', $id_peralatan)->first();
                 $stock->keluar -= $jumlah;
                 $stock->tersedia += $jumlah;
@@ -386,6 +404,7 @@ class PesananController extends Controller
         }
 
         DetailPesanan::where('id_pesanan', '=', $id)->get()->each->delete();
+        Bayar::where('id_pesanan', '=', $id)->get()->each->delete();
         $pesanan->delete();
 
         // toast('Data Berhasil Dihapus!', 'success', 'top-right');
