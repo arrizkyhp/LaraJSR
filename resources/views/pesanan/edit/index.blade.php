@@ -334,6 +334,7 @@
                               <tr>
                               <th>Nama Peralatan</th>
                               <th>Qty</th>
+                              <th>Tersedia</th>
                               <th>Aksi</th>
                               </tr>
                           </thead>
@@ -344,7 +345,7 @@
                               <td style='display:none;'><input type='hidden' name='tersedia[{{$loop->index}}]' value='{{ $p->peralatan->tersedia}}'></td>
                               <td><div class='nama-menu'>{{ $p->peralatan->nama_peralatan }}</div><input type='hidden' name='nama_peralatan[{{$loop->index}}]' value='{{ $p->peralatan->nama_peralatan }}'></td>
                               <td><div class='stock'>{{ $p->jumlah_peralatan }}</div><input type='hidden' class='jumlah_sewa' name='jumlah_sewa[{{$loop->index}}]' value='{{ $p->jumlah_peralatan }}'></td>
-                              <td style='display:none;'><div class='tersedia'>{{ $p->peralatan->tersedia }}</div><input type='hidden' class='jumlah_tersedia' name='jumlah_tersedia[{{$loop->index}}]' value='{{ $p->peralatan->tersedia }}'></td>
+                              <td><div class='tersedia'>{{ $p->peralatan->tersedia }}</div><input type='hidden' class='jumlah_tersedia' name='jumlah_tersedia[{{$loop->index}}]' value='{{ $p->peralatan->tersedia }}'></td>
                               <td><button type='button' class='btn btn-danger btnDeletePeralatan'>x</button></td>
                             </tr>
                             @endforeach
@@ -649,9 +650,10 @@
             var stockis = $('#tambah').val();
             var stockTable = $('.stock').val();
             var stock_ghost = $('#stock_ghost').val();
+            var tersedia = stock_ghost - stock;
             var harga = $('#harga').val();
             var sama = 0;
-            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' class='jumlah_sewa' name='jumlah_sewa[]' value='"+stock+"'></td><td style='display:none;'><div class='tersedia'>"+tersedia+"</div><input type='hidden' class='jumlah_tersedia' name='jumlah_tersedia[]' value='"+tersedia+"'></td><td><button type='button' class='btn btn-danger btnDeletePeralatan'>x</button></td></tr>";
+            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' class='jumlah_sewa' name='jumlah_sewa[]' value='"+stock+"'></td><td><div class='tersedia'>"+tersedia+"</div><input type='hidden' class='jumlah_tersedia' name='jumlah_tersedia[]' value='"+tersedia+"'></td><td><button type='button' class='btn btn-danger btnDeletePeralatan'>x</button></td></tr>";
             var rowCount = $('#table-penyewaan tr').length;
 
 
