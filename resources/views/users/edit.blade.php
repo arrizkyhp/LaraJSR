@@ -51,7 +51,7 @@
                        Tambah <strong>Users</strong>
 
                    @endslot
-                      <form action="{{ route('users.update', $users->id) }}" method="POST">
+                      <form action="{{ route('users.update', $users->id_users) }}" method="POST">
 
                           {{ csrf_field() }}
                              {{ method_field('PATCH') }}
@@ -61,11 +61,15 @@
                          <p class="text-danger">{{ $errors->first('name') }}</p>
                         </div>
 
+
                         <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" id="email " value="{{ $users->email }}"  class="form-control {{ $errors->has('email') ? 'is-invalid':'' }}"  placeholder="Masukkan Email " required readonly>
-                        <p class="text-danger">{{ $errors->first('email') }}</p>
+                            <label for="role">Role</label>
+                            <select name="role" id="role" class="form-control">
+                            <option value="0" {{ $users->role == 0 ? 'selected' : ''}}>Admin</option>
+                            <option value="1" {{ $users->role == 1 ? 'selected' : ''}}>Manajer Operasional</option>
+                            </select>
                         </div>
+
 
                         <div class="form-group">
                         <label for="password">Password</label>

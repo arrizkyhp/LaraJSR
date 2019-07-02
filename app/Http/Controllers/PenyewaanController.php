@@ -9,9 +9,10 @@ use App\Peralatan;
 use App\DetailPenyewaan;
 use App\Pengembalian;
 use App\PeralatanRusak;
+use App\Stock;
 use Carbon\Carbon;
 use Auth;
-
+use PDF;
 
 class PenyewaanController extends Controller
 {
@@ -26,7 +27,7 @@ class PenyewaanController extends Controller
 
     public function getPeralatan($id)
     {
-        $peralatan = Peralatan::find($id);
+        $peralatan = Peralatan::with('stocks')->find($id);
         return response()->json($peralatan);
     }
 
@@ -47,7 +48,8 @@ class PenyewaanController extends Controller
 
 
 
-        $last_penyewaan = Penyewaan::orderBy('id_penyewaan', 'desc')->first();
+        $last_penyewaan = Penyewaan::latest()->first();
+        // $last_penyewaan = Penyewaan::orderBy('id_penyewaan', 'asc')->first();
 
         if ($last_penyewaan != null) {
             $tests = $last_penyewaan->id_penyewaan;
@@ -61,12 +63,19 @@ class PenyewaanController extends Controller
 
 
         $inputPenyewaan['id_penyewaan'] = 'SW-' . Carbon::now()->format('dmY') . '-' . $kode;
-
+        // dd($inputPenyewaan['id_penyewaan']);
         $inputPenyewaan['id_pelanggan'] = $request->id_pelanggan;
         $inputPenyewaan['id_users'] = Auth::user()->id_users;
         // $inputPenyewaan['tanggal'] = Carbon::now()->format('Y-m-d');
-        $inputPenyewaan['tanggal_penyewaan'] = $request->tanggal_penyewaan;
-        $inputPenyewaan['tanggal_akhir'] = $request->tanggal_akhir;
+        // Merubah String ke tanggal
+        $getTanggal = strtotime($request->tanggal_penyewaan);
+        $newformatTanggal = date('Y-m-d', $getTanggal);
+        $inputPenyewaan['tanggal_penyewaan'] = $newformatTanggal;
+
+        $time = strtotime($request->tanggal_akhir);
+        $newformat = date('Y-m-d', $time);
+        $inputPenyewaan['tanggal_akhir'] = $newformat;
+
         $inputPenyewaan['total_harga'] = $request->total_harga;
         $inputPenyewaan['total_bayar'] = $request->total_harga;
         $inputPenyewaan['keterangan'] = $request->keterangan;
@@ -97,8 +106,16 @@ class PenyewaanController extends Controller
 
             foreach ($peralatan as $key => $value) {
                 $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
-                $inputPeralatan['stock'] = $request->stock[$key] - $request->jumlah_sewa[$key];
-                $alat = Peralatan::updateOrCreate($inputPeralatanID, $inputPeralatan);
+
+
+                $inputStockID['id_stock'] = $request->id_peralatan[$key];
+                $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
+                $inputStock['tersedia'] = $value->stocks->tersedia - $request->jumlah_sewa[$key];
+                $inputStock['keluar'] =  $value->stocks->keluar +  $request->jumlah_sewa[$key];
+
+
+                $alat = Peralatan::updateOrCreate($inputPeralatanID);
+                Stock::updateOrCreate($inputStockID, $inputStock);
             }
         }
 
@@ -123,17 +140,26 @@ class PenyewaanController extends Controller
 
     public function detailPenyewaan($id)
     {
-        $penyewaan = Penyewaan::findOrFail($id);
+        $data['penyewaan'] = Penyewaan::findOrFail($id);
+        $data['detail'] = DetailPenyewaan::where('id_penyewaan', '=', $id)->get();
+        $data['pengembalian'] = Pengembalian::where('id_penyewaan', '=', $id)->first();
+        // dd($data['pengembalian']);
 
-        $detail = DetailPenyewaan::where('id_penyewaan', '=', $id)->get();
-        $pengembalian = Pengembalian::where('id_penyewaan', '=', $id)->first();
-        // dd($pengembalian);
-        return view('penyewaan.list.detail', compact('penyewaan', 'detail', 'pengembalian'));
+        if ($data['pengembalian'] == null) {
+            # code...
+            $data['peralatanRusak'] = PeralatanRusak::where('id_pengembalian', '=', null)->get();
+        } else {
+            $data['peralatanRusak'] = PeralatanRusak::where('id_pengembalian', '=', $data['pengembalian']->id_pengembalian)->get();
+            // dd($data['peralatanRusak']);
+
+        }
+        // dd($data['peralatanRusak']);
+        return view('penyewaan.list.detail', $data);
     }
 
     public function pengembalian(Request $request, $id)
     {
-
+        // dd($request->all());
         $this->validate($request, [
             'tanggal_kembali' => 'required',
             'jumlah_kembali' => 'required',
@@ -162,7 +188,8 @@ class PenyewaanController extends Controller
         if ($penyewaan) {
 
             // Buat Kode
-            $last_pengembalian = Pengembalian::orderBy('id_pengembalian', 'desc')->first();
+            $last_pengembalian = Pengembalian::latest()->first();
+            // $last_pengembalian = Pengembalian::orderBy('id_pengembalian', 'asc')->first();
 
             if ($last_pengembalian != null) {
                 $tests = $last_pengembalian->id_pengembalian;
@@ -199,25 +226,146 @@ class PenyewaanController extends Controller
 
                 $rusak = PeralatanRusak::updateOrCreate($inputRusak, $inputRusakNom);
             }
-        }
 
-        // Perlengkapan Kembali
+            // Kurangi Stock
 
-        if ($pengembalian) {
             $idDPenyewaan = $request->id_penyewaan;
             $dPenyewaan = DetailPenyewaan::where('id_penyewaan', '=', $idDPenyewaan)->get();
 
             foreach ($dPenyewaan as $key => $value) {
                 $id_peralatan = $value->id_peralatan;
                 $jumlah = $request->jumlah_kembali[$key];
-                $stock = Peralatan::where('id_peralatan', $id_peralatan)->first();
-                $stock->stock += $jumlah;
-                $stock->save();
+
+                $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
+                $stockMinus = $stockSave->stock - $jumlah;
+                $kembali = $stockSave->stock - $stockMinus;
+
+                $stockSave->keluar -= $kembali + $stockMinus;
+                $stockSave->tersedia += $jumlah;
+                $stockSave->stock -= $stockMinus;
+
+                $stockSave->save();
+            }
+        } else {
+            // Perlengkapan Kembali
+
+            $idDPenyewaan = $request->id_penyewaan;
+            $dPenyewaan = DetailPenyewaan::where('id_penyewaan', '=', $idDPenyewaan)->get();
+
+            foreach ($dPenyewaan as $key => $value) {
+                $id_peralatan = $value->id_peralatan;
+                $jumlah = $request->jumlah_kembali[$key];
+                $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
+                $stockSave->keluar -= $jumlah;
+                $stockSave->tersedia += $jumlah;
+                $stockSave->save();
             }
         }
 
+
         alert()->success('Berhasil ', 'Data Berhasil diubah')->persistent(' Close ');
         return redirect('admin/list_penyewaan');
+    }
+
+    public function edit($id)
+    {
+
+        $data['penyewaan'] = Penyewaan::findOrFail($id);
+        $data['detailPenyewaan'] = DetailPenyewaan::where('id_penyewaan', $id)->get();
+        $data['pelanggan'] = Pelanggan::all();
+        $data['peralatan'] = Peralatan::all();
+
+        return view('penyewaan.edit.index', $data);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // dd($request->all());
+        $penyewaan = Penyewaan::findOrFail($id);
+
+        $penyewaan->id_pelanggan = $request->input('id_pelanggan');
+
+        $time = strtotime($request->tanggal_akhir);
+        $newformat = date('Y-m-d', $time);
+        $penyewaan->tanggal_akhir = $newformat;
+        $penyewaan->keterangan = $request->input('keterangan');
+        $penyewaan->total_harga = $request->input('total_harga');
+
+        $penyewaan->save();
+
+        if ($penyewaan) {
+            // menghapus penyewaan yang di delete
+            $deletePeralatan = DetailPenyewaan::where('id_penyewaan', $id)->whereNotIn('id_peralatan', $request->id_peralatan)->get();
+
+            if ($deletePeralatan->isEmpty()) {
+                $inputDetail['id_penyewaan'] = $id;
+                foreach ($request->id_peralatan as $key => $value) {
+                    $inputDetail['id_peralatan'] = $value;
+                    $inputNom['jumlah_sewa'] = $request->jumlah_sewa[$key];
+                    $inputNom['subtotal'] = $request->subtotal[$key];
+                    DetailPenyewaan::updateOrCreate($inputDetail, $inputNom);
+                }
+
+                // Peralatan
+
+                $peralatan = Peralatan::findOrFail($request->id_peralatan);
+
+                foreach ($peralatan as $key => $value) {
+                    $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
+
+                    $inputStockID['id_stock'] = $request->id_peralatan[$key];
+                    $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
+                    $inputStock['tersedia'] = $request->jumlah_tersedia[$key];
+                    $inputStock['keluar'] = $request->jumlah_sewa[$key];
+                    Peralatan::updateOrCreate($inputPeralatanID);
+                    Stock::updateOrCreate($inputStockID, $inputStock);
+                }
+            } else {
+
+                $bayar = $request->bayar;
+                $total_harga = $request->total_harga;
+
+                if ($bayar >= $total_harga) {
+                    $penyewaan->status_bayar  = 0;
+                } elseif ($bayar < $total_harga) {
+                    $penyewaan->status_bayar  = 1;
+                }
+
+                $penyewaan->save();
+
+                foreach ($deletePeralatan as $key => $value) {
+                    $id_peralatan = $value->id_peralatan;
+                    $jumlah = $request->jumlah_sewa[$key];
+                    $value->delete();
+                    // Barang Kembali
+                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
+                    $stockSave->keluar -= $jumlah;
+                    $stockSave->tersedia += $jumlah;
+                    $stockSave->save();
+                }
+                $peralatan = Peralatan::findOrFail($request->id_peralatan);
+
+
+                foreach ($peralatan as $key => $value) {
+                    $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
+
+                    $inputStockID['id_stock'] = $request->id_peralatan[$key];
+                    $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
+                    $inputStock['tersedia'] = $request->jumlah_tersedia[$key];
+                    $inputStock['keluar'] = $request->jumlah_sewa[$key];
+                    Peralatan::updateOrCreate($inputPeralatanID);
+                    Stock::updateOrCreate($inputStockID, $inputStock);
+                }
+            }
+        }
+
+        if ($peralatan) {
+            alert()->success('Berhasil', 'Data Berhasil diubah')->persistent('Close');
+            return redirect('admin/list_penyewaan');
+        } else {
+            alert()->error('Error', 'Data gagal diubah')->persistent('Close');
+            return redirect()->back();
+        }
     }
 
     public function destroy($id)
@@ -231,10 +379,14 @@ class PenyewaanController extends Controller
             $status = $value->delete();
             if ($penyewaan->status_penyewaan == 1) {
 
+
                 if ($status) {
-                    $stock = Peralatan::where('id_peralatan', $id_peralatan)->first();
-                    $stock->stock += $jumlah;
-                    $stock->save();
+                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
+
+                    $stockSave->keluar -= $jumlah;
+                    $stockSave->tersedia += $jumlah;
+
+                    $stockSave->save();
                 }
             }
         }
@@ -243,5 +395,26 @@ class PenyewaanController extends Controller
         // toast('Data Berhasil Dihapus!', 'success', 'top-right');
         alert()->success('Berhasil ', 'Data Berhasil dihapus')->persistent(' Close ');
         return redirect('admin/list_penyewaan');
+    }
+
+    public function printPDF($id)
+    {
+        $data['penyewaan'] = Penyewaan::findOrFail($id);
+        $data['detail'] = DetailPenyewaan::where('id_penyewaan', '=', $id)->get();
+        $data['pengembalian'] = Pengembalian::where('id_penyewaan', '=', $id)->first();
+        // dd($data['pengembalian']);
+
+        if ($data['pengembalian'] == null) {
+            # code...
+            $data['peralatanRusak'] = PeralatanRusak::where('id_pengembalian', '=', null)->get();
+        } else {
+            $data['peralatanRusak'] = PeralatanRusak::where('id_pengembalian', '=', $data['pengembalian']->id_pengembalian)->get();
+            // dd($data['peralatanRusak']);
+
+        }
+        // dd($data['peralatanRusak']);
+        $pdf = PDF::loadview('penyewaan.print.index', $data);
+        return $pdf->stream('test.pdf');
+        // return $pdf->download('laporan-pegawai-pdf');
     }
 }

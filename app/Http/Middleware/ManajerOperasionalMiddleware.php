@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Response;
 
 class ManajerOperasionalMiddleware
 {
@@ -16,7 +17,7 @@ class ManajerOperasionalMiddleware
     public function handle($request, Closure $next)
     {
         if ($request->user() && $request->user()->role != 1) {
-            return new Response(view('restricted')->with('role', 'Manajer Operasional'));
+            return new Response(view('restricted')->with('role', 'ManajerOperasional'));
         }
 
         return $next($request);

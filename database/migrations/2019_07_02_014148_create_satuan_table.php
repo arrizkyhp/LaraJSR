@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStockTable extends Migration
+class CreateSatuanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateStockTable extends Migration
      */
     public function up()
     {
-        Schema::create('t_stock', function (Blueprint $table) {
-            $table->increments('id_stock');
-            $table->integer('id_peralatan');
-            $table->integer('stock');
-            $table->integer('tersedia');
-            $table->integer('keluar');
-            $table->text('keterangan');
+        Schema::create('t_satuan', function (Blueprint $table) {
+            $table->increments('id_satuan');
+            $table->string('nama_satuan');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ class CreateStockTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('t_stock');
+        Schema::dropIfExists('t_satuan');
     }
 }

@@ -51,21 +51,23 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $this->validate($request, [
             'name' => 'required|string|max:100',
-            'email' => 'required|email|exists:users,email',
-            'password' => 'nullable|min:6',
+            'role' => 'required|string'
         ]);
 
         $users = Users::findOrFail($id);
         $password = !empty($request->password) ? bcrypt($request->password) : $users->password;
+
         $users->update([
             'name' => $request->name,
-            'password' => $password
+            'password' => $password,
+            'role' => $request->role
         ]);
 
         alert()->success('Berhasil', 'Data Berhasil ditambahkan')->persistent('Close');
-        return redirect('/users');
+        return redirect('admin/users');
     }
 
     public function destroy($id)

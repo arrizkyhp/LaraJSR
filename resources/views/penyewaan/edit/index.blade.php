@@ -34,8 +34,9 @@
 
 
         <div class="content mt-3">
-             <form role="form" action="{{ route('penyewaan.store') }}" id="form-submit" method="post" enctype="multipart/form-data">
-              @csrf
+             <form role="form" action="{{ route('penyewaan.update',$penyewaan->id_penyewaan) }}" id="form-submit" method="post" enctype="multipart/form-data">
+              {{ csrf_field() }}
+            {{ method_field('PATCH') }}
 
              <div class="col-lg-12">
               <div class="card">
@@ -53,7 +54,7 @@
                             <label for="">Tanggal Penyewaan</label>
                              <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="" id="tanggal_penyewaan" class="form-control" name="tanggal_penyewaan" value="{{ date('d-m-Y') }}">
+                            <input type="" id="tanggal_penyewaan" class="form-control" name="tanggal_penyewaan" value="{{ date('d-m-Y',strtotime($penyewaan->tanggal_penyewaan)) }}" readonly>
 
                             </div>
                         </div>
@@ -61,7 +62,7 @@
                          <label for="">Sampai Tanggal</label>
                              <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="" id="tanggal_akhir" class="form-control" name="tanggal_akhir" autocomplete="off">
+                            <input type="" id="tanggal_akhir" class="form-control" name="tanggal_akhir" value="{{  date('d-m-Y', strtotime($penyewaan->tanggal_akhir)) }}">
                             </div>
                     </div>
                 </div>
@@ -101,9 +102,8 @@
                         <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-user"></i></div>
                             <select name="id_pelanggan" data-placeholder="Masukan Nama Pelanggan.." class="form-control js-example-basic-multiple" tabindex="1" id="pelanggan_select" style="width: 70%">
-                                <option value=""></option>
                                 @foreach ($pelanggan as $pelanggans)
-                                <option value="{{ $pelanggans->id_pelanggan }}">{{ $pelanggans->nama_pelanggan }}</option>
+                                <option value="{{ $pelanggans->id_pelanggan }}" {{ $penyewaan->id_pelanggan == $pelanggans->id_pelanggan ?  'selected' : '' }}  >{{ $pelanggans->nama_pelanggan }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -147,28 +147,40 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach ($detailPenyewaan as $sewa)
+
+                                            <tr><td style='display:none;'><input type='hidden' name='id_peralatan[{{ $loop->index }}]' value='{{ $sewa->id_peralatan }}'></td>
+                                                <td style='display:none;'><input type='hidden' name='stock[{{ $loop->index }}]' value='{{ $sewa->jumlah_sewa }}'></td>
+                                                <td><div class='nama-menu'>{{ $sewa->peralatan->nama_peralatan }}</div><input type='hidden' name='nama_peralatan[{{ $loop->index }}]' value='{{ $sewa->peralatan->nama_peralatan }}'></td>
+                                                <td><div class='stock'>{{ $sewa->jumlah_sewa }}</div><input type='hidden' class='jumlah_sewa' name='jumlah_sewa[{{ $loop->index }}]' value='{{ $sewa->jumlah_sewa }}'></td>
+                                                <td>{{ $sewa->peralatan->harga_sewa }}<input type='hidden'  name='harga[{{ $loop->index }}]' value='{{ $sewa->peralatan->harga_sewa }}'></td>
+                                                <td><div class='subtotal'>{{ $sewa->jumlah_sewa * $sewa->peralatan->harga_sewa }}</div><input type='hidden' class='subtotal_sewa' name='subtotal[{{ $loop->index }}]' value='{{ $sewa->jumlah_sewa * $sewa->peralatan->harga_sewa }}'></td>
+                                                <td style='display:none;'><div class='tersedia'>{{ $sewa->peralatan->stocks->tersedia }}</div><input type='hidden' class='jumlah_tersedia' name='jumlah_tersedia[{{$loop->index}}]' value='{{ $sewa->peralatan->stocks->tersedia }}'></td>
+                                                <td><button type='button' class='btn btn-danger btnDelete'>x</button></td></tr>
+
+                                            @endforeach
                                         </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="col-md-6">
-                              <textarea cols="25" rows="3" placeholder="Keterangan (jika ada)" name="keterangan"></textarea>
+                              <textarea cols="25" rows="3" placeholder="Keterangan (jika ada)" name="keterangan">{{ $penyewaan->keterangan }}</textarea>
                         </div>
 
                         <div class="col-md-6">
                              <div class="form-group" style="text-align:right">
-                                <span >Total </span><h2>Rp.<b><span id="total">0</span></b></h2>
-                                 <input type='hidden' name='total_harga' class="total_harga">
+                                <span >Total </span><h2>Rp.<b><span id="total">{{ number_format($penyewaan->total_harga,0,',', '.') }}</span></b></h2>
+                                 <input type='hidden' name='total_harga' class="total_harga" value="{{ $penyewaan->total_harga }}">
                             </div>
                             <div style="float:right;">
                                 <span>Bayar (Rp)</span>
-                                <input type="number" id="bayar" name="bayar" class="form-control col-lg-8" min="0" style="float:right;" readonly><br><br><br>
+                                <input type="number" id="bayar" value="{{ $penyewaan->bayar }}" name="bayar" class="form-control col-lg-8" min="0" style="float:right;" readonly><br><br><br>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group"  style="float:right;">
-                                <button type="submit" class="btn btn-primary simpan" style="float:right;" disabled><i class="fa fa-plus-square"></i> Simpan </button>
+                                <button type="submit" class="btn btn-primary simpan" style="float:right;"><i class="fa fa-plus-square"></i> Simpan </button>
                             </div>
                         </div>
                     </div>
@@ -201,8 +213,8 @@
         // DatePicker
         $( "#tanggal_penyewaan" ).datepicker({
                 dateFormat: "dd-mm-yy",
-                    maxDate: "+0d +0w"
-                });
+                    maxDate: "+0d +0w",
+                }).attr('readonly','readonly');
 
         $( "#tanggal_akhir" ).datepicker({
         dateFormat: "dd-mm-yy",
@@ -316,11 +328,12 @@
             var nama = $('#nama_peralatan').val();
             var stock = $('#stock').val();
             var stock_ghost = $('#stock_ghost').val();
+            var tersedia = stock_ghost - stock;
             var harga = $('#harga').val();
             var subtotal = stock * harga;
             var getSubtotal = $('#subtotal').val(subtotal);
             var sama = 0;
-            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' name='jumlah_sewa[]' value='"+stock+"'></td><td>"+harga+"<input type='hidden' name='harga[]' value='"+harga+"'></td><td><div class='subtotal'>"+subtotal+"</div><input type='hidden' name='subtotal[]' value='"+subtotal+"'></td><td><button type='button' class='btn btn-danger btnDelete'>x</button></td></tr>";
+            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' name='jumlah_sewa[]' value='"+stock+"'></td><td style='display:none;'><div class='tersedia'>"+tersedia+"</div><input type='hidden' class='jumlah_tersedia' name='jumlah_tersedia[]' value='"+tersedia+"'></td><td>"+harga+"<input type='hidden' name='harga[]' value='"+harga+"'></td><td><div class='subtotal'>"+subtotal+"</div><input type='hidden' name='subtotal[]' value='"+subtotal+"'></td><td><button type='button' class='btn btn-danger btnDelete'>x</button></td></tr>";
             var rowCount = $('#table-penyewaan tr').length;
 
 
@@ -337,9 +350,15 @@
                         sama++;
                     var q = $(this).find(".stock").html();
                     var t = $(this).find(".subtotal").html();
+                    var x = $(this).find(".tersedia").html();
 
                     $(this).find(".stock").html(parseInt(q) + parseInt(stock));
                     $(this).find(".subtotal").html(parseInt(t) + parseInt(subtotal));
+                    $(this).find(".jumlah_sewa").val(parseInt(q) + parseInt(stock));
+                     $(this).find(".tersedia").html(parseInt(x) - parseInt(stock));
+                    $(this).find(".subtotal_sewa").val(parseInt(t) + parseInt(subtotal));
+                    $(this).find(".jumlah_tersedia").val(parseInt(x) - parseInt(stock));
+
                         formDisabled();
                         grandtotal();
 
@@ -390,7 +409,7 @@
             $('#stock').attr('readonly', true);
             $('#button_tambah').attr('disabled', true);
             $('.simpan').attr('disabled', false);
-            $('#bayar').attr('readonly', false);
+            // $('#bayar').attr('readonly', false);
             $('#nama_peralatan').val('');
             // $('#stock').val('');
             // $('#stock').attr("placeholder", "");

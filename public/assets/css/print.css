@@ -1,0 +1,38 @@
+#logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#logo img {
+    width: 250px;
+}
+#deskripsi {
+     text-align: center;
+    margin-bottom: 20px;
+     border-top: 1px solid  #5D6975;
+}
+h4 {
+
+    font-weight: normal;
+    text-align: center;
+    margin-bottom: 30px
+}
+#data {
+  float: left;
+}
+
+#data span {
+    text-align: left;
+    width: 400px;
+    margin-right: 10px;
+
+}
+#tanggal {
+  text-align: right;
+}
+
+#status{
+
+     text-align: right;
+
+}

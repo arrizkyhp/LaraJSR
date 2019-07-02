@@ -79,67 +79,68 @@
                         Data <strong>Menu</strong>
                         <a href="penyewaan" class="btn btn-primary" style="float:right;"><i class="fa fa-plus-square"></i> Tambah Penyewaan </a>
                    @endslot
-                      <table id="tabel-data" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Kode Penyewaan</th>
-                        <th>Nama Pelanggan</th>
-                        <th>Tanggal Sewa</th>
-                        <th>Tgl Akhir Sewa</th>
-                        <th>Pembayaran</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                     <tr>
-                        <th>#</th>
-                        <th>Kode Penyewaan</th>
-                        <th>Nama Pelanggan</th>
-                        <th>Tgl Sewa</th>
-                        <th>Tgl Akhir Sewa</th>
-                        <th>Pembayaran</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                      </tr>
-                    </tfoot>
-                      <tbody>
-                         @php $no = 1; @endphp
-                        @foreach ($penyewaan as $row)
+                   <div class="table-responsive">
+                    <table id="tabel-data" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
+                      <thead>
                         <tr>
-                        <td>{{ $no++ }}</td>
-                        <td>{{ $row->id_penyewaan }}</td>
-                        <td>{{ $row->pelanggan->nama_pelanggan }}</td>
-                        <td>{{ date('d-m-Y', strtotime($row->tanggal_penyewaan )) }}</td>
-                        <td>{{ date('d-m-Y', strtotime($row->tanggal_akhir )) }}</td>
-                        <td>
-                            @if($row->status_bayar == 0)
-                            <span class="badge badge-success" style="margin-right:5px;"> Lunas </span>
-                            @elseif($row->status_bayar == 1)
-                            <span class="badge badge-danger" style="margin-right:5px;"> Belum Lunas </span>
-                            @endif
-                        </td>
-                         <td>
-                            @if($row->status_penyewaan == 0)
-                            <a href="#" class="btn btn-success " data-toggle="tooltip" data-placement="top" title="Penyewaan Selesai"><i class="fa fa-check"></i> </a>
-                            @elseif($row->status_penyewaan == 1)
-                             <a href="#"  class="btn btn-danger btnDetail" data-toggle="tooltip" data-placement="top" title="Belum Selesai"><i class="fa fa-times"></i> </a>
-                            @endif
-                        </td>
+                          <th>#</th>
+                          <th>Kode Penyewaan</th>
+                          <th>Nama Pelanggan</th>
+                          <th>Tanggal Sewa</th>
+                          <th>Tgl Akhir Sewa</th>
+                          <th>Pembayaran</th>
+                          <th>Status</th>
+                          <th>Aksi</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>#</th>
+                          <th>Kode Penyewaan</th>
+                          <th>Nama Pelanggan</th>
+                          <th>Tgl Sewa</th>
+                          <th>Tgl Akhir Sewa</th>
+                          <th>Pembayaran</th>
+                          <th>Status</th>
+                          <th>Aksi</th>
+                        </tr>
+                      </tfoot>
+                        <tbody>
+                            @php $no = 1; @endphp
+                          @foreach ($penyewaan as $row)
+                          <tr>
+                          <td>{{ $no++ }}</td>
+                          <td>{{ $row->id_penyewaan }}</td>
+                          <td>{{ $row->pelanggan->nama_pelanggan }}</td>
+                          <td>{{ date('d-m-Y', strtotime($row->tanggal_penyewaan )) }}</td>
+                          <td>{{ date('d-m-Y', strtotime($row->tanggal_akhir )) }}</td>
+                          <td>
+                              @if($row->status_bayar == 0)
+                              <span class="badge badge-success" style="margin-right:5px;"> Lunas </span>
+                              @elseif($row->status_bayar == 1)
+                              <span class="badge badge-danger" style="margin-right:5px;"> Belum Lunas </span>
+                              @endif
+                          </td>
+                            <td>
+                              @if($row->status_penyewaan == 0)
+                              <a href="#" class="btn btn-success " data-toggle="tooltip" data-placement="top" title="Penyewaan Selesai"><i class="fa fa-check"></i> </a>
+                              @elseif($row->status_penyewaan == 1)
+                                <a href="#"  class="btn btn-danger btnDetail" data-toggle="tooltip" data-placement="top" title="Belum Selesai"><i class="fa fa-times"></i> </a>
+                              @endif
+                          </td>
 
-                        <td>
+                          <td>
 
-                          <a href="{{ url('admin/penyewaan/detail', $row->id_penyewaan) }}" class="btn btn-info btnDetail" data-toggle="tooltip" data-placement="top" title="Detail "><i class="fa fa-info"></i> </a>
-                        <a href="{{ url('admin/penyewaan/edit', $row->id_penyewaan) }}" class="btn btn-warning"  data-toggle="tooltip" data-placement="top" title="Ubah "><i class="fa fa-pencil"></i> </a>
-                        <a href="#" id="delete" class="btn btn-danger delete" style="display:inline;"  data-toggle="tooltip" data-placement="top" title="Hapus "><i class="fa fa-trash"></i></a>
-                        </form>
-                        </td>
-                      </tr>
-                        @endforeach
-                         </tbody>
-
-                  </table>
+                            <a href="{{ url('admin/penyewaan/detail', $row->id_penyewaan) }}" class="btn btn-info btnDetail" data-toggle="tooltip" data-placement="top" title="Detail "><i class="fa fa-info"></i> </a>
+                          <a href="{{ url('admin/penyewaan/edit', $row->id_penyewaan) }}" class="btn btn-warning"  data-toggle="tooltip" data-placement="top" title="Ubah "><i class="fa fa-pencil"></i> </a>
+                          <a href="#" id="delete" class="btn btn-danger delete" style="display:inline;"  data-toggle="tooltip" data-placement="top" title="Hapus "><i class="fa fa-trash"></i></a>
+                          </form>
+                          </td>
+                        </tr>
+                          @endforeach
+                            </tbody>
+                    </table>
+                  </div>
 
                       @slot('footer')
 

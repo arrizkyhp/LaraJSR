@@ -20,39 +20,58 @@
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart""></i>Transaksi</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-cutlery"></i><a href="{{ asset('admin/pesanan')}}">Pesanan</a></li>
-                            <li><i class="fa fa-bars"></i><a href="{{ asset('admin/list_pesanan')}}">List Pesanan</a></li>
-                            <li><i class="fa fa-glass"></i><a href="{{ asset('admin/penyewaan')}}">Penyewaan</a></li>
-                            <li><i class="fa fa-bars"></i><a href="{{ asset('admin/list_penyewaan')}}">List Penyewaan</a></li>
+                            @if (auth()->user()->role == 0 )
+                                <li><i class="fa fa-cutlery"></i><a href="{{ asset('admin/pesanan')}}">Pesanan</a></li>
+                                <li><i class="fa fa-bars"></i><a href="{{ asset('admin/list_pesanan')}}">List Pesanan</a></li>
+                            @elseif (auth()->user()->role == 1)
+                                <li><i class="fa fa-glass"></i><a href="{{ asset('admin/penyewaan')}}">Penyewaan</a></li>
+                                <li><i class="fa fa-bars"></i><a href="{{ asset('admin/list_penyewaan')}}">List Penyewaan</a></li>
+                            @endif
+
+
                         </ul>
                     </li>
 
                                       <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-hdd-o"></i>Manajemen Data</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-cutlery"></i><a href="{{ asset('admin/menu')}}">Menu</a></li>
-                            <li><i class="fa fa-coffee"></i><a href="{{ asset('admin/jenis_pesanan')}}">Jenis Pesanan</a></li>
-                            <li><i class="fa fa-cutlery"></i><a href="{{ asset('admin/list_makanan')}}">Makanan/Minuman</a></li>
-                            <li><i class="fa fa-user"></i><a href="{{ asset('admin/pelanggan')}}">Pelanggan</a></li>
-                            <li><i class="fa fa-bars"></i><a href="{{ asset('admin/peralatan')}}">Peralatan</a></li>
+                            @if (auth()->user()->role == 0 )
+                                <li><i class="fa fa-cutlery"></i><a href="{{ asset('admin/menu')}}">Menu</a></li>
+                                <li><i class="fa fa-coffee"></i><a href="{{ asset('admin/jenis_pesanan')}}">Jenis Pesanan</a></li>
+                                <li><i class="fa fa-cutlery"></i><a href="{{ asset('admin/list_makanan')}}">Makanan/Minuman</a></li>
+                                <li><i class="fa fa-user"></i><a href="{{ asset('admin/pelanggan')}}">Pelanggan</a></li>
+                            @elseif (auth()->user()->role == 1)
+                                <li><i class="fa fa-bars"></i><a href="{{ asset('admin/peralatan')}}">Peralatan</a></li>
+                            @endif
+
 
                         </ul>
                     </li>
 
-                      <li class="menu-item-has-children dropdown">
+
+                     @if (auth()->user()->role == 0 )
+                    <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Manajemen Users</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-user"></i><a href="{{ asset('admin/users')}}">User</a></li>
 
-
-                                        </ul>
+                        <li><i class="fa fa-user"></i><a href="{{ asset('admin/users')}}">User</a></li>
+                        </ul>
                     </li>
+
+
+                    @elseif (auth()->user()->role == 1)
+                    @endif
 
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Laporan</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-basic.html">Basic Form</a></li>
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Advanced Form</a></li>
+                        @if (auth()->user()->role == 0 )
+
+                            <li><i class="fa fa-user"></i><a href="{{ asset('admin/users')}}">Laporan</a></li>
+                        @elseif (auth()->user()->role == 1)
+                            <li><i class="menu-icon fa fa-book"></i><a href="forms-basic.html">Penyewaan</a></li>
+                            <li><i class="menu-icon fa fa-book"></i><a href="{{ asset('admin/peralatan_rusak')}}">Peralatan Rusak</a></li>
+                        @endif
                         </ul>
                     </li>
 

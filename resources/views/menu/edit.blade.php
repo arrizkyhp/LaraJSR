@@ -56,7 +56,7 @@ $(document).ready(function () {
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active root-ajj"><a href="/admin/dashboard">Dashboard</a> / <a href="/admin/menu">Menu</a> / Edit Menu</li>
+                            <li class="active root-ajj"><a href="/admin/dashboard">Dashboard</a> / <a href="/admin/peralatan">Peralatan</a> / Edit Peralatan</li>
                         </ol>
                     </div>
                 </div>
@@ -103,16 +103,16 @@ $(document).ready(function () {
                         <p class="text-danger">{{ $errors->first('nama_menu') }}</p>
                         </div>
 
-                          <div class="form-group">
-                                    <label for="">Jenis Pesanan</label>
-                                    <select name="id_jenis_pesanan" class="form-control {{ $errors->has('id_jenis_pesanan') ? 'is-invalid':'' }}" required readonly>
-                                        <option value="{{ $menu->id_jenis_pesanan }}">{{ $menu->jenis_pesanan->nama_jenis_pesanan }}</option>
-                                        @foreach (\App\JenisPesanan::all() as $jenis_pesanan)
-                                        <option value="{{ $jenis_pesanan->id_jenis_pesanan }}">{{ $jenis_pesanan->nama_jenis_pesanan }}</option>
-                                        @endforeach
-                                    </select>
-                                    <p class="text-danger">{{ $errors->first('id_jenis_pesanan') }}</p>
-                                </div>
+                        <div class="form-group">
+                            <label for="">Jenis Pesanan</label>
+                            <select name="id_jenis_pesanan" class="form-control {{ $errors->has('id_jenis_pesanan') ? 'is-invalid':'' }}" required readonly>
+                                <option value="{{ $menu->id_jenis_pesanan }}">{{ $menu->jenis_pesanan->nama_jenis_pesanan }}</option>
+                                @foreach (\App\JenisPesanan::all() as $jenis_pesanan)
+                                <option value="{{ $jenis_pesanan->id_jenis_pesanan }}">{{ $jenis_pesanan->nama_jenis_pesanan }}</option>
+                                @endforeach
+                            </select>
+                            <p class="text-danger">{{ $errors->first('id_jenis_pesanan') }}</p>
+                        </div>
 
                         <div class="form-group">
                         <label for="Deskripsi">List Makanan/Minuman</label>

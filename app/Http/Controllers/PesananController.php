@@ -37,16 +37,6 @@ class PesananController extends Controller
     public function edit($id)
     {
 
-        // $menu = Menu::all();
-        // $detailMenu = DetailMenu::where('id_menu', '=', $id)->get();
-        // $pelanggan = Pelanggan::all();
-        // $listMakanan = ListMakanan::all();
-        // $detailPesanan = DetailPesanan::where('id_pesanan', '=', $id)->get();
-        // $pesanan = Pesanan::findOrFail($id);
-        // $peralatan = Peralatan::all();
-        // $prasmanan = Prasmanan::where('id_pesanan', '=', $id)->get();
-        // $prasmananStatus = Prasmanan::where('id_pesanan', '=', $id)->first();
-
         $data['menu'] = Menu::all();
         $data['detailMenu'] = DetailMenu::where('id_menu', '=', $id)->get();
         $data['pelanggan'] = Pelanggan::all();
@@ -217,7 +207,7 @@ class PesananController extends Controller
             'bayar' => 'required',
         ]);
 
-        $last_pesanan = Pesanan::orderBy('id_pesanan', 'desc')->first();
+        $last_pesanan = Pesanan::orderBy('id_pesanan', 'asc')->first();
 
         if ($last_pesanan != null) {
             $tests = $last_pesanan->id_pesanan;
@@ -302,8 +292,8 @@ class PesananController extends Controller
             $peralatan = Peralatan::findOrFail($request->id_peralatan);
             foreach ($peralatan as $key => $value) {
                 $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
-                $inputPeralatan['tersedia'] = $request->stock[$key] - $request->jumlah_sewa[$key];
-                $inputPeralatan['keluar'] = $request->jumlah_sewa[$key];
+                $inputPeralatan['tersedia'] = $value->tersedia - $request->jumlah_sewa[$key];
+                $inputPeralatan['keluar'] = $value->tersedia + $request->jumlah_sewa[$key];
                 Peralatan::updateOrCreate($inputPeralatanID, $inputPeralatan);
             }
         }
@@ -411,4 +401,6 @@ class PesananController extends Controller
         alert()->success('Berhasil ', 'Data Berhasil dihapus')->persistent(' Close ');
         return redirect('admin/list_pesanan');
     }
+
+
 }

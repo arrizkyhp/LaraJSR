@@ -23,4 +23,9 @@ class Pengembalian extends Model
     {
         return $this->hasOne('\App\Penyewaan', 'id_penyewaan', 'id_penyewaan');
     }
+
+    public function peralatanRusak()
+    {
+        return $this->hasMany('\App\Penyewaan', 'id_pengembalian', 'id_pengembalian');
+    }
 }
