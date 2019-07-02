@@ -110,6 +110,7 @@ class MenuController extends Controller
     }
     public function update(Request $request, $id)
     {
+
         $this->validate($request, [
             'id_jenis_pesanan' => 'required|exists:t_jenis_pesanan,id_jenis_pesanan',
             'nama_menu' => 'required',
@@ -125,12 +126,9 @@ class MenuController extends Controller
         $menu->nama_menu = $request->input('nama_menu');
         $menu->keterangan = $request->input('keterangan');
         $menu->harga = $request->input('harga');
+        $menu->status_peralatan = $request->input('status_peralatan');
 
-        if ($request->status_peralatan == "") {
-            $menu->status_peralatan = 0;
-        } elseif ($request->status_peralatan == "on") {
-            $menu->status_peralatan = 1;
-        }
+
 
         $menu->save();
 

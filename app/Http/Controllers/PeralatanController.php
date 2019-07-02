@@ -104,6 +104,7 @@ class PeralatanController extends Controller
     public function peralatanRusak()
     {
         $data['peralatan'] = Peralatan::all();
+        $data['satuan'] = Satuan::all();
         $data['peralatanRusak'] = PeralatanRusak::all();
         return view('peralatan.peralatanRusak.index', $data);
     }

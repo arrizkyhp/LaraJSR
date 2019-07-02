@@ -287,7 +287,7 @@
 											  <select id="id_peralatan" name="id_peralatan" data-placeholder="Nama Peralatan.." class="form-control select-peralatan" tabindex="1" id="peralatan_select" style="width: 100%" disabled>
                             <option value=""></option>
                             @foreach ($peralatan as $peralatans)
-                            <option value="{{ $peralatans->id_peralatan }}">{{ $peralatans->nama_peralatan }} - {{ $peralatans->tersedia }}</option>
+                            <option value="{{ $peralatans->id_peralatan }}">{{ $peralatans->nama_peralatan }} - {{ $peralatans->stocks->tersedia }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -614,8 +614,8 @@
                 $('#button_tambah').attr('disabled', false);
                 $('#id_peralatan').val(response.id_peralatan);
                 $('#nama_peralatan').val(response.nama_peralatan);
-                $('#stock').val(response.tersedia);
-                $('#stock_ghost').val(response.tersedia);
+                $('#stock').val(response.stocks.tersedia);
+                $('#stock_ghost').val(response.stocks.tersedia);
 
 
             }
@@ -625,6 +625,8 @@
 
       $('#stock').on('change', function () {
             var stok = $(this).val();
+
+
             if (stok < 0) {
             $(this).val(0);
             }else{
@@ -771,15 +773,23 @@
           function grandtotal()
           {
             var sum =0;
+            var title2 = 0;
             $('#tabel-pesanan tbody tr').each(function(){
+            title2 += $(this).find("td:eq(1)").text();
             sum += parseInt($('.subtotal',$(this)).text());
-            // test += $('.subtotal).val(col2);
           });
             $('.grandtotal').html(sum).formatCurrency()
             var raw = $('.grandtotal').html().replace(/[^\d,-]/g, '');
             var raw = raw.replace(",", '');
+            var status = $('#status_peralatan').val();
 
-            var dp = 40/100*raw;
+            if (title2 >= 1) {
+              var dp = 60/100*raw;
+            }else if(title2 == 0 ) {
+              var dp = 40/100*raw;
+            }
+
+
 
              $('.total_harga').val(raw);
             $('.downPaymentOut').html(dp).formatCurrency();

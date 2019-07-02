@@ -56,7 +56,7 @@ $(document).ready(function () {
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active root-ajj"><a href="/admin/dashboard">Dashboard</a> / <a href="/admin/peralatan">Peralatan</a> / Edit Peralatan</li>
+                            <li class="active root-ajj"><a href="/admin/dashboard">Dashboard</a> / <a href="/admin/menu">Menu</a> / Edit Menu</li>
                         </ol>
                     </div>
                 </div>
@@ -144,6 +144,15 @@ $(document).ready(function () {
                          <p class="text-danger">{{ $errors->first('harga') }}</p>
                         </div>
                          </div>
+
+
+                        <div class="form-group">
+
+                            <span>Dengan Peralatan ?</span>
+                            <input type="hidden" value="0" name="status_peralatan">
+                          <label class="switch switch-3d switch-info mr-3"><input type="checkbox" class="switch-input" name="status_peralatan" value="1" {{ $menu->status_peralatan == 1 ? 'checked' : '' }}> <span class="switch-label"></span> <span class="switch-handle"></span></label>
+
+                        </div>
 
 
                       @slot('footer')

@@ -67,7 +67,7 @@
                         <ul class="sub-menu children dropdown-menu">
                         @if (auth()->user()->role == 0 )
 
-                            <li><i class="fa fa-user"></i><a href="{{ asset('admin/users')}}">Laporan</a></li>
+                            <li><i class="fa fa-user"></i><a href="{{ asset('admin/laporan_pesanan')}}">Pesanan</a></li>
                         @elseif (auth()->user()->role == 1)
                             <li><i class="menu-icon fa fa-book"></i><a href="forms-basic.html">Penyewaan</a></li>
                             <li><i class="menu-icon fa fa-book"></i><a href="{{ asset('admin/peralatan_rusak')}}">Peralatan Rusak</a></li>

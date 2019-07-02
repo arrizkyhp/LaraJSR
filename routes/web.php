@@ -27,23 +27,29 @@ Route::get('/home', 'HomeController@index');
 Route::group(['middleware' => 'auth'], function () {
     Route::prefix('admin')->group(function () {
 
-        // Admin  Only
 
+        // Grey Area
         Route::get('/dashboard', function () {
             return view('dashboard');
         });
+
+        // Pelanggan
+        Route::resource('/pelanggan', 'PelangganController');
+        // get Peralatan
+        Route::get('/get_peralatan/{id}', 'PenyewaanController@getPeralatan');
+
+
+        // Admin  Only
 
         Route::group(['middleware' => 'admin'], function () {
             // Users
             Route::resource('/users', 'UserController')->except([
                 'show'
             ]);
-
-            // Pelanggan
-            Route::resource('/pelanggan', 'PelangganController');
-
             // Pesanan
-            Route::resource('/pesanan', 'PesananController');
+            Route::resource('/pesanan', 'PesananController')->except([
+                'show'
+            ]);
             Route::get('/list_pesanan', 'PesananController@listPesanan');
             Route::get('/pesanan/detail/{id}', 'PesananController@detailPesanan');
             Route::get('/getDetailPesanan/{id}', 'PesananController@getDetail');
@@ -51,6 +57,11 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/selesai_pesanan/{id}', 'PesananController@selesai');
             // Edit Pesanan
             Route::get('/pesanan/edit/{id}', 'PesananController@edit');
+            // Laporan
+            Route::get('/laporan_pesanan', 'PesananController@listPesananLaporan')->name('pesanan.laporan');
+            // PDF
+            Route::get('/pesanan/print/{id}', 'PesananController@printPDF')->name('pesanan.print');
+            Route::get('/pesanan/pdf', 'PesananController@laporan')->name('pesanan.laporanPrint');
 
             // Jenis Pesanan
             Route::resource('/jenis_pesanan', 'JenisPesananController');
@@ -89,12 +100,8 @@ Route::group(['middleware' => 'auth'], function () {
             // Satuan Perlatan
             Route::get('/satuan_tambah', 'PeralatanController@storeSatuan')->name('satuan.store');
 
-            // Pelanggan
-            Route::resource('/pelanggan', 'PelangganController');
-
             // Penyewaan
             Route::resource('/penyewaan', 'PenyewaanController');
-            Route::get('/get_peralatan/{id}', 'PenyewaanController@getPeralatan');
             Route::get('/list_penyewaan', 'PenyewaanController@listPenyewaan');
             Route::get('/penyewaan/detail/{id}', 'PenyewaanController@detailPenyewaan');
             Route::get('/penyewaan/edit/{id}', 'PenyewaanController@edit');

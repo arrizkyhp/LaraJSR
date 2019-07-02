@@ -47,6 +47,9 @@
 
               <div class="col-lg-12">
                      <div class="card">
+                          <div class="card-header">
+                         <a href="{{ route('pesanan.print',$pesanan->id_pesanan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-print"></i> Print </a>
+                    </div>
               <div class="card-body">
                   <div class="form-group">
                       <div class="col-md-6">
