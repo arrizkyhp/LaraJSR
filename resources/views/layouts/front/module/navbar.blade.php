@@ -22,6 +22,9 @@
             <a class="nav-link js-scroll-trigger" href="#portfolio">Menu</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#sewa">Sewa Peralatan</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#contact">Kontak</a>
           </li>
           {{-- <li class="btn-item">

@@ -64,15 +64,15 @@
             </div>
 
             <div class="col-md-4">
-              <h3 class="footer-head">Pemesanan</h3>
+              <h3 class="footer-head">Layanan</h3>
               <hr>
               <div class="icon-kontak">
                 <a href="">
-                  <em>Cara Pesan</em>
+                  <em>Pesanan</em>
                 </a></div>
               <div class="icon-kontak">
-                <a href="">
-                  <em>082119124111</em>
+                <a href="#sewa">
+                  <em>Penyewaan</em>
                 </a>
 
               </div>
@@ -95,7 +95,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-          <span class="copyright">Copyright &copy; Your Website 2018</span>
+          <span class="copyright"> &copy; JSR 2018</span>
         </div>
 
       </div>

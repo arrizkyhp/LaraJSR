@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Peralatan;
+use App\Satuan;
+use App\Konten;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +26,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data['peralatan'] = Peralatan::all();
+        $data['satuan'] = Satuan::all();
+        $data['konten'] = Konten::take(6)->get();
+
+        return view('index', $data);
     }
 }

@@ -75,6 +75,13 @@
                         </ul>
                     </li>
 
+                     @if (auth()->user()->role == 0 )
+                    <li class="active">
+                        <a href="{{ asset('admin/konten')}}"> <i class="menu-icon fa fa-smile-o"></i>Konten</a>
+                    </li>
+                     @elseif (auth()->user()->role == 1)
+                    @endif
+
 
                     <li>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" > <i class="menu-icon fa fa-sign-out"></i> Logout</a>

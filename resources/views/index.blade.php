@@ -30,7 +30,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" href="img/logos/logoJSR.svg">
+  <link rel="icon" href="{{ asset('images/logoJSR.png') }}">
 
   <title>Jembar Sari Rasa</title>
 
@@ -120,7 +120,9 @@
           <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
         </div>
       </div>
+
       <div class="row">
+         @foreach ($konten as $value)
         <div class="col-md-4 col-sm-6 portfolio-item">
           <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
             <div class="portfolio-hover">
@@ -128,14 +130,15 @@
                 <i class="fa fa-plus fa-3x"></i>
               </div>
             </div>
-            <img class="img-fluid" src="{{ asset('front/img/portfolio/01-thumbnail.jpg') }}" alt="">
+            <img class="img-fluid" src="{{ asset('uploads/'.@$value->foto) }}"  alt="">
           </a>
           <div class="portfolio-caption">
-            <h4>Threads</h4>
-            <p class="text-muted">Illustration</p>
+            <h4>{{ $value->nama_konten }}</h4>
+            <p class="text-muted">{{ $value->jenis->nama_jenis_pesanan }}</p>
           </div>
         </div>
-        <div class="col-md-4 col-sm-6 portfolio-item">
+         @endforeach
+        {{-- <div class="col-md-4 col-sm-6 portfolio-item">
           <a class="portfolio-link" data-toggle="modal" href="#portfolioModal2">
             <div class="portfolio-hover">
               <div class="portfolio-hover-content">
@@ -205,6 +208,32 @@
             <p class="text-muted">Photography</p>
           </div>
         </div>
+      </div> --}}
+    </div>
+  </section>
+
+  <!-- Portfolio Grid -->
+  <section class="bg-light" id="sewa">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="section-heading text-uppercase">Sewa Peralatan</h2>
+          <h3 class="section-subheading text-muted">Jembar Sari Rasa juga menyediakan Penyewaan Peralatan Catering</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-center">
+      <a class="btn btn-primary btn-xl"  data-toggle="modal"  href="#modalSewa">List Peralatan</a>
+      </div>
+
+          {{-- <a class="portfolio-link" data-toggle="modal" href="#modalSewa">
+            <div class="portfolio-hover">
+              <div class="portfolio-hover-content">
+                <i class="fa fa-plus fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid" src="{{ asset('front/img/portfolio/02-thumbnail.jpg') }}" alt="">
+          </a> --}}
       </div>
     </div>
   </section>
@@ -217,6 +246,67 @@
 @include('layouts.front.module.footer')
 
   <!-- Portfolio Modals -->
+
+    <!-- Modal 1 -->
+  <div class="portfolio-modal modal fade" id="modalSewa" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="close-modal" data-dismiss="modal">
+          <div class="lr">
+            <div class="rl"></div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 mx-auto">
+              <div class="modal-body">
+                <!-- Project Details Go Here -->
+                <h2 class="text-uppercase">List Harga Sewa Peralatan Catering</h2>
+                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Nama Peralatan</th>
+                        <th>Satuan</th>
+                        <th>Harga Sewa</th>
+                        <th>Harga Ganti</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        @php $no = 1; @endphp
+                      @foreach ($peralatan as $alat)
+                        <tr>
+                        <td>{{ $no++ }}</td>
+                        <td>{{ $alat->nama_peralatan }}</td>
+                        <td>{{ $alat->satuan->nama_satuan }}</td>
+                        <td>{{ $alat->harga_sewa }}</td>
+                        <td>{{ $alat->harga_ganti }}</td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+                <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
+                  blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia
+                  expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                <ul class="list-inline">
+                  <li>Date: January 2017</li>
+                  <li>Client: Threads</li>
+                  <li>Category: Illustration</li>
+                </ul>
+                <button class="btn btn-primary" data-dismiss="modal" type="button">
+                  <i class="fa fa-times"></i>
+                  Close Project</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Modal 1 -->
   <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">

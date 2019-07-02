@@ -27,8 +27,7 @@
 
 
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-
-
+      <link rel="icon" href="{{ asset('images/logoJSR.png') }}">
     <link href="{{ asset('front/css/font.css') }}" rel="stylesheet">
 
 </head>

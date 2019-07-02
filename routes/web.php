@@ -13,14 +13,14 @@
 
 // FrontEnd
 
-Route::get('/', function () {
-    return view('index');
-});
+// Route::get('/', function () {
+//     return view('index');
+// });
 
 // BackEnd
 
 Auth::routes();
-Route::get('/home', 'HomeController@index');
+Route::get('/', 'HomeController@index');
 
 
 
@@ -88,6 +88,11 @@ Route::group(['middleware' => 'auth'], function () {
 
             // Peralatan
             Route::get('/get_peralatan/{id}', 'PenyewaanController@getPeralatan');
+
+            // Konten
+            Route::resource('/konten', 'KontenController')->except([
+                'show'
+            ]);
         });
 
 
