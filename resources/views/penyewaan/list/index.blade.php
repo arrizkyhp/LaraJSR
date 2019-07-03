@@ -132,7 +132,12 @@
                           <td>
 
                             <a href="{{ url('admin/penyewaan/detail', $row->id_penyewaan) }}" class="btn btn-info btnDetail" data-toggle="tooltip" data-placement="top" title="Detail "><i class="fa fa-info"></i> </a>
-                          <a href="{{ url('admin/penyewaan/edit', $row->id_penyewaan) }}" class="btn btn-warning"  data-toggle="tooltip" data-placement="top" title="Ubah "><i class="fa fa-pencil"></i> </a>
+                             @if ($row->status_pesanan == 0)
+
+                            @else
+                            <a href="{{ url('admin/penyewaan/edit', $row->id_penyewaan) }}" class="btn btn-warning"  data-toggle="tooltip" data-placement="top" title="Ubah "><i class="fa fa-pencil"></i> </a>
+                            @endif
+
                           <a href="#" id="delete" class="btn btn-danger delete" style="display:inline;"  data-toggle="tooltip" data-placement="top" title="Hapus "><i class="fa fa-trash"></i></a>
                           </form>
                           </td>

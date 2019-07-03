@@ -25,6 +25,8 @@ Route::get('/', 'HomeController@index');
 
 
 Route::group(['middleware' => 'auth'], function () {
+
+
     Route::prefix('admin')->group(function () {
 
 
@@ -33,10 +35,7 @@ Route::group(['middleware' => 'auth'], function () {
             return view('dashboard');
         });
 
-        // Pelanggan
-        Route::resource('/pelanggan', 'PelangganController');
-        // get Peralatan
-        Route::get('/get_peralatan/{id}', 'PenyewaanController@getPeralatan');
+
 
 
         // Admin  Only
@@ -94,6 +93,11 @@ Route::group(['middleware' => 'auth'], function () {
                 'show'
             ]);
         });
+
+        // Pelanggan
+        Route::resource('/pelanggan', 'PelangganController');
+        // get Peralatan
+        Route::get('/get_peralatan/{id}', 'PenyewaanController@getPeralatan');
 
 
         // Manajer Operasional

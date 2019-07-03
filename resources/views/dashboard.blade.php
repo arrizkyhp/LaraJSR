@@ -48,9 +48,9 @@ $(document).on('ajaxComplete ready', function () {
                 <div class="card text-white bg-flat-color-1">
                     <div class="card-body pb-0">
                         <h4 class="mb-0">
-                            <span class="count">{{ $users = DB::table('t_pesanan')->count() }}</span>
+                            <span class="count">{{ $users = DB::table('t_pesanan')->where('status_pesanan',0)->count() }}</span>
                         </h4>
-                        <p class="text-light">Pesanan</p>
+                        <p class="text-light">Pesanan Selesai</p>
 
                     </div>
 
@@ -63,9 +63,9 @@ $(document).on('ajaxComplete ready', function () {
                     <div class="card-body pb-0">
 
                         <h4 class="mb-0">
-                            <span class="count">{{ $users = DB::table('t_penyewaan')->count() }}</span>
+                            <span class="count">{{ $users = DB::table('t_penyewaan')->where('status_penyewaan',0)->count() }}</span>
                         </h4>
-                        <p class="text-light">Penyewaan</p>
+                        <p class="text-light">Penyewaan Selesai</p>
 
                     </div>
                 </div>
