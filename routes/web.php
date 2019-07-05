@@ -100,6 +100,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/get_peralatan/{id}', 'PenyewaanController@getPeralatan');
 
 
+
         // Manajer Operasional
         Route::group(['middleware' => 'manajer.operasional'], function () {
 
@@ -108,6 +109,12 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/peralatan_rusak', 'PeralatanController@peralatanRusak');
             // Satuan Perlatan
             Route::get('/satuan_tambah', 'PeralatanController@storeSatuan')->name('satuan.store');
+            // Stock
+            Route::get('/Stock/{id}', 'PeralatanController@Stock')->name('stock.peralatan');
+            Route::get('/get_stock/{id}', 'PeralatanController@getStock')->name('stock.get');
+            Route::get('/stockUpdate/{id}', 'PeralatanController@EditStock')->name('stock.update');
+            // PDF
+            Route::get('/stock/print/{id}', 'PeralatanController@printPDF')->name('stock.print');
 
             // Penyewaan
             Route::resource('/penyewaan', 'PenyewaanController');

@@ -1,7 +1,7 @@
 @extends('layouts.back.master')
 
 @section('title')
-<title>Peralatan | Jembar Sari Rasa</title>
+<title>Stock | Jembar Sari Rasa</title>
 @endsection
 
 {{-------------------------------------------- KONTEN ------------------------------------}}
@@ -44,6 +44,7 @@
 
 
         <div class="content mt-3">
+
 
               <div class="col-lg-12">
                    @card
@@ -111,6 +112,7 @@
                         <td style="display:none;">{{ $row->harga_sewa }}</td>
                         <td style="display:none;">{{ $row->harga_ganti }}</td>
                         <td>
+                          <a href="{{ route('stock.peralatan',$row->id_peralatan) }}" class="btn btn-info "><i class="fa fa-suitcase"></i> </a>
                         <a href="{{ route('peralatan.edit',$row->id_peralatan) }}" class="btn btn-warning "><i class="fa fa-pencil"></i> </a>
                         <a href="#" class="btn btn-danger delete" style="display:inline;"><i class="fa fa-trash"></i></a>
                         </form>

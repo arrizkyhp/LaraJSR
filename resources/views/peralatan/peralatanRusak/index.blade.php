@@ -33,13 +33,13 @@
                    @card
                    @slot('header')
                         Data <strong>Peralatan Rusak/Tidak Kembali</strong>
-
+                     <a href="" class="btn btn-primary" style="float:right;"><i class="fa fa-print"></i> Print </a>
                     @endslot
                     <div class="table-responsive">
                       <table id="tabel-data" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
                     <thead>
                       <tr>
-                        <th>#</th>
+                        <th>Tanggal</th>
                         <th>Kode Pengembalian</th>
                         <th>Nama Peralatan</th>
                         <th>Satuan</th>
@@ -49,7 +49,7 @@
                     </thead>
                     <tfoot>
                      <tr>
-                        <th>#</th>
+                        <th>Tanggal</th>
                         <th>Kode Pengembalian</th>
                         <th>Nama Peralatan</th>
                         <th>Satuan</th>
@@ -61,10 +61,10 @@
                          @php $no = 1; @endphp
                         @foreach ($peralatanRusak as $row)
                       <tr>
-                       <td>{{ $no++ }}</td>
+                       <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $row->created_at)->format('d-m-Y') }}</td>
                         <td>{{ $row->id_pengembalian }}</td>
                         <td>{{ $row->peralatan->nama_peralatan }}</td>
-                        <td>{{ $row->peralatan->satuan }}</td>
+                        <td>{{ $row->peralatan->satuan->nama_satuan }}</td>
                         <td>{{ $row->jumlah_rusak }}</td>
                         {{-- <td>
                         <a href="#" class="btn btn-warning edit"><i class="fa fa-pencil"></i> </a>

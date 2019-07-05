@@ -108,14 +108,15 @@ class PenyewaanController extends Controller
                 $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
 
 
-                $inputStockID['id_stock'] = $request->id_peralatan[$key];
                 $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
-                $inputStock['tersedia'] = $value->stocks->tersedia - $request->jumlah_sewa[$key];
-                $inputStock['keluar'] =  $value->stocks->keluar +  $request->jumlah_sewa[$key];
+                $inputStockID['stock'] = $value->stocks->stock;
+                $inputStockID['tersedia'] = $value->stocks->tersedia - $request->jumlah_sewa[$key];
+                $inputStockID['keluar'] =  $value->stocks->keluar +  $request->jumlah_sewa[$key];
+                $inputStockID['keterangan'] = 'Disewakan ' .  $inputDetail['id_penyewaan'];
 
 
                 $alat = Peralatan::updateOrCreate($inputPeralatanID);
-                Stock::updateOrCreate($inputStockID, $inputStock);
+                Stock::Create($inputStockID);
             }
         }
 
@@ -236,15 +237,16 @@ class PenyewaanController extends Controller
                 $id_peralatan = $value->id_peralatan;
                 $jumlah = $request->jumlah_kembali[$key];
 
-                $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
+                $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
                 $stockMinus = $stockSave->stock - $jumlah;
                 $kembali = $stockSave->stock - $stockMinus;
 
-                $stockSave->keluar -= $kembali + $stockMinus;
-                $stockSave->tersedia += $jumlah;
-                $stockSave->stock -= $stockMinus;
-
-                $stockSave->save();
+                $inputStock['id_peralatan'] =  $id_peralatan;
+                $inputStock['keluar'] = $stockSave->keluar -= $kembali + $stockMinus;
+                $inputStock['tersedia'] = $stockSave->tersedia += $jumlah;
+                $inputStock['stock'] = $stockSave->stock -= $stockMinus;
+                $inputStock['keterangan'] = 'Pengembalian Penyewaan ' .  $id;
+                Stock::Create($inputStock);
             }
         } else {
             // Perlengkapan Kembali
@@ -255,10 +257,13 @@ class PenyewaanController extends Controller
             foreach ($dPenyewaan as $key => $value) {
                 $id_peralatan = $value->id_peralatan;
                 $jumlah = $request->jumlah_kembali[$key];
-                $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
-                $stockSave->keluar -= $jumlah;
-                $stockSave->tersedia += $jumlah;
-                $stockSave->save();
+                $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
+                $inputStockID['id_peralatan'] = $id_peralatan;
+                $inputStockID['stock'] = $stockSave->stock;
+                $inputStockID['keluar'] = $stockSave->keluar -= $jumlah;
+                $inputStockID['tersedia'] =  $stockSave->tersedia += $jumlah;
+                $inputStockID['keterangan'] = 'Pengembalian Penyewaan ' .  $id;
+                Stock::Create($inputStockID);
             }
         }
 
@@ -313,12 +318,15 @@ class PenyewaanController extends Controller
                 foreach ($peralatan as $key => $value) {
                     $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
 
-                    $inputStockID['id_stock'] = $request->id_peralatan[$key];
+                    $stockSave = Stock::where('id_peralatan', $request->id_peralatan[$key])->latest()->first();
+
                     $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
-                    $inputStock['tersedia'] = $request->jumlah_tersedia[$key];
-                    $inputStock['keluar'] = $request->jumlah_sewa[$key];
+                    $inputStockID['stock'] = $stockSave->stock;
+                    $inputStockID['tersedia'] = $request->jumlah_tersedia[$key];
+                    $inputStockID['keluar'] = $request->jumlah_sewa[$key];
+                    $inputStockID['keterangan'] = 'Mengubah Penyewaan (tambah) ' .  $inputDetail['id_penyewaan'];
                     Peralatan::updateOrCreate($inputPeralatanID);
-                    Stock::updateOrCreate($inputStockID, $inputStock);
+                    Stock::Create($inputStockID);
                 }
             } else {
 
@@ -338,10 +346,14 @@ class PenyewaanController extends Controller
                     $jumlah = $request->jumlah_sewa[$key];
                     $value->delete();
                     // Barang Kembali
-                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
-                    $stockSave->keluar -= $jumlah;
-                    $stockSave->tersedia += $jumlah;
-                    $stockSave->save();
+                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
+
+                    $inputStock['id_peralatan'] = $id_peralatan;
+                    $inputStock['stock'] = $stockSave->stock;
+                    $inputStock['keluar'] =  $stockSave->keluar -= $jumlah;
+                    $inputStock['tersedia'] = $stockSave->tersedia += $jumlah;
+                    $inputStock['keterangan'] = 'Mengubah Penyewaans (Hapus) ' .  $id;
+                    Stock::Create($inputStock);
                 }
                 $peralatan = Peralatan::findOrFail($request->id_peralatan);
 
@@ -349,23 +361,20 @@ class PenyewaanController extends Controller
                 foreach ($peralatan as $key => $value) {
                     $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
 
-                    $inputStockID['id_stock'] = $request->id_peralatan[$key];
+
                     $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
-                    $inputStock['tersedia'] = $request->jumlah_tersedia[$key];
-                    $inputStock['keluar'] = $request->jumlah_sewa[$key];
+                    $inputStockID['stock'] = $stockSave->stock;
+                    $inputStockID['tersedia'] = $request->jumlah_tersedia[$key];
+                    $inputStockID['keluar'] = $request->jumlah_sewa[$key];
+                    $inputStockID['keterangan'] = 'Mengubah Penyewaana (Hapus) ' .  $id;
                     Peralatan::updateOrCreate($inputPeralatanID);
-                    Stock::updateOrCreate($inputStockID, $inputStock);
+                    Stock::Create($inputStockID);
                 }
             }
         }
 
-        if ($peralatan) {
-            alert()->success('Berhasil', 'Data Berhasil diubah')->persistent('Close');
-            return redirect('admin/list_penyewaan');
-        } else {
-            alert()->error('Error', 'Data gagal diubah')->persistent('Close');
-            return redirect()->back();
-        }
+        alert()->success('Berhasil', 'Data Berhasil diubah')->persistent('Close');
+        return redirect('admin/list_penyewaan');
     }
 
     public function destroy($id)
@@ -381,12 +390,14 @@ class PenyewaanController extends Controller
 
 
                 if ($status) {
-                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
+                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
 
-                    $stockSave->keluar -= $jumlah;
-                    $stockSave->tersedia += $jumlah;
-
-                    $stockSave->save();
+                    $inputStock['id_peralatan'] = $id_peralatan;
+                    $inputStock['stock'] = $stockSave->stock;
+                    $inputStock['keluar'] = $stockSave->keluar -= $jumlah;
+                    $inputStock['tersedia'] = $stockSave->tersedia += $jumlah;
+                    $inputStock['keterangan'] = 'Menghapus Penyewaan ' .  $id;
+                    Stock::Create($inputStock);
                 }
             }
         }

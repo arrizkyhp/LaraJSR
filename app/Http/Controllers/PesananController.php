@@ -133,14 +133,19 @@ class PesananController extends Controller
 
                 foreach ($peralatan as $key => $value) {
                     $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
+                    $id_peralatan = $request->id_peralatan;
 
-                    $inputStockID['id_stock'] = $request->id_peralatan[$key];
+                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
+
+
+                    $inputStockID['stock'] = $stockSave->stock;
                     $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
-                    $inputStock['tersedia'] = $request->jumlah_tersedia[$key];
-                    $inputStock['keluar'] = $request->jumlah_sewa[$key];
+                    $inputStockID['tersedia'] = $request->jumlah_tersedia[$key];
+                    $inputStockID['keluar'] = $request->jumlah_sewa[$key];
+                    $inputStockID['keterangan'] = 'Mengubah Pesanan Peralatan ' .  $id;
                     // dd($value->keluar);
                     Peralatan::updateOrCreate($inputPeralatanID);
-                    Stock::updateOrCreate($inputStockID, $inputStock);
+                    Stock::Create($inputStockID);
                 }
             } else {
                 foreach ($deletePeralatan as $key => $value) {
@@ -148,10 +153,15 @@ class PesananController extends Controller
                     $jumlah = $value->jumlah_peralatan;
                     $value->delete();
                     // Barang Kembali
-                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
-                    $stockSave->keluar -= $jumlah;
-                    $stockSave->tersedia += $jumlah;
-                    $stockSave->save();
+                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
+
+
+                    $inputStock['id_peralatan'] = $id_peralatan;
+                    $inputStock['stock'] = $stockSave->stock;
+                    $inputStock['keluar'] = $stockSave->keluar -= $jumlah;
+                    $inputStock['tersedia'] = $stockSave->tersedia += $jumlah;
+                    $inputStock['keterangan'] = 'Mengubah Pesanan Peralatan ' .  $id;
+                    Stock::Create($inputStock);
                 }
             }
         }
@@ -213,7 +223,7 @@ class PesananController extends Controller
             'bayar' => 'required',
         ]);
 
-        $last_pesanan = Pesanan::orderBy('id_pesanan', 'asc')->first();
+        $last_pesanan = Pesanan::latest()->first();
 
         if ($last_pesanan != null) {
             $tests = $last_pesanan->id_pesanan;
@@ -298,15 +308,18 @@ class PesananController extends Controller
             $peralatan = Peralatan::findOrFail($request->id_peralatan);
             foreach ($peralatan as $key => $value) {
                 $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
+                $id_peralatan = $request->id_peralatan;
 
 
-                $inputStockID['id_stock'] = $request->id_peralatan[$key];
+                $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
+
                 $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
-                $inputStock['tersedia'] = $value->stocks->tersedia - $request->jumlah_sewa[$key];
-                $inputStock['keluar'] = $value->stocks->tersedia + $request->jumlah_sewa[$key];
-
-                Peralatan::updateOrCreate($inputPeralatanID, $inputPeralatan);
-                Stock::updateOrCreate($inputStockID, $inputStock);
+                $inputStockID['stock'] = $value->stocks->stock;
+                $inputStockID['tersedia'] = $value->stocks->tersedia - $request->jumlah_sewa[$key];
+                $inputStockID['keluar'] = $value->stocks->keluar + $request->jumlah_sewa[$key];
+                $inputStockID['keterangan'] = 'Pesanan ' .  $inputDetail['id_pesanan'];
+                Peralatan::updateOrCreate($inputPeralatanID);
+                Stock::Create($inputStockID);
             }
         }
 
@@ -367,10 +380,14 @@ class PesananController extends Controller
                 $jumlah = $value->jumlah_peralatan;
                 $value->delete();
                 // Barang Kembali
-                $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
-                $stockSave->keluar -= $jumlah;
-                $stockSave->tersedia += $jumlah;
-                $stockSave->save();
+                $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
+
+                $inputStock['id_peralatan'] = $id_peralatan;
+                $inputStock['stock'] = $stockSave->stock;
+                $inputStock['keluar'] = $stockSave->keluar -= $jumlah;
+                $inputStock['tersedia'] = $stockSave->tersedia += $jumlah;
+                $inputStock['keterangan'] = 'Selesai Pesanan ' .  $id;
+                Stock::Create($inputStock);
             }
         }
         $status = $pesanan->save();
@@ -398,10 +415,14 @@ class PesananController extends Controller
                 $value->delete();
 
 
-                $stockSave = Stock::where('id_peralatan', $id_peralatan)->first();
-                $stockSave->keluar -= $jumlah;
-                $stockSave->tersedia += $jumlah;
-                $stockSave->save();
+                $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
+
+                $inputStock['id_peralatan'] = $id_peralatan;
+                $inputStock['stock'] = $stockSave->stock;
+                $inputStock['keluar'] =  $stockSave->keluar -= $jumlah;
+                $inputStock['tersedia'] = $stockSave->tersedia += $jumlah;
+                $inputStock['keterangan'] = 'Menghapus Pesanan ' .  $id;
+                Stock::Create($inputStock);
             }
         }
 

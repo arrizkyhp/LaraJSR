@@ -7,12 +7,14 @@ use App\Peralatan;
 use App\Satuan;
 use App\Stock;
 use App\PeralatanRusak;
+use PDF;
 
 class PeralatanController extends Controller
 {
     public function index()
     {
         $data['peralatan'] = Peralatan::all();
+
         $data['satuan'] = Satuan::all();
 
         return view('peralatan.index', $data);
@@ -57,6 +59,7 @@ class PeralatanController extends Controller
     {
         $data['peralatan'] = Peralatan::findOrFail($id);
         $data['satuan'] = Satuan::all();
+
         return view('peralatan.edit', $data);
     }
 
@@ -105,7 +108,7 @@ class PeralatanController extends Controller
     {
         $data['peralatan'] = Peralatan::all();
         $data['satuan'] = Satuan::all();
-        $data['peralatanRusak'] = PeralatanRusak::all();
+        $data['peralatanRusak'] = PeralatanRusak::where('jumlah_rusak', '>', 0)->get();
         return view('peralatan.peralatanRusak.index', $data);
     }
 
@@ -122,5 +125,50 @@ class PeralatanController extends Controller
 
         toast('Data Berhasil Ditambahkan!', 'success', 'top-right');
         return redirect()->back();
+    }
+
+    public function stock($id)
+    {
+        $data['peralatan'] = Peralatan::findOrFail($id);
+        $data['stock'] = Stock::where('id_peralatan', $id)->get();
+        $data['stockBaru'] = Stock::where('id_peralatan', '=', $id)->latest()->first();
+
+
+
+        return view('peralatan.stock', $data);
+    }
+
+    public function getStock($id)
+    {
+        $peralatan = Stock::find($id);
+        return response()->json($peralatan);
+    }
+
+    public function EditStock(Request $request, $id)
+    {
+        // dd($request->all());
+
+        $stock = Stock::find($id);
+        $inputStock['id_peralatan'] = $stock->stock = $request->id_peralatan;
+        $inputStock['stock'] = $stock->tersedia = $request->stock;
+        $inputStock['tersedia'] =  $stock->keluar = $request->tersedia;
+        $inputStock['keluar'] = $stock->keterangan = $request->keluar;
+        $inputStock['keterangan'] = $stock->keterangan = $request->keterangan;
+        Stock::Create($inputStock);
+
+        toast('Data Berhasil Diubah!', 'success', 'top-right');
+        return redirect()->back();
+    }
+
+    public function printPDF($id)
+    {
+        $data['peralatan'] = Peralatan::findOrFail($id);
+        $data['stock'] = Stock::where('id_peralatan', $id)->get();
+        $data['stockBaru'] = Stock::where('id_peralatan', '=', $id)->latest()->first();
+
+        // dd($data['peralatanRusak']);
+        $pdf = PDF::loadview('print.stock', $data);
+        return $pdf->stream('test.pdf');
+        // return $pdf->download('laporan-pegawai-pdf');
     }
 }
