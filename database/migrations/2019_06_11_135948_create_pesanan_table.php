@@ -23,6 +23,7 @@ class CreatePesananTable extends Migration
             $table->string('keterangan')->nullable();
             $table->integer('status_bayar');
             $table->integer('status_pesanan');
+            $table->integer('status_alat');
             $table->timestamps();
         });
     }

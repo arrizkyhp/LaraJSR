@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Peralatan;
+use App\Pesanan;
 use App\Satuan;
 use App\Konten;
 use Illuminate\Http\Request;
@@ -31,5 +32,12 @@ class HomeController extends Controller
         $data['konten'] = Konten::take(6)->get();
 
         return view('index', $data);
+    }
+
+    public function dashboard()
+    {
+        $data['pesanan'] = pesanan::where('status_alat', 1)->get();
+
+        return view('dashboard', $data);
     }
 }

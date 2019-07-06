@@ -28,12 +28,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::prefix('admin')->group(function () {
-
-
         // Grey Area
-        Route::get('/dashboard', function () {
-            return view('dashboard');
-        });
+        Route::get('/dashboard', 'HomeController@dashboard');
 
 
 
@@ -98,21 +94,23 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/pelanggan', 'PelangganController');
         // get Peralatan
         Route::get('/get_peralatan/{id}', 'PenyewaanController@getPeralatan');
-
-
+        // Pesanan Peralatan
+        Route::get('/pesanan/peralatan/{id}', 'PesananController@storePeralatan')->name('pesanan.peralatan');
+        // Stock
+        Route::get('/Stock/{id}', 'PeralatanController@Stock')->name('stock.peralatan');
+        Route::get('/get_stock/{id}', 'PeralatanController@getStock')->name('stock.get');
+        Route::get('/stockUpdate/{id}', 'PeralatanController@EditStock')->name('stock.update');
+        Route::resource('/peralatan', 'PeralatanController');
 
         // Manajer Operasional
         Route::group(['middleware' => 'manajer.operasional'], function () {
 
             // Peralatan
-            Route::resource('/peralatan', 'PeralatanController');
+
             Route::get('/peralatan_rusak', 'PeralatanController@peralatanRusak');
             // Satuan Perlatan
             Route::get('/satuan_tambah', 'PeralatanController@storeSatuan')->name('satuan.store');
-            // Stock
-            Route::get('/Stock/{id}', 'PeralatanController@Stock')->name('stock.peralatan');
-            Route::get('/get_stock/{id}', 'PeralatanController@getStock')->name('stock.get');
-            Route::get('/stockUpdate/{id}', 'PeralatanController@EditStock')->name('stock.update');
+
             // PDF
             Route::get('/stock/print/{id}', 'PeralatanController@printPDF')->name('stock.print');
 

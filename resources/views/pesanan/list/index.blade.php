@@ -87,6 +87,7 @@
                         <th>Nama Pelanggan</th>
                         <th>Tanggal Pesanan</th>
                         <th>Pembayaran</th>
+                        <th style='display:none;'>status</th>
                         <th>Status</th>
                         <th>Aksi</th>
                       </tr>
@@ -98,6 +99,7 @@
                         <th>Nama Pelanggan</th>
                         <th>Tanggal Pesanan</th>
                          <th>Pembayaran</th>
+                        <th style='display:none;'>Status</th>
                         <th>Status</th>
                         <th>Aksi</th>
                       </tr>
@@ -124,6 +126,7 @@
                             <span class="badge badge-danger" style="margin-right:5px;"> Belum Lunas </span>
                             @endif
                         </td>
+                        <td style='display:none;'>{{ $row->status_bayar }}</td>
                          <td>
                             @if($row->status_pesanan == 0)
                             <a href="#" class="btn btn-success " data-toggle="tooltip" data-placement="top" title="Pesanan Selesai"><i class="fa fa-check"></i> </a>
@@ -196,6 +199,25 @@
         });
         // End Delete Record
 
+
+
+        $('.selesai').on('click',function()
+        {
+            var tr = $('#tabel-data').closest('tr');
+              if ($($tr).hasClass('child')) {
+                $tr = $tr.prev('.parent');
+            }
+
+            var data = table.row($tr).data();
+
+
+               if (data[5] == 1) {
+                 alertBayar();
+                  return false;
+               }
+
+        });
+
         // Start Konfirm Record
         table.on('click', '#konfirm', function() {
 
@@ -205,6 +227,7 @@
             }
 
             var data = table.row($tr).data();
+
             console.log(data);
 
 
@@ -227,6 +250,16 @@
             });
 
         }
+
+        function alertBayar() {
+          swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Pesanan Ini Belum Lunas!',
+
+            });
+          }
+
 
     });
 </script>

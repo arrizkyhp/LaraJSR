@@ -10,7 +10,7 @@ class Pesanan extends Model
     public $incrementing = false;
     protected $table = 't_pesanan';
     protected $fillable = [
-        'id_pesanan', 'id_pelanggan', 'id_users', 'tanggal', 'tanggal_pesanan', 'total_harga', 'keterangan',  'bayar', 'status_bayar', 'status_pesanan'
+        'id_pesanan', 'id_pelanggan', 'id_users', 'tanggal', 'tanggal_pesanan', 'total_harga', 'keterangan',  'bayar', 'status_bayar', 'status_pesanan', 'status_alat'
     ];
 
     public function pelanggan()
@@ -31,5 +31,9 @@ class Pesanan extends Model
     public function bayar()
     {
         return $this->hasMany('\App\Bayar', 'id_pesanan');
+    }
+    public function prasmanan()
+    {
+        return $this->hasMany('\App\Prasmanan', 'id_pesanan');
     }
 }

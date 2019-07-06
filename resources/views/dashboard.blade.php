@@ -77,9 +77,9 @@ $(document).on('ajaxComplete ready', function () {
                     <div class="card-body pb-0">
 
                         <h4 class="mb-0">
-                            <span class="count">10468</span>
+                            <span class="count">{{ $users = DB::table('t_pesanan')->where('status_pesanan',1)->count() }}</span>
                         </h4>
-                        <p class="text-light">Members online</p>
+                        <p class="text-light">Pesanan Belum Selesai</p>
 
                     </div>
 
@@ -115,81 +115,49 @@ $(document).on('ajaxComplete ready', function () {
                 </div>
             </div>
             <!--/.col-->
-
-            <div class="col-lg-3 col-md-6">
-                <div class="social-box facebook">
-                    <i class="fa fa-facebook"></i>
-                    <ul>
-                        <li>
-                            <span class="count">40</span> k
-                            <span>friends</span>
-                        </li>
-                        <li>
-                            <span class="count">450</span>
-                            <span>feeds</span>
-                        </li>
-                    </ul>
+               @if (auth()->user()->role == 1 )
+            <div class="col-md-6">
+                <div class="card">
+                <div class="card-header">
+                <strong class="card-title mb-3">Pesanan yang membutuhkan Peralatan</strong>
                 </div>
-                <!--/social-box-->
-            </div>
-            <!--/.col-->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                     <th>Kode Pesanan</th>
+                                    <th>Tanggal Input</th>
+                                    <th>Untuk Tanggal</th>
+                                    <th>List Peralatan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($pesanan as $pesan)
+                                <tr>
+                                    <td>{{ $pesan->id_pesanan }}</td>
+                                    <td>{{ date('d/m/Y', strtotime($pesan->tanggal  )) }}</td>
+                                    <td>{{ date('d/m/Y', strtotime($pesan->tanggal_pesanan ))  }}</td>
+                                     <td>
+                                        @foreach ($pesan->prasmanan as $pras)
+                                         <span class="badge badge-success">{{ $pras->peralatan->nama_peralatan }} : {{ $pras->jumlah_peralatan }}</span>
+                                        @endforeach
+                                        </td>
+                                        <td><a href="{{route('pesanan.peralatan',$pesan->id_pesanan)}}" class="btn btn-sm btn-info" title="Edit"><i class="fa fa-edit"></i></a></td>
+                                </tr>
 
+                                @endforeach
+                            </tbody>
 
-            <div class="col-lg-3 col-md-6">
-                <div class="social-box twitter">
-                    <i class="fa fa-twitter"></i>
-                    <ul>
-                        <li>
-                            <span class="count">30</span> k
-                            <span>friends</span>
-                        </li>
-                        <li>
-                            <span class="count">450</span>
-                            <span>tweets</span>
-                        </li>
-                    </ul>
+                        </table>
+                    </div>
                 </div>
-                <!--/social-box-->
             </div>
-            <!--/.col-->
-
-
-            <div class="col-lg-3 col-md-6">
-                <div class="social-box linkedin">
-                    <i class="fa fa-linkedin"></i>
-                    <ul>
-                        <li>
-                            <span class="count">40</span> +
-                            <span>contacts</span>
-                        </li>
-                        <li>
-                            <span class="count">250</span>
-                            <span>feeds</span>
-                        </li>
-                    </ul>
-                </div>
-                <!--/social-box-->
             </div>
-            <!--/.col-->
+             @endif
 
 
-            <div class="col-lg-3 col-md-6">
-                <div class="social-box google-plus">
-                    <i class="fa fa-google-plus"></i>
-                    <ul>
-                        <li>
-                            <span class="count">94</span> k
-                            <span>followers</span>
-                        </li>
-                        <li>
-                            <span class="count">92</span>
-                            <span>circles</span>
-                        </li>
-                    </ul>
-                </div>
-                <!--/social-box-->
-            </div>
-            <!--/.col-->
 
 
 
