@@ -20,7 +20,11 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
+                             @if (auth()->user()->role == 0 )
                             <li class="active root-ajj"><a href="{{ asset('admin/dashboard')}}">Dashboard</a> / <a href="{{ asset('admin/penyewaan')}}">Penyewaan</a> / <a href="{{ asset('admin/list_penyewaan')}}">List Penyewaan </a>/ {{ $penyewaan->id_penyewaan }}</li>
+                            @elseif(auth()->user()->role == 1 )
+                            <li class="active root-ajj"><a href="{{ asset('admin/dashboard')}}">Dashboard</a> / <a href="{{ asset('admin/peralatan_rusak')}}">Peralatan Rusak </a>/ {{ $penyewaan->id_penyewaan }}</li>
+                            @endif
                         </ol>
                     </div>
                 </div>
@@ -154,7 +158,7 @@
                  <div class="col-md-6">
                      @if ($penyewaan->status_penyewaan == 0)
 
-                     @elseif ($penyewaan->status_penyewaan == 1)
+                     @elseif ($penyewaan->status_penyewaan == 1 && $penyewaan->status_alat == 0)
                        <button type="button" class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Pengembalian</b>
 
                      @endif

@@ -6,6 +6,7 @@ use App\Peralatan;
 use App\Pesanan;
 use App\Satuan;
 use App\Konten;
+use App\Penyewaan;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -37,6 +38,8 @@ class HomeController extends Controller
     public function dashboard()
     {
         $data['pesanan'] = pesanan::where('status_alat', 1)->get();
+        $data['penyewaan'] = penyewaan::where('status_alat', 1)->get();
+
 
         return view('dashboard', $data);
     }

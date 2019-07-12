@@ -11,11 +11,11 @@
 
 
 
-     <h4><b>Laporan Stock {{ $peralatan->nama_peralatan }}</b></h4>
+      <br><h4><b>Laporan Penyewaan</b></h4>
 
 
                 <div id="data">
-                    <span class="detailInfo"><b> Dari Tanggal : </b> {{ date('d/m/Y', strtotime($tanggalAwal)) }} </span><br>
+                    <span class="detailInfo"><b> Dari Tanggal : </b> {{ date('d/m/Y', strtotime($tanggalAwal )) }}</span><br>
 
                 </div>
             <div id="tanggal">
@@ -29,28 +29,35 @@
                     <table class="table table-striped table-bordered">
                         <tr>
                             <thead>
-                                <th>Tanggal</th>
+                                <th>Kode Penyewaan</th>
                                 {{-- <th>Deskripsi</th> --}}
-                                <th>Stock Awal</th>
-                                <th>Tersedia</th>
-                                <th>Keluar</th>
-                                <th>Keterangan</th>
+                                <th>Pelanggan</th>
+                                <th>Operator</th>
+                                <th>Tanggal Penyewaan</th>
+                                <th>Tanggal Akhir</th>
+                                <th>Tanggal Kembali</th>
+                                <th>Total Bayar</th>
+                                {{-- <th>Jumlah Bayar</th> --}}
                             </thead>
                         </tr>
                         <tr>
                             <tbody>
+                                <td style='display:none;'> {{ $total = 0 }}</td>
 
-
-                                @foreach ($stock as $stok)
-                                <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $stok->created_at)->format('d-m-Y') }}</td>
+                                @foreach ($penyewaan as $sewa)
+                                <td style='display:none;'>{{ $total += $sewa->total_bayar}}</td>
+                                <td>{{ $sewa->id_penyewaan}}</td>
                                 {{-- <td>
-                                @foreach ($stok->menu->detail_menu as $detail_m)
+                                @foreach ($sewa->menu->detail_menu as $detail_m)
                                     <label for="" class="badge badge-info">{{ $detail_m->list_makanan->nama_makanan }}</label>
                                 @endforeach</td> --}}
-                                <td>{{ $stok->stock}}</td>
-                                <td>{{  $stok->tersedia }}</td>
-                                <td>{{ $stok->keluar }}</td>
-                                <td>{{ $stok->keterangan }}</td>
+                                <td>{{ $sewa->pelanggan->nama_pelanggan}}</td>
+                                <td>{{  $sewa->users->name }}</td>
+                                <td>{{ $sewa->tanggal_penyewaan }}</td>
+                                <td>{{ $sewa->tanggal_akhir }}</td>
+                                <td>{{ $sewa->pengembalian->last()->tanggal_kembali }}</td>
+                                <td>{{ $sewa->total_bayar }}</td>
+                                {{-- <td>{{ $sewa->pengembalian->last()->bayar }}</td> --}}
 
                             </tbody>
                         </tr>
@@ -60,12 +67,12 @@
                    <div class="col-md-4">
                         <div id="tanggal">
 
-                        {{-- <span class="detailSpan" ><h5><b>Total Pembayaran :</b> Rp.{{ number_format($total,2,',', '.') }}</h5></span><br> --}}
+                        <span class="detailSpan" ><h5><b>Total Pembayaran :</b> Rp.{{ number_format($total,2,',', '.') }}</h5></span><br>
 
                     </div>
                     </div>
 
-                    <br><br>
+
         <div id="deskripsi">
             <b>Jembar Sari Rasa</b><br>
          Jln Barulaksana No.49 RT.03 RW.14 Jayagiri Lembang Bandung Barat<br>

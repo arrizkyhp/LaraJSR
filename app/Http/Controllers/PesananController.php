@@ -405,15 +405,16 @@ class PesananController extends Controller
                 $jumlah = $value->jumlah_peralatan;
                 $value->delete();
 
+                if ($pesanan->status_alat == 0) {
+                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
 
-                $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
-
-                $inputStock['id_peralatan'] = $id_peralatan;
-                $inputStock['stock'] = $stockSave->stock;
-                $inputStock['keluar'] =  $stockSave->keluar -= $jumlah;
-                $inputStock['tersedia'] = $stockSave->tersedia += $jumlah;
-                $inputStock['keterangan'] = 'Menghapus Pesanan ' .  $id;
-                Stock::Create($inputStock);
+                    $inputStock['id_peralatan'] = $id_peralatan;
+                    $inputStock['stock'] = $stockSave->stock;
+                    $inputStock['keluar'] =  $stockSave->keluar -= $jumlah;
+                    $inputStock['tersedia'] = $stockSave->tersedia += $jumlah;
+                    $inputStock['keterangan'] = 'Menghapus Pesanan ' .  $id;
+                    Stock::Create($inputStock);
+                }
             }
         }
 

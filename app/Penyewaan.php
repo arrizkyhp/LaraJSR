@@ -22,7 +22,8 @@ class Penyewaan extends Model
         'bayar',
         'keterangan',
         'status_bayar',
-        'status_penyewaan'
+        'status_penyewaan',
+        'status_alat'
     ];
 
     public function pelanggan()

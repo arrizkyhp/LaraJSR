@@ -25,6 +25,7 @@ class CreatePenyewaanTable extends Migration
             $table->string('keterangan')->nullable();
             $table->integer('status_bayar');
             $table->integer('status_penyewaan');
+            $table->integer('status_alat');
             $table->timestamps();
         });
     }
@@ -36,6 +37,6 @@ class CreatePenyewaanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penyewaan');
+        Schema::dropIfExists('t_penyewaan');
     }
 }

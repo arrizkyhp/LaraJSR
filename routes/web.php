@@ -68,6 +68,11 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/menu/getInitialCodeById/{id}', 'MenuController@getInitial')->name('getInitial');
             Route::get('/menu/calculate-harga/{ids}', 'MenuController@calculateHarga');
 
+            // Penyewaan
+            Route::resource('/penyewaan', 'PenyewaanController')->except([
+                'show'
+            ]);
+
             // List Makanan/Minuman
             Route::resource('/list_makanan', 'ListMakananController');
             Route::post('/', 'ListMakananController@storeJenis');
@@ -90,12 +95,23 @@ Route::group(['middleware' => 'auth'], function () {
             ]);
         });
 
+
+        Route::get('/list_penyewaan', 'PenyewaanController@listPenyewaan');
+        Route::get('/penyewaan/detail/{id}', 'PenyewaanController@detailPenyewaan');
+        Route::get('/penyewaan/edit/{id}', 'PenyewaanController@edit');
+        // Pengembalian
+        Route::patch('/penyewaan/pengembalian/{id}', 'PenyewaanController@pengembalian')->name('sewa.kembali');
+        // PDF
+        Route::get('/penyewaan/print/{id}', 'PenyewaanController@printPDF')->name('sewa.print');
+        Route::get('/penyewaan/pdf', 'PenyewaanController@laporan')->name('sewa.laporanPrint');
+
         // Pelanggan
         Route::resource('/pelanggan', 'PelangganController');
         // get Peralatan
         Route::get('/get_peralatan/{id}', 'PenyewaanController@getPeralatan');
         // Pesanan Peralatan
         Route::get('/pesanan/peralatan/{id}', 'PesananController@storePeralatan')->name('pesanan.peralatan');
+        Route::get('/penyewaan/peralatan/{id}', 'PenyewaanController@storePeralatan')->name('sewa.peralatan');
         // Stock
         Route::get('/Stock/{id}', 'PeralatanController@Stock')->name('stock.peralatan');
         Route::get('/get_stock/{id}', 'PeralatanController@getStock')->name('stock.get');
@@ -105,24 +121,15 @@ Route::group(['middleware' => 'auth'], function () {
         // Manajer Operasional
         Route::group(['middleware' => 'manajer.operasional'], function () {
 
-            // Peralatan
-
+            // Peralatan Rusak
             Route::get('/peralatan_rusak', 'PeralatanController@peralatanRusak');
+            // Laporan Peralatan Rusak
+            Route::get('/peralatan_rusak/pdf', 'PeralatanController@laporanRusak')->name('rusak.laporan');
             // Satuan Perlatan
             Route::get('/satuan_tambah', 'PeralatanController@storeSatuan')->name('satuan.store');
-
             // PDF
             Route::get('/stock/print/{id}', 'PeralatanController@printPDF')->name('stock.print');
-
-            // Penyewaan
-            Route::resource('/penyewaan', 'PenyewaanController');
-            Route::get('/list_penyewaan', 'PenyewaanController@listPenyewaan');
-            Route::get('/penyewaan/detail/{id}', 'PenyewaanController@detailPenyewaan');
-            Route::get('/penyewaan/edit/{id}', 'PenyewaanController@edit');
-            // Pengembalian
-            Route::patch('/penyewaan/pengembalian/{id}', 'PenyewaanController@pengembalian')->name('sewa.kembali');
-            // PDF
-            Route::get('/penyewaan/print/{id}', 'PenyewaanController@printPDF')->name('sewa.print');
+            Route::get('/stock/laporan/{id}', 'PeralatanController@laporanStock')->name('stock.laporan');
         });
     });
 });

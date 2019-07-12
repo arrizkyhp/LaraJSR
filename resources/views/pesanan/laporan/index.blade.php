@@ -1,7 +1,7 @@
 @extends('layouts.back.master')
 
 @section('title')
-<title>Laporan Pesanan | Jembar Sari Rasa</title>
+<title>Laporan | Jembar Sari Rasa</title>
 @endsection
 
 {{-------------------------------------------- KONTEN ------------------------------------}}
@@ -20,7 +20,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active root-ajj"><a href="dashboard">Dashboard </a>/ <a href="pesanan">Pesanan</a> / List Pesanan </li>
+                            <li class="active root-ajj"><a href="dashboard">Dashboard </a> / List Laporan </li>
                         </ol>
                     </div>
                 </div>
@@ -29,8 +29,10 @@
 
 
 
-        <div class="content mt-3">
-                     <div class="collapse multi-collapse" id="laporanPesanan">
+        <div class="content mt-3" id="myGroup">
+
+    {{-- START Collapse --}}
+            <div class="collapse multi-collapse" id="laporanPesanan" data-parent="#myGroup">
             <div class="col-lg-12">
               <div class="card">
                   <div class="card-header">
@@ -45,7 +47,7 @@
                             <label for="">Tanggal Awal</label>
                              <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="" id="tanggal_awal" class="form-control" name="tanggal_penyewaan" value="{{ date('d-m-Y') }}">
+                            <input type="" id="tanggal_awalPesanan" class="form-control" name="tanggal_penyewaan" value="{{ date('d-m-Y') }}">
 
                             </div>
                         </div>
@@ -53,7 +55,7 @@
                          <label for="">Tanggal Akhir</label>
                              <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="" id="tanggal_akhir" class="form-control" name="tanggal_akhir" value="{{ date('d-m-Y') }}" autocomplete="off">
+                            <input type="" id="tanggal_akhirPesanan" class="form-control" name="tanggal_akhir" value="{{ date('d-m-Y') }}" autocomplete="off">
                             </div>
                         </div>
                         <div class="col-md-6"></div>
@@ -68,6 +70,47 @@
               </div>
 
             </div>
+
+            <div class="collapse multi-collapse" id="laporanPenyewaan" data-parent="#myGroup">
+            <div class="col-lg-12">
+              <div class="card">
+                  <div class="card-header">
+                      Laporan Penyewaan
+                  </div>
+              <div class="card-body">
+
+                     <form action="{{ route('sewa.laporanPrint') }}" method="GET" >
+                        {{ csrf_field() }}
+                        <input type="hidden" id="id_menu">
+                        <div class="form-group col-md-6">
+                            <label for="">Tanggal Awal</label>
+                             <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="" id="tanggal_awalPenyewaan" class="form-control" name="tanggal_penyewaan" value="{{ date('d-m-Y') }}">
+
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                         <label for="">Tanggal Akhir</label>
+                             <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="" id="tanggal_akhirPenyewaan" class="form-control" name="tanggal_akhir" value="{{ date('d-m-Y') }}" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                               <button type="submit"  class="btn btn-primary" style="float:right;"><i class="fa fa-print"></i> Print </button></td>
+                        </div>
+                    </form>
+                 </div>
+
+
+                 </div>
+              </div>
+
+            </div>
+
+        {{-- END OF COLLAPSE --}}
 
               <div class="col-lg-12">
                    @card
@@ -89,14 +132,14 @@
                             <th>1</th>
                             <td>Laporan Pesanan</td>
                             <td>
-                            <a class="btn btn-primary" data-toggle="collapse" href="#laporanPesanan" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><i class="fa fa-eye"></i> Lihat</a>
+                            <a class="btn btn-primary" data-toggle="collapse" href="#laporanPesanan" role="button" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-eye"></i> Lihat</a>
                             </td>
                         </tr>
                          <tr>
                             <th>2</th>
-                            <td>Data Menu</td>
+                            <td>Laporan Penyewaan</td>
                             <td>
-                            <a class="btn btn-primary" data-toggle="collapse" href="#laporanPesanan" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><i class="fa fa-eye"></i> Lihat</a>
+                            <a class="btn btn-primary" data-toggle="collapse" href="#laporanPenyewaan" role="button" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-eye"></i> Lihat</a>
                             </td>
                         </tr>
 
@@ -124,14 +167,23 @@
     $(document).ready(function () {
 
       // DatePicker
-        $( "#tanggal_awal" ).datepicker({
+        $( "#tanggal_awalPesanan" ).datepicker({
                 dateFormat: "dd-mm-yy"
                 });
 
 
-        $( "#tanggal_akhir" ).datepicker({
+        $( "#tanggal_akhirPesanan" ).datepicker({
         dateFormat: "dd-mm-yy"
         });
+
+        $( "#tanggal_awalPenyewaan" ).datepicker({
+        dateFormat: "dd-mm-yy"
+        });
+
+        $( "#tanggal_akhirPenyewaan" ).datepicker({
+        dateFormat: "dd-mm-yy"
+        });
+
 
         var table = $('#tabel-data').DataTable();
 

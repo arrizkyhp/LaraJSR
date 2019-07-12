@@ -80,6 +80,7 @@ class PenyewaanController extends Controller
         $inputPenyewaan['total_bayar'] = $request->total_harga;
         $inputPenyewaan['keterangan'] = $request->keterangan;
         $inputPenyewaan['status_penyewaan'] = 1;
+        $inputPenyewaan['status_alat'] = 1;
         $inputPenyewaan['bayar'] = $request->bayar;
         if ($request->total_harga <= $request->bayar) {
             $inputPenyewaan['status_bayar'] = 0;
@@ -108,20 +109,14 @@ class PenyewaanController extends Controller
                 $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
 
 
-                $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
-                $inputStockID['stock'] = $value->stocks->stock;
-                $inputStockID['tersedia'] = $value->stocks->tersedia - $request->jumlah_sewa[$key];
-                $inputStockID['keluar'] =  $value->stocks->keluar +  $request->jumlah_sewa[$key];
-                $inputStockID['keterangan'] = 'Disewakan ' .  $inputDetail['id_penyewaan'];
-
 
                 $alat = Peralatan::updateOrCreate($inputPeralatanID);
-                Stock::Create($inputStockID);
+                // Stock::Create($inputStockID);
             }
         }
 
 
-        if ($alat) {
+        if ($detail) {
             alert()->success('Berhasil', 'Data Berhasil ditambahkan')->persistent('Close');
             return redirect('admin/penyewaan');
         } else {
@@ -318,15 +313,15 @@ class PenyewaanController extends Controller
                 foreach ($peralatan as $key => $value) {
                     $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
 
-                    $stockSave = Stock::where('id_peralatan', $request->id_peralatan[$key])->latest()->first();
+                    // $stockSave = Stock::where('id_peralatan', $request->id_peralatan[$key])->latest()->first();
 
-                    $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
-                    $inputStockID['stock'] = $stockSave->stock;
-                    $inputStockID['tersedia'] = $request->jumlah_tersedia[$key];
-                    $inputStockID['keluar'] = $request->jumlah_sewa[$key];
-                    $inputStockID['keterangan'] = 'Mengubah Penyewaan (tambah) ' .  $inputDetail['id_penyewaan'];
+                    // $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
+                    // $inputStockID['stock'] = $stockSave->stock;
+                    // $inputStockID['tersedia'] = $request->jumlah_tersedia[$key];
+                    // $inputStockID['keluar'] = $request->jumlah_sewa[$key];
+                    // $inputStockID['keterangan'] = 'Mengubah Penyewaan (tambah) ' .  $inputDetail['id_penyewaan'];
                     Peralatan::updateOrCreate($inputPeralatanID);
-                    Stock::Create($inputStockID);
+                    // Stock::Create($inputStockID);
                 }
             } else {
 
@@ -345,15 +340,15 @@ class PenyewaanController extends Controller
                     $id_peralatan = $value->id_peralatan;
                     $jumlah = $request->jumlah_sewa[$key];
                     $value->delete();
-                    // Barang Kembali
-                    $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
+                    // // Barang Kembali
+                    // $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
 
-                    $inputStock['id_peralatan'] = $id_peralatan;
-                    $inputStock['stock'] = $stockSave->stock;
-                    $inputStock['keluar'] =  $stockSave->keluar -= $jumlah;
-                    $inputStock['tersedia'] = $stockSave->tersedia += $jumlah;
-                    $inputStock['keterangan'] = 'Mengubah Penyewaans (Hapus) ' .  $id;
-                    Stock::Create($inputStock);
+                    // $inputStock['id_peralatan'] = $id_peralatan;
+                    // $inputStock['stock'] = $stockSave->stock;
+                    // $inputStock['keluar'] =  $stockSave->keluar -= $jumlah;
+                    // $inputStock['tersedia'] = $stockSave->tersedia += $jumlah;
+                    // $inputStock['keterangan'] = 'Mengubah Penyewaans (Hapus) ' .  $id;
+                    // Stock::Create($inputStock);
                 }
                 $peralatan = Peralatan::findOrFail($request->id_peralatan);
 
@@ -362,13 +357,13 @@ class PenyewaanController extends Controller
                     $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
 
 
-                    $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
-                    $inputStockID['stock'] = $stockSave->stock;
-                    $inputStockID['tersedia'] = $request->jumlah_tersedia[$key];
-                    $inputStockID['keluar'] = $request->jumlah_sewa[$key];
-                    $inputStockID['keterangan'] = 'Mengubah Penyewaana (Hapus) ' .  $id;
+                    // $inputStockID['id_peralatan'] = $request->id_peralatan[$key];
+                    // $inputStockID['stock'] = $stockSave->stock;
+                    // $inputStockID['tersedia'] = $request->jumlah_tersedia[$key];
+                    // $inputStockID['keluar'] = $request->jumlah_sewa[$key];
+                    // $inputStockID['keterangan'] = 'Mengubah Penyewaana (Hapus) ' .  $id;
                     Peralatan::updateOrCreate($inputPeralatanID);
-                    Stock::Create($inputStockID);
+                    // Stock::Create($inputStockID);
                 }
             }
         }
@@ -389,7 +384,7 @@ class PenyewaanController extends Controller
             if ($penyewaan->status_penyewaan == 1) {
 
 
-                if ($status) {
+                if ($penyewaan->status_alat == 0) {
                     $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
 
                     $inputStock['id_peralatan'] = $id_peralatan;
@@ -427,5 +422,57 @@ class PenyewaanController extends Controller
         $pdf = PDF::loadview('penyewaan.print.index', $data);
         return $pdf->stream('test.pdf');
         // return $pdf->download('laporan-pegawai-pdf');
+    }
+
+    public function storePeralatan($id)
+    {
+        $dPenyewaan = DetailPenyewaan::where('id_penyewaan', $id)->get();
+        $penyewaan = Penyewaan::findOrFail($id);
+        // dd($prasmanan);
+
+        // Kurangi Stock
+
+        foreach ($dPenyewaan as $key => $value) {
+            // $inputPeralatanID['id_peralatan'] = $request->id_peralatan[$key];
+            // $id_peralatan = $request->id_peralatan;
+            // dd($value->jumlah_peralatan);
+
+
+            $stockSave = Stock::where('id_peralatan', $value->id_peralatan)->latest()->first();
+
+            $inputStockID['id_peralatan'] = $value->id_peralatan;
+            $inputStockID['stock'] =  $stockSave->stock;
+            $inputStockID['tersedia'] =  $stockSave->tersedia - $value->jumlah_sewa;
+            $inputStockID['keluar'] =  $stockSave->keluar + $value->jumlah_sewa;
+            $inputStockID['keterangan'] = 'Disewakan ' .  $id;
+
+            // dd($inputStockID);
+
+            Stock::Create($inputStockID);
+        }
+        $penyewaan->status_alat = 0;
+        $penyewaan->save();
+        alert()->success('Berhasil ', 'Data Berhasil dikonfirmasi')->persistent(' Close ');
+        return redirect('admin/dashboard');
+    }
+
+    public function laporan(Request $request)
+    {
+        // dd($request->all());
+        $data['tanggalAwal']  = $request->tanggal_penyewaan;
+        $data['tanggalAkhir'] = $request->tanggal_akhir;
+
+        $time = strtotime($request->tanggal_penyewaan);
+        $waktu = strtotime($request->tanggal_akhir);
+
+        $tanggalAwal = date('Y-m-d', $time);
+        $tanggalAkhir = date('Y-m-d', $waktu);
+        // dd($data['tanggalAkhir']);
+
+        $data['penyewaan'] = Penyewaan::where('status_penyewaan', 0)->whereBetween('tanggal_penyewaan', [$tanggalAwal, $tanggalAkhir])->get();
+
+
+        $pdf = PDF::loadview('print.penyewaan', $data);
+        return $pdf->stream('penyewaan.pdf');
     }
 }

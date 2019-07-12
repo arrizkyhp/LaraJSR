@@ -171,4 +171,53 @@ class PeralatanController extends Controller
         return $pdf->stream('test.pdf');
         // return $pdf->download('laporan-pegawai-pdf');
     }
+
+    public function laporanStock(Request $request, $id)
+    {
+        // dd($request->all());
+        $data['tanggalAwal']  = $request->tanggal_penyewaan;
+        $data['tanggalAkhir'] = $request->tanggal_akhir;
+        $data['peralatan'] = Peralatan::findOrFail($id);
+
+        $time = strtotime($request->tanggal_penyewaan);
+        $waktu = strtotime($request->tanggal_akhir);
+
+        $tanggalAwal = date('Y-m-d', $time);
+        $tanggalAkhir = date('Y-m-d', $waktu);
+        // dd($data['tanggalAkhir']);
+
+        $data['stock'] = Stock::where('id_peralatan', $id)->whereBetween('created_at', [$tanggalAwal, $tanggalAkhir])->get();
+        // dd($data['stock']);
+
+
+        $pdf = PDF::loadview('print.stock', $data);
+        return $pdf->stream('stock.pdf');
+    }
+
+    public function laporanRusak(Request $request)
+    {
+        // dd($request->all());
+        $data['tanggalAwal']  = $request->tanggal_penyewaan;
+        $data['tanggalAkhir'] = $request->tanggal_akhir;
+
+        $time = strtotime($request->tanggal_penyewaan);
+        $waktu = strtotime($request->tanggal_akhir);
+
+        $tanggalAwal = date('Y-m-d', $time);
+        $tanggalAkhir = date('Y-m-d', $waktu);
+
+
+        $id_peralatan = $request->nama_peralatan;
+
+        if ($id_peralatan == 'all') {
+            $data['peralatanRusak'] = PeralatanRusak::whereBetween('created_at', [$tanggalAwal, $tanggalAkhir])->get();
+        } else {
+            $data['peralatanRusak'] = PeralatanRusak::where('id_peralatan', $id_peralatan)->whereBetween('created_at', [$tanggalAwal, $tanggalAkhir])->get();
+        }
+
+
+        // dd($data['peralatan']);
+        $pdf = PDF::loadview('print.peralatanRusak', $data);
+        return $pdf->stream('penyewaan.pdf');
+    }
 }

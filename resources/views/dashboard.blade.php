@@ -116,7 +116,7 @@ $(document).on('ajaxComplete ready', function () {
             </div>
             <!--/.col-->
                @if (auth()->user()->role == 1 )
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card">
                 <div class="card-header">
                 <strong class="card-title mb-3">Pesanan yang membutuhkan Peralatan</strong>
@@ -145,6 +145,45 @@ $(document).on('ajaxComplete ready', function () {
                                         @endforeach
                                         </td>
                                         <td><a href="{{route('pesanan.peralatan',$pesan->id_pesanan)}}" class="btn btn-sm btn-info" title="Edit"><i class="fa fa-edit"></i></a></td>
+                                </tr>
+
+                                @endforeach
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                <div class="card-header">
+                <strong class="card-title mb-3">Penyewaan yang membutuhkan Peralatan</strong>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Kode Penyewaan</th>
+                                    <th>Tanggal Input</th>
+                                    <th>Sampai Tanggal</th>
+                                    <th>List Peralatan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($penyewaan as $sewa)
+                                <tr>
+                                    <td>{{ $sewa->id_penyewaan}}</td>
+                                    <td>{{ date('d/m/Y', strtotime($sewa->tanggal_penyewaan  )) }}</td>
+                                    <td>{{ date('d/m/Y', strtotime($sewa->tanggal_akhir ))  }}</td>
+                                     <td>
+                                        @foreach ($sewa->detail_penyewaan as $pras)
+                                         <span class="badge badge-success">{{ $pras->peralatan->nama_peralatan }} : {{ $pras->jumlah_sewa }}</span>
+                                        @endforeach
+                                        </td>
+                                        <td><a href="{{route('sewa.peralatan',$sewa->id_penyewaan)}}" class="btn btn-sm btn-info" title="Edit"><i class="fa fa-edit"></i></a></td>
                                 </tr>
 
                                 @endforeach
