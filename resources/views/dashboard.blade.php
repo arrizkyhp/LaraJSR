@@ -44,76 +44,80 @@ $(document).on('ajaxComplete ready', function () {
         <div class="content mt-3">
 
 
-            <div class="col-sm-6 col-lg-3">
-                <div class="card text-white bg-flat-color-1">
-                    <div class="card-body pb-0">
-                        <h4 class="mb-0">
-                            <span class="count">{{ $users = DB::table('t_pesanan')->where('status_pesanan',0)->count() }}</span>
-                        </h4>
-                        <p class="text-light">Pesanan Selesai</p>
-
-                    </div>
-
-                </div>
-            </div>
-            <!--/.col-->
-
-            <div class="col-sm-6 col-lg-3">
-                <div class="card text-white bg-flat-color-2">
-                    <div class="card-body pb-0">
-
-                        <h4 class="mb-0">
-                            <span class="count">{{ $users = DB::table('t_penyewaan')->where('status_penyewaan',0)->count() }}</span>
-                        </h4>
-                        <p class="text-light">Penyewaan Selesai</p>
-
-                    </div>
-                </div>
-            </div>
-            <!--/.col-->
-
-            <div class="col-sm-6 col-lg-3">
-                <div class="card text-white bg-flat-color-3">
-                    <div class="card-body pb-0">
-
-                        <h4 class="mb-0">
-                            <span class="count">{{ $users = DB::table('t_pesanan')->where('status_pesanan',1)->count() }}</span>
-                        </h4>
-                        <p class="text-light">Pesanan Belum Selesai</p>
-
-                    </div>
-
-                </div>
-            </div>
-            <!--/.col-->
-
-            <div class="col-sm-6 col-lg-3">
-                <div class="card text-white bg-flat-color-4">
-                    <div class="card-body pb-0">
-                        <div class="dropdown float-right">
-                            <button class="btn bg-transparent dropdown-toggle theme-toggle text-light" type="button" id="dropdownMenuButton4" data-toggle="dropdown">
-                                <i class="fa fa-cog"></i>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-                                <div class="dropdown-menu-content">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-four">
+                            <div class="stat-icon dib">
+                                <i class="ti-shopping-cart text-muted"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-heading">Pesanan </div>
+                                    <div class="stat-text">Selesai: {{ $users = DB::table('t_pesanan')->where('status_pesanan',0)->count() }}</div>
+                                    <div class="stat-text">Belum: {{ $users = DB::table('t_pesanan')->where('status_pesanan',1)->count() }}</div>
                                 </div>
                             </div>
                         </div>
-                        <h4 class="mb-0">
-                            <span class="count">10468</span>
-                        </h4>
-                        <p class="text-light">Members online</p>
-
-                        <div class="chart-wrapper px-3" style="height:70px;" height="70">
-                            <canvas id="widgetChart4"></canvas>
-                        </div>
-
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-four">
+                            <div class="stat-icon dib">
+                                <i class="ti-briefcase text-muted"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-heading">Penyewaan </div>
+                                    <div class="stat-text">Selesai: {{ $users = DB::table('t_penyewaan')->where('status_penyewaan',0)->count() }}</div>
+                                    <div class="stat-text">Belum: {{ $users = DB::table('t_penyewaan')->where('status_penyewaan',1)->count() }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-four">
+                            <div class="stat-icon dib">
+                                <i class="ti-user text-muted"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-heading">Pelanggan </div>
+                                    <div class="stat-text">Total: {{ $users = DB::table('t_pelanggan')->count() }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-four">
+                            <div class="stat-icon dib">
+                                <i class="ti-clipboard text-muted"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-heading">Menu </div>
+                                    <div class="stat-text">Total: {{ $users = DB::table('t_menu')->count() }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!--/.col-->
                @if (auth()->user()->role == 1 )
             <div class="col-md-12">

@@ -27,8 +27,9 @@
 
             <div class="table-responsive">
                     <table class="table table-striped table-bordered">
-                        <tr>
+
                             <thead>
+                                <tr>
                                 <th>Kode Pesanan</th>
                                 {{-- <th>Deskripsi</th> --}}
                                 <th>Pelanggan</th>
@@ -37,10 +38,11 @@
                                 <th>Tanggal Pesanan</th>
                                 <th>Tanggal Bayar</th>
                                 <th>Jumlah Bayar</th>
+                                </tr>
                             </thead>
-                        </tr>
-                        <tr>
+
                             <tbody>
+                                <tr>
                                 <td style='display:none;'> {{ $total = 0 }}</td>
 
                                 @foreach ($pesanan as $pesan)
@@ -57,9 +59,10 @@
                                 <td>{{ $pesan->bayar->last()->tanggal_bayar }}</td>
                                 <td>{{ $pesan->bayar->last()->bayar }}</td>
 
+                                    </tr>
                             </tbody>
-                        </tr>
-                        @endforeach
+                                     @endforeach
+
                     </table>
                 </div>
                    <div class="col-md-4">

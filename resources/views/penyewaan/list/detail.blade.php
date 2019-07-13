@@ -160,7 +160,8 @@
 
                      @elseif ($penyewaan->status_penyewaan == 1 && $penyewaan->status_alat == 0)
                        <button type="button" class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Pengembalian</b>
-
+                    @else
+                         <h3><span class="badge badge-info" style="margin-right:5px;" > Menunggu Konfirmasi  </span></h3>
                      @endif
 
                 </div>

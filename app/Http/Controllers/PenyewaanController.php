@@ -118,7 +118,7 @@ class PenyewaanController extends Controller
 
         if ($detail) {
             alert()->success('Berhasil', 'Data Berhasil ditambahkan')->persistent('Close');
-            return redirect('admin/penyewaan');
+            return redirect('admin/list_penyewaan');
         } else {
             alert()->error('Error', 'Data gagal ditambahkan')->persistent('Close');
             return redirect()->back();
@@ -375,7 +375,14 @@ class PenyewaanController extends Controller
     public function destroy($id)
     {
         $penyewaan = Penyewaan::findOrFail($id);
+        $kembaliCek = Pengembalian::where('id_penyewaan', $id)->first();
         $detailPenyewaan = DetailPenyewaan::where('id_penyewaan', '=', $id)->get();
+
+
+        // Cek Apakah ada Peralatan Rusak
+
+
+
 
         foreach ($detailPenyewaan as $key => $value) {
             $id_peralatan = $value->id_peralatan;
@@ -385,6 +392,7 @@ class PenyewaanController extends Controller
 
 
                 if ($penyewaan->status_alat == 0) {
+
                     $stockSave = Stock::where('id_peralatan', $id_peralatan)->latest()->first();
 
                     $inputStock['id_peralatan'] = $id_peralatan;
@@ -394,9 +402,13 @@ class PenyewaanController extends Controller
                     $inputStock['keterangan'] = 'Menghapus Penyewaan ' .  $id;
                     Stock::Create($inputStock);
                 }
+            } else {
+                $kembali = Pengembalian::where('id_penyewaan', $id)->get()->each->delete();
+                $peralatanRusak = PeralatanRusak::where('id_pengembalian', $kembaliCek->id_pengembalian)->get()->each->delete();
             }
         }
         $penyewaan->delete();
+
 
         // toast('Data Berhasil Dihapus!', 'success', 'top-right');
         alert()->success('Berhasil ', 'Data Berhasil dihapus')->persistent(' Close ');

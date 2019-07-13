@@ -41,17 +41,19 @@
 
             <div class="table-responsive">
                     <table class="table table-striped table-bordered">
-                        <tr>
+
                             <thead>
+                                <tr>
                                 <th>Nama Menu</th>
                                 {{-- <th>Deskripsi</th> --}}
                                 <th>Quantity</th>
                                 <th>Harga</th>
                                 <th>Jumlah</th>
+                                </tr>
                             </thead>
-                        </tr>
-                        <tr>
+
                             <tbody>
+                                <tr>
                                 @foreach ($detail as $details)
                                 <td>{{ $details->menu->nama_menu}}</td>
                                 {{-- <td>
@@ -61,9 +63,9 @@
                                 <td>{{ $details->quantity}}</td>
                                 <td>{{  number_format($details->harga,0,',', '.') }}</td>
                                 <td>{{  number_format($details->subtotal,0,',', '.') }}</td>
-
+                                    </tr>
                             </tbody>
-                        </tr>
+
                         @endforeach
                     </table>
                 </div>
