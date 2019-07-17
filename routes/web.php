@@ -93,6 +93,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('/konten', 'KontenController')->except([
                 'show'
             ]);
+            Route::get('/konten/menu', 'KontenController@listMenu')->name('konten.menu');
+            Route::get('/konten/menu/edit/{id}', 'KontenController@edit')->name('konten.menuedit');
+            Route::patch('/konten/menu/update/{id}', 'KontenController@update')->name('konten.menuupdate');
         });
 
 

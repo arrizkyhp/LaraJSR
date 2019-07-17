@@ -18,6 +18,9 @@
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#services">Layanan</a>
           </li>
+           <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#list">Sajian</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#portfolio">Menu</a>
           </li>

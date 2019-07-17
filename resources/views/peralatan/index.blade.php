@@ -51,9 +51,11 @@
                    @slot('header')
                         Data <strong>Peralatan</strong>
                         <div style="float:right;">
+                           @if (auth()->user()->role == 1 )
                           <div class="btn-group" >
                             <a href="{{ url('admin/peralatan_rusak') }}" class="btn btn-danger" >Peralatan Rusak/Tidak Kembali </a>
                           </div>
+                           @endif
                           <div class="btn-group" >
                             <button class="btn btn-info "  data-toggle="modal" data-target="#exampleModal2"><i class="fa fa-plus-square"></i> Tambah Satuan  </button>
                           </div>
@@ -69,9 +71,11 @@
                         <th>#</th>
                         <th style="display:none;">id</th>
                         <th>Nama Peralatan</th>
+                         @if (auth()->user()->role == 1 )
                         <th>Stock</th>
                         <th>Keluar</th>
                         <th>Tersedia</th>
+                        @endif
                         <th>Satuan</th>
                         <th>Harga Sewa</th>
                         <th>Harga Ganti</th>
@@ -85,9 +89,11 @@
                         <th>#</th>
                         <th style="display:none;">id</th>
                         <th>Nama Peralatan</th>
+                        @if (auth()->user()->role == 1 )
                         <th>Stock</th>
                         <th>Keluar</th>
                         <th>Tersedia</th>
+                        @endif
                         <th>Satuan</th>
                         <th>Harga Sewa</th>
                         <th>Harga Ganti</th>
@@ -103,18 +109,27 @@
                         <td>{{ $no++ }}</td>
                         <td style="display:none;">{{ $row->id_peralatan }}</td>
                         <td>{{ $row->nama_peralatan }}</td>
+                         @if (auth()->user()->role == 1 )
                         <td>{{ $row->stocks->stock }}</td>
                         <td>{{ $row->stocks->keluar }}</td>
                         <td>{{ $row->stocks->tersedia }}</td>
+                        @endif
                         <td>{{ $row->satuan->nama_satuan }}</td>
                         <td>Rp.{{ number_format($row->harga_sewa,0,',', '.') }}</td>
                         <td>Rp.{{ number_format($row->harga_ganti,0,',', '.') }}</td>
                         <td style="display:none;">{{ $row->harga_sewa }}</td>
                         <td style="display:none;">{{ $row->harga_ganti }}</td>
                         <td>
+
+                        @if (auth()->user()->role == 0 )
+
+                        <a href="{{ route('peralatan.edit',$row->id_peralatan) }}" class="btn btn-warning "><i class="fa fa-pencil"></i> </a>
+                        <a href="#" class="btn btn-danger delete" style="display:inline;"><i class="fa fa-trash"></i></a>
+                        @else
                           <a href="{{ route('stock.peralatan',$row->id_peralatan) }}" class="btn btn-info "><i class="fa fa-suitcase"></i> </a>
                         <a href="{{ route('peralatan.edit',$row->id_peralatan) }}" class="btn btn-warning "><i class="fa fa-pencil"></i> </a>
                         <a href="#" class="btn btn-danger delete" style="display:inline;"><i class="fa fa-trash"></i></a>
+                        @endif
                         </form>
                         </td>
                       </tr>

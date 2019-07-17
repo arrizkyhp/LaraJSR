@@ -74,7 +74,7 @@
                     <div class="form-group">
                     <label for="foto">Foto</label><br>
                     <img src="{{ asset('uploads/'.@$result->foto) }}" width="80px" ><br>
-                    <input type="file" name="foto"  class="form-control" >
+                    <input type="file" name="foto" class="form-control" >
                     </div>
 
 

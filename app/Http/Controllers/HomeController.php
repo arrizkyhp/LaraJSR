@@ -8,6 +8,7 @@ use App\Satuan;
 use App\Konten;
 use App\Penyewaan;
 use Illuminate\Http\Request;
+use App\ListMakanan;
 
 class HomeController extends Controller
 {
@@ -29,6 +30,8 @@ class HomeController extends Controller
     public function index()
     {
         $data['peralatan'] = Peralatan::all();
+        $data['makanan'] = ListMakanan::where('id_jenis_makanan', '!=', '3')->orderBy('id_jenis_makanan', 'ASC')->get();
+        $data['snack'] = ListMakanan::where('id_jenis_makanan', '3')->get();
         $data['satuan'] = Satuan::all();
         $data['konten'] = Konten::take(6)->get();
 

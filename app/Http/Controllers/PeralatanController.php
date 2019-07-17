@@ -68,8 +68,6 @@ class PeralatanController extends Controller
         // dd($request->all());
         $this->validate($request, [
             'nama_peralatan' => 'required',
-            'stock' => 'required',
-            'satuan' => 'required',
             'harga_sewa' => 'required',
             'harga_ganti' => 'required'
         ]);
@@ -82,14 +80,6 @@ class PeralatanController extends Controller
         $peralatan->harga_ganti = $request->input('harga_ganti');
         $peralatan->save();
 
-        $stock = Stock::where('id_peralatan', $id)->first();
-
-        $stock->id_peralatan = $id;
-        $stock->stock = $request->input('stock');
-        $stock->tersedia = $request->input('tersedia');
-        $stock->keluar = $request->input('keluar');
-
-        $stock->save();
 
         alert()->success('Berhasil ', 'Data Berhasil diubah')->persistent(' Close ');
         return redirect('/admin/peralatan');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\JenisPesanan;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class JenisPesananController extends Controller
 {
@@ -53,11 +54,17 @@ class JenisPesananController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+
+        $validator = Validator::make($request->all(), [
             'nama_jenis_pesanan' => 'required',
             'kode' => 'required',
             'foto' => 'mimes:jpeg,png|max:512'
         ]);
+
+        if ($validator->fails()) {
+            alert()->error('Gagal', 'Data Gagal Diubah')->persistent('Close');
+            return back();
+        }
 
         $input = $request->all();
         $result = \App\JenisPesanan::where('id_jenis_pesanan', $id)->first();

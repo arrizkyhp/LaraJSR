@@ -86,8 +86,7 @@
             <i class="fa fa-box fa-stack-1x fa-inverse"></i>
           </span>
           <h4 class="service-heading">Nasi Box</h4>
-          <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto
-            quo inventore harum ex magni, dicta impedit.</p>
+          <p class="text-muted">Kami Menyediakan Pelayanan Nasi Box dan Snack Box untuk berbagai Acara.</p>
         </div>
         <div class="col-md-4">
           <span class="fa-stack fa-4x">
@@ -95,8 +94,7 @@
             <i class="fa fa-birthday-cake fa-stack-1x fa-inverse"></i>
           </span>
           <h4 class="service-heading">Tumpeng Hias</h4>
-          <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto
-            quo inventore harum ex magni, dicta impedit.</p>
+          <p class="text-muted">Kami berpengalaman dalam layanan Tumpeng Hias berbagai macam hidangan menjadi lebih menarik dan juga lezt cocok untuk berbagai Acara.</p>
         </div>
         <div class="col-md-4">
           <span class="fa-stack fa-4x">
@@ -104,30 +102,54 @@
             <i class="fa fa-users fa-stack-1x fa-inverse"></i>
           </span>
           <h4 class="service-heading">Catering Acara</h4>
-          <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto
-            quo inventore harum ex magni, dicta impedit.</p>
+          <p class="text-muted">Kami Juga melayani Catering untuk berbagai macam acara seperti Pernikahan, Rapat, Syukuran, Seminar, dsb .</p>
         </div>
       </div>
     </div>
   </section>
 
+   <section class="bg-light" id="list">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="section-heading text-uppercase">List Sajian</h2>
+          <h3 class="section-subheading text-muted">Berbagai Macam Makanan, Minuman, Dan Snack yang disajikan di Jembar Sari Rasa</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-center">
+      <a class="btn btn-primary btn-xl"  data-toggle="modal"  href="#modalMakanan">List Sajian</a>
+      </div>
+      </div>
+
+
+
+
+    </div>
+  </section>
+
+
+
+
   <!-- Portfolio Grid -->
-  <section class="bg-light" id="portfolio">
+  <section  id="portfolio">
     <div class="container">
       <div class="row">
         <div class="col-lg-12 text-center">
           <h2 class="section-heading text-uppercase">Menu</h2>
-          <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+          <h3 class="section-subheading text-muted">Beberapa Menu yang tersedia di jembar Sari Rasa</h3>
+
         </div>
       </div>
 
       <div class="row">
          @foreach ($konten as $value)
         <div class="col-md-4 col-sm-6 portfolio-item">
-          <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
+          <a class="portfolio-link  js-scroll-trigger" href="#contact">
             <div class="portfolio-hover">
               <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
+                Pesan
               </div>
             </div>
             <img class="img-fluid" src="{{ asset('uploads/'.@$value->foto) }}"  alt="">
@@ -138,83 +160,14 @@
           </div>
         </div>
          @endforeach
-        {{-- <div class="col-md-4 col-sm-6 portfolio-item">
-          <a class="portfolio-link" data-toggle="modal" href="#portfolioModal2">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img class="img-fluid" src="{{ asset('front/img/portfolio/02-thumbnail.jpg') }}" alt="">
-          </a>
-          <div class="portfolio-caption">
-            <h4>Explore</h4>
-            <p class="text-muted">Graphic Design</p>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6 portfolio-item">
-          <a class="portfolio-link" data-toggle="modal" href="#portfolioModal3">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img class="img-fluid" src="{{ asset('front/img/portfolio/03-thumbnail.jpg') }}" alt="">
-          </a>
-          <div class="portfolio-caption">
-            <h4>Finish</h4>
-            <p class="text-muted">Identity</p>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6 portfolio-item">
-          <a class="portfolio-link" data-toggle="modal" href="#portfolioModal4">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img class="img-fluid" src="{{ asset('front/img/portfolio/04-thumbnail.jpg') }}" alt="">
-          </a>
-          <div class="portfolio-caption">
-            <h4>Lines</h4>
-            <p class="text-muted">Branding</p>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6 portfolio-item">
-          <a class="portfolio-link" data-toggle="modal" href="#portfolioModal5">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img class="img-fluid" src="{{ asset('front/img/portfolio/05-thumbnail.jpg') }}" alt="">
-          </a>
-          <div class="portfolio-caption">
-            <h4>Southwest</h4>
-            <p class="text-muted">Website Design</p>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6 portfolio-item">
-          <a class="portfolio-link" data-toggle="modal" href="#portfolioModal6">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img class="img-fluid" src="{{ asset('front/img/portfolio/06-thumbnail.jpg') }}" alt="">
-          </a>
-          <div class="portfolio-caption">
-            <h4>Window</h4>
-            <p class="text-muted">Photography</p>
-          </div>
-        </div>
-      </div> --}}
+
     </div>
   </section>
 
   <!-- Portfolio Grid -->
   <section class="bg-light" id="sewa">
     <div class="container">
+
       <div class="row">
         <div class="col-lg-12 text-center">
           <h2 class="section-heading text-uppercase">Sewa Peralatan</h2>
@@ -225,18 +178,15 @@
         <div class="col-md-12 text-center">
       <a class="btn btn-primary btn-xl"  data-toggle="modal"  href="#modalSewa">List Peralatan</a>
       </div>
-
-          {{-- <a class="portfolio-link" data-toggle="modal" href="#modalSewa">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img class="img-fluid" src="{{ asset('front/img/portfolio/02-thumbnail.jpg') }}" alt="">
-          </a> --}}
       </div>
+
+
+
+
     </div>
   </section>
+
+
 
 
 
@@ -281,21 +231,21 @@
                         <td>{{ $no++ }}</td>
                         <td>{{ $alat->nama_peralatan }}</td>
                         <td>{{ $alat->satuan->nama_satuan }}</td>
-                        <td>{{ $alat->harga_sewa }}</td>
-                        <td>{{ $alat->harga_ganti }}</td>
+                        <td>Rp.{{ number_format($alat->harga_sewa,0,',', '.')  }}</td>
+                        <td>Rp.{{ number_format($alat->harga_ganti,0,',', '.')   }}</td>
                         </tr>
                       @endforeach
                     </tbody>
                   </table>
                 </div>
-                <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
+                {{-- <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
                   blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia
                   expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                 <ul class="list-inline">
                   <li>Date: January 2017</li>
                   <li>Client: Threads</li>
                   <li>Category: Illustration</li>
-                </ul>
+                </ul> --}}
                 <button class="btn btn-primary" data-dismiss="modal" type="button">
                   <i class="fa fa-times"></i>
                   Close Project</button>
@@ -307,9 +257,8 @@
     </div>
   </div>
 
-
-  <!-- Modal 1 -->
-  <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+   <!-- Modal 1 -->
+  <div class="portfolio-modal modal fade" id="modalMakanan" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="close-modal" data-dismiss="modal">
@@ -322,17 +271,68 @@
             <div class="col-lg-8 mx-auto">
               <div class="modal-body">
                 <!-- Project Details Go Here -->
-                <h2 class="text-uppercase">Project Name</h2>
-                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                <img class="img-fluid d-block mx-auto" src="{{ asset('front/img/portfolio/01-full.jpg') }}" alt="">
-                <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
+                <h2 class="text-uppercase">List Makanan/Minuman/Snack</h2>
+                <p class="item-intro text-muted">Beberapa List Makanan,Minuman,Dan Snack yang tersedia di Jembar Sari Rasa.</p>
+                  <h3>Makanan/Minuman</h3>
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Nama</th>
+                        <th>Jenis</th>
+                        <th>Harga</th>
+
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                        @php $no = 1; @endphp
+                      @foreach ($makanan as $makan)
+                        <tr>
+                        <td>{{ $no++ }}</td>
+                        <td>{{ $makan->nama_makanan }}</td>
+                        <td>{{ $makan->jenis_makanan->nama_jenis_makanan }}</td>
+                        <td>Rp.{{ number_format($makan->harga,0,',', '.') }}</td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+
+                  <h3>Snack</h3>
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Nama</th>
+                        <th>Jenis</th>
+                        <th>Harga</th>
+
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                        @php $no = 1; @endphp
+                      @foreach ($snack as $makan)
+                        <tr>
+                        <td>{{ $no++ }}</td>
+                        <td>{{ $makan->nama_makanan }}</td>
+                        <td>{{ $makan->jenis_makanan->nama_jenis_makanan }}</td>
+                        <td>Rp.{{ number_format($makan->harga,0,',', '.')  }}</td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+                {{-- <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
                   blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia
                   expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                 <ul class="list-inline">
                   <li>Date: January 2017</li>
                   <li>Client: Threads</li>
                   <li>Category: Illustration</li>
-                </ul>
+                </ul> --}}
                 <button class="btn btn-primary" data-dismiss="modal" type="button">
                   <i class="fa fa-times"></i>
                   Close Project</button>
@@ -344,185 +344,8 @@
     </div>
   </div>
 
-  <!-- Modal 2 -->
-  <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
-          <div class="lr">
-            <div class="rl"></div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <div class="modal-body">
-                <!-- Project Details Go Here -->
-                <h2 class="text-uppercase">Project Name</h2>
-                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                <img class="img-fluid d-block mx-auto" src="{{ asset('front/img/portfolio/02-full.jpg') }}" alt="">
-                <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
-                  blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia
-                  expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                <ul class="list-inline">
-                  <li>Date: January 2017</li>
-                  <li>Client: Explore</li>
-                  <li>Category: Graphic Design</li>
-                </ul>
-                <button class="btn btn-primary" data-dismiss="modal" type="button">
-                  <i class="fa fa-times"></i>
-                  Close Project</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Modal 3 -->
-  <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
-          <div class="lr">
-            <div class="rl"></div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <div class="modal-body">
-                <!-- Project Details Go Here -->
-                <h2 class="text-uppercase">Project Name</h2>
-                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                <img class="img-fluid d-block mx-auto" src="{{ asset('front/img/portfolio/03-full.jpg') }}" alt="">
-                <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
-                  blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia
-                  expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                <ul class="list-inline">
-                  <li>Date: January 2017</li>
-                  <li>Client: Finish</li>
-                  <li>Category: Identity</li>
-                </ul>
-                <button class="btn btn-primary" data-dismiss="modal" type="button">
-                  <i class="fa fa-times"></i>
-                  Close Project</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Modal 4 -->
-  <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
-          <div class="lr">
-            <div class="rl"></div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <div class="modal-body">
-                <!-- Project Details Go Here -->
-                <h2 class="text-uppercase">Project Name</h2>
-                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                <img class="img-fluid d-block mx-auto" src="{{ asset('front/img/portfolio/04-full.jpg') }}" alt="">
-                <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
-                  blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia
-                  expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                <ul class="list-inline">
-                  <li>Date: January 2017</li>
-                  <li>Client: Lines</li>
-                  <li>Category: Branding</li>
-                </ul>
-                <button class="btn btn-primary" data-dismiss="modal" type="button">
-                  <i class="fa fa-times"></i>
-                  Close Project</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 5 -->
-  <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
-          <div class="lr">
-            <div class="rl"></div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <div class="modal-body">
-                <!-- Project Details Go Here -->
-                <h2 class="text-uppercase">Project Name</h2>
-                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                <img class="img-fluid d-block mx-auto" src="{{ asset('front/img/portfolio/05-full.jpg') }}" alt="">
-                <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
-                  blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia
-                  expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                <ul class="list-inline">
-                  <li>Date: January 2017</li>
-                  <li>Client: Southwest</li>
-                  <li>Category: Website Design</li>
-                </ul>
-                <button class="btn btn-primary" data-dismiss="modal" type="button">
-                  <i class="fa fa-times"></i>
-                  Close Project</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 6 -->
-  <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
-          <div class="lr">
-            <div class="rl"></div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <div class="modal-body">
-                <!-- Project Details Go Here -->
-                <h2 class="text-uppercase">Project Name</h2>
-                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                <img class="img-fluid d-block mx-auto" src="{{ asset('front/img/portfolio/06-full.jpg') }}" alt="">
-                <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
-                  blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia
-                  expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                <ul class="list-inline">
-                  <li>Date: January 2017</li>
-                  <li>Client: Window</li>
-                  <li>Category: Photography</li>
-                </ul>
-                <button class="btn btn-primary" data-dismiss="modal" type="button">
-                  <i class="fa fa-times"></i>
-                  Close Project</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Bootstrap core JavaScript -->
   <script src="{{ asset('front/vendor/jquery/jquery.min.js') }}"></script>

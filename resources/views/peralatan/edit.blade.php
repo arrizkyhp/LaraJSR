@@ -71,24 +71,6 @@ $(document).ready(function () {
                             </div>
 
                             <div class="form-group">
-                            <label for="stock">Stock</label>
-                            <input type="number" name="stock" value="{{ $peralatan->stocks->stock }}" min="0"  id="stock" class="form-control {{ $errors->has('stock') ? 'is-invalid':'' }}" placeholder="Masukkan stock">
-                            <p class="text-danger">{{ $errors->first('stock') }}</p>
-                            </div>
-
-                            <div class="form-group">
-                            <label for="tersedia">Tersedia</label>
-                            <input type="number" name="tersedia" value="{{ $peralatan->stocks->tersedia }}" min="0"  id="tersedia" class="form-control {{ $errors->has('tersedia') ? 'is-invalid':'' }}" placeholder="Masukkan tersedia">
-                            <p class="text-danger">{{ $errors->first('tersedia') }}</p>
-                            </div>
-
-                            <div class="form-group">
-                            <label for="keluar">Keluar</label>
-                            <input type="number" name="keluar" value="{{ $peralatan->stocks->keluar }}" min="0"  id="keluar" class="form-control {{ $errors->has('keluar') ? 'is-invalid':'' }}" placeholder="Masukkan keluar">
-                            <p class="text-danger">{{ $errors->first('keluar') }}</p>
-                            </div>
-
-                            <div class="form-group">
                             <label for="harga_sewa">Harga Sewa</label>
                             <input type="number" name="harga_sewa" value="{{ $peralatan->harga_sewa }}" id="harga_sewa"  class="form-control {{ $errors->has('keluar') ? 'is-invalid':'' }}" min="0" placeholder="Masukkan Harga Sewa Peralatan">
                             <p class="text-danger">{{ $errors->first('keluar') }}</p>

@@ -7,89 +7,79 @@
 {{-------------------------------------------- KONTEN ------------------------------------}}
 
 @section('content')
- <!-- Header-->
-        <div class="breadcrumbs">
-            <div class="col-sm-4 head-content">
-                <div class="page-header float-left">
-                    <div lass="page-title">
-                        <h1>Konten</h1>
+
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+            <div class="row">
+
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header text-sm-center">
+                            <strong class="card-title">Menu</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="mx-auto d-block">
+                                <div class="h1 text-muted text-center mb-4">
+                                    <i class="fa fa-book text-dark"></i>
+                                </div>
+                                <form action="{{ route('konten.menu') }}">
+                                    <div class="text-center">
+                                        <input type="submit" class="btn btn-primary" value="Kelola" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li class="active root-ajj"><a href="#">Dashboard</a> / Konten</li>
-                        </ol>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header text-sm-center">
+                            <strong class="card-title">List Makanan</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="mx-auto d-block">
+                                <div class="h1 text-muted text-center mb-4">
+                                    <i class="fa fa-cutlery text-dark"></i>
+                                </div>
+                                <form action="{{ asset('admin/list_makanan')}}">
+                                    <div class="text-center">
+                                        <input type="submit" class="btn btn-primary" value="Kelola" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header text-sm-center">
+                            <strong class="card-title">Sewa Peralatan</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="mx-auto d-block">
+                                <div class="h1 text-muted text-center mb-4">
+                                    <i class="fa fa-briefcase text-dark"></i>
+                                </div>
+                                <form action="{{ asset('admin/peralatan')}}">
+                                    <div class="text-center">
+                                        <input type="submit" class="btn btn-primary" value="Kelola" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+    </div>
 
 
-        <div class="content mt-3">
 
-              <div class="col-lg-12">
-                   @card
-                   @slot('header')
-                        Data <strong>Konten</strong>
-                        <button class="btn btn-primary" style="float:right;" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus-square"></i> Tambah </button>
-                   @endslot
-                      <table id="tabel-data" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th style="display:none;">id</th>
-                        <th>Foto</th>
-                        <th>Nama Konten</th>
-                        <th>Jenis</th>
-                        <th>Deskripsi</th>
-                        <th>Aksi</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                     <tr>
-                        <th>#</th>
-                        <th style="display:none;">id</th>
-                        <th>Foto</th>
-                        <th>Nama Konten</th>
-                        <th>Jenis</th>
-                        <th>Deskripsi</th>
-                        <th>Aksi</th>
-                      </tr>
-                    </tfoot>
-                      <tbody>
-                         @php $no = 1; @endphp
-                        @foreach ($konten as $row)
-                      <tr>
-                      <td>{{ $no++ }}</td>
-                      <th style="display:none;">{{ $row->id_konten }}</th>
-                      <td><img src="{{ asset('uploads/'.@$row->foto) }}" width="80px" class="img" alt=""></td>
-                      <td>{{ $row->nama_konten }}</td>
-                      <td>{{ $row->jenis->nama_jenis_pesanan }}</td>
-                      <td>{{ $row->deskripsi }}</td>
-                        <td>
-                        <a href="{{ url("admin/konten/$row->id_konten/edit")}}" class="btn btn-warning edit"><i class="fa fa-pencil"></i> </a>
-                        <a href="#" class="btn btn-danger delete" style="display:inline;"><i class="fa fa-trash"></i></a>
-                        </form>
-                        </td>
-                      </tr>
-                        @endforeach
-                         </tbody>
-
-                  </table>
-
-                      @slot('footer')
-
-                        @endslot
-                      @endcard
-
-
-        </div> <!-- .content -->
-    </div><!-- /#right-panel -->
-
-    @endsection
+@endsection
 
     {{-------------------------------------------- SCRIPT MODAL ------------------------------------}}
 
