@@ -41,27 +41,29 @@
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
-                    <tr>
+
                         <thead>
+                             <tr>
                             <th>Nama Perlengkapan</th>
                             <th>Jumlah Perlengkapan</th>
                             <th>Satuan</th>
                             <th>Harga Sewa Satuan</th>
                             <th>Jumlah</th>
+                            </tr>
                         </thead>
-                    </tr>
-                    <tr>
+
+
                         <tbody>
+                            <tr>
                             @foreach ($detail as $details)
                             <td>{{ $details->peralatan->nama_peralatan}}</td>
                             <td><input type="hidden" value="{{ $details->jumlah_sewa}}" name="jumlah_sewa[]">{{ $details->jumlah_sewa}}</td>
                             <td>{{ $details->peralatan->satuan->nama_satuan}}</td>
                             <td>Rp.{{ number_format($details->peralatan->harga_sewa,0,',', '.') }}</td>
                             <td>Rp.{{ number_format($details->subtotal,0,',', '.') }}</td>
-
-
+                              </tr>
                         </tbody>
-                    </tr>
+
                       @endforeach
                 </table>
                 <div class="form-group">
@@ -95,18 +97,29 @@
                                 @elseif  ($penyewaan->status_penyewaan == 1)
                                 <span class="detailSpan" ><h5><b>Subtotal :</b> Rp.{{ number_format($penyewaan->total_harga,0,',', '.') }}</h5></span>
                                 <input type="hidden" value="{{ $penyewaan->total_harga }}" id="subtotal" name="subtotal">
-                                <span class="detailSpan" ><h5><b>DP :</b> Rp.{{ number_format($penyewaan->bayar,0,',', '.') }}</h5></span>
+                                <span class="detailSpan" ><h5><b>DP :</b> Rp.{{ number_format($penyewaan->bayar,0,',', '.') }}</h5></span><br>
 
                                 @endif
 
                     </div>
                     </div>
-                </div>
-                 @if ($penyewaan->status_bayar == 0)
-                    <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Lunas </span></h3><br><br>
-                    @elseif($penyewaan->status_bayar == 1)
-                    <h3><span class="badge badge-danger" style="margin-right:5px; float:right;" > Belum Lunas </span></h3><br><br>
-                @endif
+                 <table>
+                     <tr>
+                        <td width="50%">
+
+                        <span class="detailInfo"><b> Tanda Terima </b></span><br><br><br>
+                        <span class="detailInfo"><b> ......................... </b></span><br>
+                        </td>
+                        <td></td>
+                        <td width="50%">
+                             <div id="tanggal">
+                        <span class="detailInfo"><b> Hormat Kami </b></span><br><br><br>
+                        <span class="detailInfo"><b> Hj. M. Siti Aminah </b></span><br>
+                             </div>
+
+                        </td>
+                         </tr>
+                </table><br><br>
 
         <div id="deskripsi">
             <b>Jembar Sari Rasa</b><br>

@@ -251,8 +251,8 @@
                     </div>
                      <div class="form-group">
 											<label for="">Qty</label>
-                        <input type="number" id="quantity" class="form-control col-lg-4" min="50" style="float:right;" readonly><br>
-                          <small id="emailHelp" class="form-text text-muted" >*minimal order 50.</small>
+                        <input type="number" id="quantity" class="form-control col-lg-4" min="35" style="float:right;" readonly><br>
+                          <small id="emailHelp" class="form-text text-muted" >*minimal order 35.</small>
                     </div>
                        <div class="form-group" style="text-align:right">
 											<span >Harga </span><h2>Rp.<b><span id="harga">{{ number_format('0') }}</span></b></h2>
@@ -358,6 +358,13 @@
         var tanggal_pesanan = $("#datepicker").val();
         var nama_pelanggan = $("#pelanggan_select").val();
         var bayar = $("#bayar").val();
+        // var dp = $(".downPaymentOut").html();
+
+        var raw = $('.downPaymentOut').html().replace(/[^\d,-]/g, '');
+        var raw = raw.replace(",", '');
+        // var status = $('#status_peralatan').val();
+        // alert(raw);
+        // return false;
         var statusAlat = $("#status_peralatan").val();
         var peralatan = $('#table-penyewaan tr').length;
 
@@ -369,6 +376,9 @@
           return false;
         }else if (bayar == '') {
           alertSubmit3();
+          return false;
+        }else if (bayar != raw ) {
+          alertSubmit5();
           return false;
         }else if ((statusAlat == 1) && (peralatan == 1)) {
             alertSubmit4();
@@ -435,8 +445,8 @@
     $('#quantity').on('change',function(){
      var qty = $(this).val();
     //  Ketika Quantity diisi -1
-     if (qty<1) {
-      qty=1;
+     if (qty<35) {
+      qty=35;
       $('#quantity').val(qty);
 
     }
@@ -500,14 +510,16 @@
         $('#stock').attr('readonly', false);
       }
 
+
+
       // Mengisi Form Pesanan berdasarkan Row yang di pilih
       $('#id_menu').val(col2);
       $('#nama_menu').val(col3);
       $('#jenis').val(col4);
       $('#harga').text(col6);
-      $('#subtotal').html(col6);
+      $('#subtotal').html(col6*35);
       $('#status_peralatan').val(col7);
-      $('#quantity').val('50');
+      $('#quantity').val('35');
 
 
 
@@ -745,6 +757,13 @@
               type: 'error',
               title: 'Oops...',
               text: 'Isi Peralatan terlebih Dahulu!',
+            });
+          }
+           function alertSubmit5 (){
+          swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Jumlah Bayar harus sesuai dengan uang muka !',
             });
           }
 

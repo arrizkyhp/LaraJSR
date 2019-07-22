@@ -79,22 +79,42 @@
                             {{ $pesanan->keterangan }}<br><br>
                           </div>
 
+
+
                     </div>
                     <div class="col-md-4">
                         <div id="tanggal">
 
-                         <span class="detailSpan" ><h5><b>Subtotal :</b> Rp.{{ number_format($pesanan->total_harga,2,',', '.') }}</h5></span>
+                         <span><h5><b>Subtotal :</b> Rp.{{ number_format($pesanan->total_harga,2,',', '.') }}</h5></span>
                         <input type="hidden" value="{{ $pesanan->total_harga }}" id="totalHarga">
-                        <span class="detailSpan" ><h5><b>Bayar :</b> Rp.{{ number_format($jumlahBayar,2,',', '.') }}</h5></span>
+                        <span><h5><b>Bayar :</b> Rp.{{ number_format($jumlahBayar,2,',', '.') }}</h5></span><br>
+
 
                     </div>
-                    </div>
                 </div>
-                 @if ($pesanan->status_bayar == 0)
-                    <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Lunas </span></h3><br><br>
-                    @elseif($pesanan->status_bayar == 1)
-                    {{-- <h3><span class="badge badge-danger" style="margin-right:5px; float:right;" > Belum Lunas </span></h3><br><br> --}}
-                @endif
+                </div>
+
+
+
+                <table>
+                    <tr>
+                        <td width="50%">
+                        <span class="detailInfo"><b> Tanda Terima </b></span><br><br><br>
+                        <span class="detailInfo"><b> ......................... </b></span><br>
+                        </td>
+                        <td></td>
+                        <td width="50%">
+                             <div id="tanggal">
+                        <span class="detailInfo"><b> Hormat Kami </b></span><br><br><br>
+                        <span class="detailInfo"><b> Hj. M. Siti Aminah </b></span><br>
+                             </div>
+                        </td>
+                    </tr>
+                </table><br><br>
+
+
+
+
 
         <div id="deskripsi">
             <b>Jembar Sari Rasa</b><br>

@@ -10,8 +10,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sufee Admin - HTML5 Admin Template</title>
-    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <title>Login | Jembar Sari Rasa</title>
+    <meta name="description" content="Login | Jembar Sari Rasa">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="apple-touch-icon" href="apple-icon.png">
@@ -53,7 +53,7 @@
                         @csrf
                         <div class="form-group">
                             <label>{{ __('Username') }}</label>
-                            <input type="text" class="form-control  @error('username') is-invalid @enderror" placeholder="Email" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                            <input type="text" class="form-control  @error('username') is-invalid @enderror" placeholder="Username" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
                         @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

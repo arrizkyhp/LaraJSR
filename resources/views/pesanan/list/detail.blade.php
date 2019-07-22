@@ -269,12 +269,12 @@
                         </div>
                         <div class="form-group">
                             <label>Keterangan</label>
-                            <textarea name="keterangan" class="form-control"></textarea>
+                            <textarea name="keterangan" class="form-control keteranganBayar"></textarea>
                         </div>
                   </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Simpan Data</button>
+                <button type="submit" class="btn btn-primary btn-simpan">Simpan Data</button>
             </div>
             </form>
             </div>
@@ -293,8 +293,25 @@
 
     $(document).ready(function () {
           $(document).on('click','.btn-simpan',function (e) {
-              $('#formTambah').attr('action','/admin/bayar');
+              var bayar = $('#bayar_lagi').val();
+
+               var keterangan = $('.keteranganBayar').val();
+
+              if (bayar == '') {
+                   alertBayar();
+                   return false;
+               }
+
+                 if (keterangan == '') {
+                   alertKeterangan();
+                    return false;
+               }
+
+
           });
+
+
+
 
           $('#bayar_lagi').on('change',function(){
 
@@ -305,11 +322,32 @@
             qty=1;
 
             }
+
+
          $('#bayar_lagi').val(qty);
           $('#bayar_nominal').html(qty).formatCurrency();
 
 
     });
+
+     function alertKeterangan (){
+          swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Isi Keterangan Terlebih Dahulu!',
+
+            });
+          }
+
+        function alertBayar (){
+          swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Isi Jumlah Bayar Terlebih Dahulu!',
+
+            });
+          }
+
 
 
     });
