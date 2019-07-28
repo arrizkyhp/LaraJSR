@@ -48,14 +48,25 @@
               <div class="col-lg-12">
                      <div class="card">
                           <div class="card-header">
-                         <a href="{{ route('pesanan.print',$pesanan->id_pesanan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-print"></i> Print </a>
+                            <div style="float:right;">
+                                <div class="btn-group" >
+                                <a href="{{ route('pesanan.print',$pesanan->id_pesanan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-envelope-o"></i> Email </a>
+                                </div>
+                                <div class="btn-group" >
+                                <a href="https://api.whatsapp.com/send?phone={{ $pesanan->pelanggan->no_telepon }}&text=Assalamualaikum wr wb, Bapak/Ibu {{ $pesanan->pelanggan->nama_pelanggan }} berikut ini merupakan Nota Pesanan anda {{ route('pesanan.print',$pesanan->id_pesanan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-whatsapp"></i> Whatsapp </a>
+                                </div>
+                                <div class="btn-group" >
+                                <a href="{{ route('pesanan.print',$pesanan->id_pesanan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-print"></i> Print </a>
+                                </div>
+                            </div>
                     </div>
               <div class="card-body">
                   <div class="form-group">
                       <div class="col-md-6">
               <span class="detailInfo"><b> Nama Pemesan : </b> {{ $pesanan->pelanggan->nama_pelanggan }}</span><br>
               <span class="detailInfo"><b> Alamat : </b> {{ $pesanan->pelanggan->alamat }}</span><br>
-
+              <span class="detailInfo"><b> Email : </b> {{ $pesanan->pelanggan->email }}</span><br>
+              <span class="detailInfo"><b> No Telepon : </b> {{ $pesanan->pelanggan->no_telepon }}</span><br>
               <span class="detailInfo"><b> Operator : </b> {{ $pesanan->user->name }}</span><br><br>
                     </div>
                      <div class="col-md-6">
@@ -65,12 +76,13 @@
                         @if ($pesanan->status_bayar == 0)
                         <span   style="margin-right:5px; float:right;"><b> Tanggal Pelunasan : </b> {{ date('d/m/Y', strtotime($tanggalBayar->tanggal_bayar)) }}</span><br><br>
                         @endif
+                        <br>
               {{-- Status Pesanan --}}
-              @if ($pesanan->status_pesanan == 0)
+              {{-- @if ($pesanan->status_pesanan == 0)
               <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Selesai </span></h3><br><br>
               @elseif($pesanan->status_pesanan == 1)
                <h3><span class="badge badge-danger" style="margin-right:5px; float:right;" > Belum Selesai </span></h3><br><br>
-              @endif
+              @endif --}}
               {{-- Status Bayar --}}
               @if ($pesanan->status_bayar == 0)
               <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Lunas </span></h3><br><br>

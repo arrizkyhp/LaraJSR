@@ -98,6 +98,10 @@
                             </div>
                           </div>
 
+                          <div class="form-group col-lg-5">
+                            <button type="button" class="btn btn-primary" style="float:right;" role="button" data-toggle="modal" data-target="#modalMenu">Pilih Menu</button>
+                          </div>
+
                           <div class="form-group col-lg-6">
                             <label for="alamat">Alamat</label>
                               <input type="alamat" id="alamat" class="form-control" id="alamat"  readonly>
@@ -154,7 +158,7 @@
                           <div class="form-group col-lg-12">
                             {{-- <button type="button" class="btn btn-primary hasil-pesanan" style="float:right;">Hasil</button> --}}
                             <button type="submit" class="btn btn-primary btn-submit" id="btn-submit" style="float:right;" disabled>Simpan</button>
-                            <button type="button" class="btn btn-warning" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Pilih Menu</button>
+
                           </div>
 
                         </div>
@@ -166,65 +170,10 @@
                     @card
                    @slot('header')
                       Data <strong>Menu</strong>
-                        <button type="button" class="btn btn-info" style="float:right;" data-toggle="modal" data-target="#exampleModal2"><i class="fa fa-plus-square"></i> Tambah Menu Baru</button>
+
                    @endslot
 
-                   <div class="table-responsive">
-                    <table id="tabel-data" class="table table-striped table-bordered table-hover table-responsive" width="100%" cellspacing="0">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th style="display:none;">id</th>
-                          <th>Nama Menu</th>
-                          <th>Jenis Pesanan</th>
-                          <th>List Makanan</th>
-                          <th>Harga</th>
-                          <th>Aksi</th>
-                          <th style="display:none;">Status Peralatan</th>
-                        </tr>
-                      </thead>
-                      <tfoot>
-                        <tr>
-                          <th>#</th>
-                          <th style="display:none;">id</th>
-                          <th>Nama Menu</th>
-                          <th>Jenis Pesanan</th>
-                          <th>List Makanan</th>
-                          <th>Harga</th>
-                          <th>Aksi</th>
-                          <th style="display:none;">Status Peralatan</th>
-                        </tr>
-                      </tfoot>
-                      <tbody>
-                        @php $no = 1; @endphp
-                        @foreach ($menu as $row)
-                          <tr class="sc-product-item">
-                            <td>{{ $no++ }}</td>
-                            <td style="display:none;">{{ $row->id_menu }}</td>
-                            <td >{{ $row->nama_menu }}
 
-                              @if ($row->status_peralatan == 1)
-                                 <i class="fa fa-cutlery">
-                              @endif
-
-                            </td>
-                            <td >{{ $row->jenis_pesanan->nama_jenis_pesanan }}</td>
-                            <td>
-                        @foreach ($row->detail_menu as $detail)
-                            <label for="" class="badge badge-info">{{ $detail->list_makanan->nama_makanan }}</label>
-                        @endforeach
-                          </td>
-                          <td>{{ $row->harga }}</td>
-                          <td>
-                          <a href="#cart" id="menu_data" class="btn btn-info btnMenu"><i class="fa fa-plus-square"></i> </a>
-                          </td>
-                          <td style="display:none;">{{ $row->status_peralatan }}</td>
-                          </tr>
-                        @endforeach
-                      </tbody>
-
-                    </table>
-                  </div>
 
                       @slot('footer')
 
@@ -331,6 +280,91 @@
 
           </form>
         </div> <!-- .content -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalMenu">Data Menu</h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <button type="button" class="btn btn-primary" data-toggle="modal"  data-target="#exampleModal2"><i class="fa fa-plus-square"></i> Tambah Menu Baru</button>
+                <hr>
+                 <div class="table-responsive">
+                    <table id="tabel-data" class="table table-striped table-bordered table-hover table-responsive" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th style="display:none;">id</th>
+                          <th>Nama Menu</th>
+                          <th>Peralatan</th>
+                          <th>Jenis Pesanan</th>
+                          <th>List Makanan</th>
+                          <th>Harga</th>
+                          <th>Aksi</th>
+                          <th style="display:none;">Status Peralatan</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>#</th>
+                          <th style="display:none;">id</th>
+                          <th>Nama Menu</th>
+                          <th>Peralatan</th>
+                          <th>Jenis Pesanan</th>
+                          <th>List Makanan</th>
+                          <th>Harga</th>
+                          <th>Aksi</th>
+                          <th style="display:none;">Status Peralatan</th>
+                        </tr>
+                      </tfoot>
+                      <tbody>
+                        @php $no = 1; @endphp
+                        @foreach ($menu as $row)
+                          <tr class="sc-product-item">
+                            <td>{{ $no++ }}</td>
+                            <td style="display:none;">{{ $row->id_menu }}</td>
+                            <td >{{ $row->nama_menu }}
+                            </td>
+                            <td>
+                              @if ($row->status_peralatan == 1)
+                                   <label for="" class="badge badge-success">Ya</label>
+                                  @else
+                                  <label for="" class="badge badge-danger">Tidak</label>
+                              @endif
+                            </td>
+                            <td >{{ $row->jenis_pesanan->nama_jenis_pesanan }}</td>
+                            <td>
+                        @foreach ($row->detail_menu as $detail)
+                            <label for="" class="badge badge-info">{{ $detail->list_makanan->nama_makanan }}</label>
+                        @endforeach
+                          </td>
+                          <td>{{ $row->harga }}</td>
+                          <td>
+                          <a href="#cart" id="menu_data" data-dismiss="modal" class="btn btn-info btnMenu"><i class="fa fa-plus-square"></i> Tambah</a>
+                          </td>
+                          <td style="display:none;">{{ $row->status_peralatan }}</td>
+                          </tr>
+                        @endforeach
+                      </tbody>
+
+                    </table>
+                  </div>
+              </div>
+              {{-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div> --}}
+            </div>
+          </div>
+        </div>
+
+
     </div><!-- /#right-panel -->
 
     @endsection
@@ -355,6 +389,15 @@
       // $('body').toggleClass('open');
       var table = $('#tabel-data').DataTable();
       // $('#harga').number( true, 4 );
+
+        // Modal dalam Modal
+         $(document).on('show.bs.modal', '.modal', function (event) {
+            var zIndex = 1040 + (10 * $('.modal:visible').length);
+            $(this).css('z-index', zIndex);
+            setTimeout(function() {
+                $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+            }, 0);
+        });
 
 
 
@@ -460,12 +503,24 @@
       // Ketika Quantity di tambah atau dikurang
     $('#quantity').on('change',function(){
      var qty = $(this).val();
-    //  Ketika Quantity diisi -1
-     if (qty<0) {
-      qty=1;
-      $('#quantity').val(qty);
+     var jenis = $('#jenis').val();
 
-    }
+     if (jenis === 'Tumpeng') {
+        if (qty<5) {
+          qty=5;
+          $('#quantity').val(qty);
+
+        }
+     }else {
+        if (qty<35) {
+          qty=35;
+          $('#quantity').val(qty);
+
+        }
+     }
+
+    //  Ketika Quantity diisi -1
+
      var harga = $('#harga').html();
      $('#subtotal').html(parseInt(harga)*qty);
     });
@@ -518,25 +573,32 @@
       var col4 = currow.find('td:eq(3)').text();
       var col5 = currow.find('td:eq(4)').text();
       var col6 = currow.find('td:eq(5)').text();
+      var col9 = currow.find('td:eq(6)').text();
       var col7 = currow.find('td:eq(7)').text();
+      var col8 = currow.find('td:eq(8)').text();
 
-       if (col7 == 1) {
+       if (col8 == 1) {
          $('#multiCollapseExample2').collapse('show');
         $('#id_peralatan').attr('disabled', false);
         $('#stock').attr('readonly', false);
       }
 
 
-
-
       // Mengisi Form Pesanan berdasarkan Row yang di pilih
       $('#id_menu').val(col2);
       $('#nama_menu').val(col3);
-      $('#jenis').val(col4);
-      $('#harga').text(col6);
-      $('#subtotal').html(col6*35);
-      $('#status_peralatan').val(col7);
-      $('#quantity').val('35');
+      $('#jenis').val(col5);
+      $('#harga').text(col9);
+      $('#status_peralatan').val(col8);
+
+      if (col5 === 'Tumpeng') {
+        $('#quantity').val('5');
+        $('#subtotal').html(col9*5);
+      }else {
+        $('#quantity').val('35');
+        $('#subtotal').html(col9*35);
+      }
+
 
       // alert(result);
 
@@ -829,6 +891,7 @@
              $('.total_harga').val(raw);
             $('.downPaymentOut').html(dp).formatCurrency();
              $('.downPayment').val(dp);
+             $('#bayar').val(dp);
 
 
           }

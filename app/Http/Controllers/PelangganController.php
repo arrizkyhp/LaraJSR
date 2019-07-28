@@ -11,7 +11,7 @@ class PelangganController extends Controller
 
     public function index()
     {
-        $pelanggan = Pelanggan::all();
+        $pelanggan = Pelanggan::orderBy('nama_pelanggan','ASC')->get();
         return view('pelanggan.index', compact('pelanggan'));
     }
 
@@ -20,14 +20,16 @@ class PelangganController extends Controller
         $this->validate($request, [
             'nama_pelanggan' => 'required',
             'alamat' => 'required',
-            'no_telepon' => 'required|unique:t_pelanggan'
+            'no_telepon' => 'required|unique:t_pelanggan',
+            'email' => 'required|unique:t_pelanggan'
         ]);
 
         $pelanggan = new Pelanggan;
 
         $pelanggan->nama_pelanggan = $request->input('nama_pelanggan');
         $pelanggan->alamat = $request->input('alamat');
-        $pelanggan->no_telepon = $request->input('no_telepon');
+        $pelanggan->email = $request->input('email');
+        $pelanggan->no_telepon = '62' . $request->input('no_telepon');
 
         $pelanggan->save();
 
@@ -44,7 +46,8 @@ class PelangganController extends Controller
         $this->validate($request, [
             'nama_pelanggan' => 'required',
             'alamat' => 'required',
-            'no_telepon' => 'required'
+            'no_telepon' => 'required',
+            'email' => 'required'
         ]);
 
         $pelanggan = Pelanggan::find($id);
@@ -52,6 +55,7 @@ class PelangganController extends Controller
 
         $pelanggan->nama_pelanggan = $request->input('nama_pelanggan');
         $pelanggan->alamat = $request->input('alamat');
+        $pelanggan->email = $request->input('email');
         $pelanggan->no_telepon = $request->input('no_telepon');
 
         $pelanggan->save();

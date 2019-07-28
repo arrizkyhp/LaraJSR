@@ -21,6 +21,7 @@
 
 Auth::routes();
 Route::get('/', 'HomeController@index');
+Route::get('/pesanan/print/{id}', 'PesananController@printPDF')->name('pesanan.print');
 
 
 
@@ -55,7 +56,6 @@ Route::group(['middleware' => 'auth'], function () {
             // Laporan
             Route::get('/laporan_pesanan', 'PesananController@listPesananLaporan')->name('pesanan.laporan');
             // PDF
-            Route::get('/pesanan/print/{id}', 'PesananController@printPDF')->name('pesanan.print');
             Route::get('/pesanan/pdf', 'PesananController@laporan')->name('pesanan.laporanPrint');
 
             // Jenis Pesanan
@@ -107,6 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
         // PDF
         Route::get('/penyewaan/print/{id}', 'PenyewaanController@printPDF')->name('sewa.print');
         Route::get('/penyewaan/pdf', 'PenyewaanController@laporan')->name('sewa.laporanPrint');
+
 
         // Pelanggan
         Route::resource('/pelanggan', 'PelangganController');

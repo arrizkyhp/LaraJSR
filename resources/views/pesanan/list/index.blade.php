@@ -86,7 +86,6 @@
                         <th>Kode Pesanan</th>
                         <th>Nama Pelanggan</th>
                         <th>Tanggal Pesanan</th>
-                        <th>Pembayaran</th>
                         <th style='display:none;'>status</th>
                         <th style='display:none;'>status</th>
                         <th>Status</th>
@@ -99,7 +98,6 @@
                         <th>Kode Pesanan</th>
                         <th>Nama Pelanggan</th>
                         <th>Tanggal Pesanan</th>
-                         <th>Pembayaran</th>
                         <th style='display:none;'>Status</th>
                         <th style='display:none;'>Status</th>
                         <th>Status</th>
@@ -130,16 +128,14 @@
                         </td>
                         <td style='display:none;'>{{ $row->status_bayar }}</td>
                         <td style='display:none;'>{{ $row->status_alat }}</td>
-                         <td>
+                         {{-- <td>
                             @if($row->status_pesanan == 0)
                             <a href="#" class="btn btn-success " data-toggle="tooltip" data-placement="top" title="Pesanan Selesai"><i class="fa fa-check"></i> </a>
                             @elseif($row->status_pesanan == 1)
                              <a href="#" id="konfirm" class="btn btn-danger btnDetail" data-toggle="tooltip" data-placement="top" title="Pesanan Belum Selesai"><i class="fa fa-times"></i> </a>
                             @endif
-                        </td>
-                        {{-- <td> <label for="" class="badge badge-info">{{ $row->jenis_pesanan->nama_jenis_pesanan }}</label></td>
-                        <td>{{ $row->deskripsi }}</td>
-                        <td>{{ $row->harga }}</td> --}}
+                        </td> --}}
+
                         <td>
 
                           <a href="{{ url('admin/pesanan/detail', $row->id_pesanan) }}" class="btn btn-info btnDetail" data-toggle="tooltip" data-placement="top" title="Detail Pesanan"><i class="fa fa-info"></i> </a>

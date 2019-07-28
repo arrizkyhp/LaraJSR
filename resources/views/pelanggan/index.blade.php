@@ -58,6 +58,7 @@
                         <th style="display:none;">id</th>
                         <th>Name</th>
                         <th>Alamat</th>
+                        <th>Email</th>
                         <th>No_telepon</th>
                         <th>Aksi</th>
                       </tr>
@@ -68,6 +69,7 @@
                         <th style="display:none;">id</th>
                         <th>Name</th>
                         <th>Alamat</th>
+                        <th>Email</th>
                         <th>No_telepon</th>
                         <th>Aksi</th>
                       </tr>
@@ -80,6 +82,7 @@
                       <th style="display:none;">{{ $row->id_pelanggan }}</th>
                       <td>{{ $row->nama_pelanggan }}</td>
                         <td>{{ $row->alamat }}</td>
+                        <td>{{ $row->email }}</td>
                         <td>{{ $row->no_telepon }}</td>
                         <td>
                         <a href="#" class="btn btn-warning edit"><i class="fa fa-pencil"></i> </a>
@@ -124,7 +127,8 @@
 
             $('#nama_pelanggan').val(data[2]);
             $('#alamat').val(data[3]);
-            $('#no_telepon').val(data[4]);
+            $('#email').val(data[4]);
+            $('#no_telepon').val(data[5]);
 
             $('#editForm').attr('action','/admin/pelanggan/'+data[1]);
             $('#editModal').modal('show');

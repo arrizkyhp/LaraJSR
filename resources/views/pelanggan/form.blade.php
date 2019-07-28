@@ -10,17 +10,25 @@
     {{ csrf_field() }}
     <div class="form-group">
       <label for="nama_pelanggan">Nama</label>
-      <input type="text" name="nama_pelanggan" id="nama_pelanggan "  class="form-control"  placeholder="Masukkan Nama Pelanggan" >
+      <input type="text" name="nama_pelanggan" id="nama_pelanggan "  class="form-control"  placeholder="Masukkan Nama Pelanggan" required>
     </div>
 
     <div class="form-group">
       <label for="alamat">Alamat</label>
-      <input type="text" name="alamat"  id="alamat " class="form-control" placeholder="Masukkan Alamat">
+      <input type="text" name="alamat"  id="alamat " class="form-control" placeholder="Masukkan Alamat" required>
     </div>
 
     <div class="form-group">
-      <label for="no_telepon">No Telepon</label>
-      <input type="number" name="no_telepon" id="no_telepon "  class="form-control" type="number" id="number" min="0" placeholder="Masukkan No Telepon Pelanggan">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email " class="form-control"  placeholder="Masukkan Email Pelanggan" required>
+    </div>
+
+    <div class="form-group">
+    <label for="no_telepon">No Telepon</label>
+    <div class="input-group">
+      <div class="input-group-addon">+62</div>
+      <input type="number" name="no_telepon" id="no_telepon "  class="form-control" type="number" id="number" min="0" placeholder="Masukkan No Telepon Pelanggan" required>
+    </div>
     </div>
 
 
@@ -48,9 +56,15 @@
       <input type="alamat" name="alamat" id="alamat" class="form-control" id="alamat" placeholder="Masukkan Alamat">
     </div>
 
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" class="form-control" id="email"  placeholder="Masukkan Email Pelanggan">
+    </div>
+
     <div class="form-group">
       <label for="no_telepon">No Telepon</label>
-      <input type="no_telepon" name="no_telepon" id="no_telepon" class="form-control" id="no_telepon" type="number" id="number" min="0" type="number" placeholder="Masukkan No Telepon Pelanggan">
+      <input type="no_telepon" name="no_telepon" id="no_telepon" class="form-control" id="no_telepon" type="number" id="number" min="0" type="number" placeholder="Masukkan No Telepon Pelanggan" readonly>
     </div>
 
 

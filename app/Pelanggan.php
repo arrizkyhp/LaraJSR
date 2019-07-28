@@ -9,6 +9,6 @@ class Pelanggan extends Model
     protected $table = 't_pelanggan';
     public $primaryKey = 'id_pelanggan';
     protected $fillable = [
-        'nama_pelanggan', 'alamat', 'no_telepon'
+        'nama_pelanggan', 'alamat','email', 'no_telepon'
     ];
 }

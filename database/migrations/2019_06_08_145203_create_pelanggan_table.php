@@ -17,6 +17,7 @@ class CreatePelangganTable extends Migration
             $table->increments('id_pelanggan');
             $table->string('nama_pelanggan');
             $table->string('alamat');
+            $table->string('email')->unique();
             $table->string('no_telepon');
             $table->timestamps();
         });
