@@ -123,8 +123,10 @@
                         <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($pesanan->total_harga,2,',', '.') }}</h4></span>
                         <input type="hidden" value="{{ $pesanan->total_harga }}" id="totalHarga">
                         <span class="detailSpan" ><h4><b>Bayar :</b> Rp.{{ number_format($jumlahBayar,2,',', '.') }}</h4></span>
+
                         <hr>
                         <span class="detailSpan"><h4><b>Sisa :</b> Rp.{{ number_format($pesanan->total_harga- $jumlahBayar,2,',', '.') }}</h4></span><br>
+                        <input type="hidden" value="{{ $pesanan->total_harga- $jumlahBayar }}" id="jumlah_bayar">
 
                     </div>
                     <div class="col-md-6">
@@ -154,6 +156,13 @@
                             <div class="form-group col-md-12">
                                 <div class="form-group">
                                     <h3>Peralatan</h3>
+                                    @if ($pesanan->status_alat == 1)
+                                         <span class="badge badge-danger" style="margin-right:5px; float:right;"> Belum dikonfirmasi </span>
+                                    @else
+                                        <span class="badge badge-success" style="margin-right:5px; float:right;"> Sudah dikonfirmasi </span>
+                                    @endif
+                                    <br>
+
                                 </div>
                                 <div class="table-responsive">
                                     <table id="table-kembali" class="table table-striped table-bordered table-kembali">
@@ -161,6 +170,7 @@
                                         <thead>
                                                 <th>Nama Peralatan</th>
                                                 <th>Jumlah Peralatan</th>
+
                                                 <th style='display:none;'>a</th>
                                             </thead>
                                         </tr>
@@ -294,7 +304,6 @@
     $(document).ready(function () {
           $(document).on('click','.btn-simpan',function (e) {
               var bayar = $('#bayar_lagi').val();
-
                var keterangan = $('.keteranganBayar').val();
 
               if (bayar == '') {
@@ -313,15 +322,31 @@
 
 
 
-          $('#bayar_lagi').on('change',function(){
+          $('.bayar').on('change',function(){
+            var bayar = $('#jumlah_bayar').val();
 
             var qty = $(this).val();
+
             //  Ketika Quantity diisi -1
+
+            if (parseInt(qty) >= parseInt(bayar)) {
+                    //  alert('test');
+                qty = bayar;
+                var keterangan = $('.keteranganBayar').val('Pelunasan');
+
+            } else {
+                 var keterangan = $('.keteranganBayar').val('Pembayaran Sebagian');
+            }
+
+
+
 
             if (qty<1) {
             qty=1;
-
             }
+
+
+
 
 
          $('#bayar_lagi').val(qty);

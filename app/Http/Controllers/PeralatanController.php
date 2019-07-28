@@ -88,6 +88,8 @@ class PeralatanController extends Controller
     public function destroy($id)
     {
         $peralatan = Peralatan::find($id);
+
+        Stock::where('id_peralatan', $id)->delete();
         $peralatan->delete();
 
         alert()->success('Berhasil ', 'Data Berhasil dihapus')->persistent(' Close ');

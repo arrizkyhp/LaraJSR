@@ -24,7 +24,7 @@ class PesananController extends Controller
     public function index()
     {
         $pesanan = Pesanan::all();
-        $menu = Menu::all();
+        $menu = Menu::orderBy('created_at', 'desc')->get();
         $pelanggan = Pelanggan::all();
         $listMakanan = ListMakanan::all();
         $peralatan = Peralatan::all();
@@ -178,7 +178,7 @@ class PesananController extends Controller
 
     public function listPesanan()
     {
-        $pesanan = Pesanan::all();
+        $pesanan = Pesanan::orderBy('created_at', 'desc')->get();
         // $data = DB::table('t_pesanan')->join('t_detail_pesanan', 't_detail_pesanan.id_')
         $detail = DetailPesanan::all();
 
@@ -230,6 +230,8 @@ class PesananController extends Controller
         } else {
             $tests = 000;
         }
+
+
 
 
 
@@ -328,8 +330,22 @@ class PesananController extends Controller
 
     public function bayar(Request $request)
     {
-        // dd($request->all());
+
+        // dd($test);
+        $id = $request->id_pesanan;
+        $tanggal_pesanan = Pesanan::where('id_pesanan', $id)->first();
+
+        $tanggal_bayar = $request->tanggal_bayar;
+        $test = 'pas';
+        if ($tanggal_bayar < $tanggal_pesanan->tanggal) {
+            alert()->error('Ooops', 'Tanggal yang diinputkan tidak sesuai!')->persistent('Close');
+            return redirect()->back();
+        }
+
+
         $pesanan = Pesanan::find($request->id_pesanan);
+
+
         $jumlahBayar = Bayar::where('id_pesanan', '=', $request->id_pesanan)->sum('bayar');
 
         $inputBayar['id_pesanan'] = $request->id_pesanan;

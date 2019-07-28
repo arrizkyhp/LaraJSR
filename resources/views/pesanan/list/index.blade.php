@@ -88,6 +88,7 @@
                         <th>Tanggal Pesanan</th>
                         <th>Pembayaran</th>
                         <th style='display:none;'>status</th>
+                        <th style='display:none;'>status</th>
                         <th>Status</th>
                         <th>Aksi</th>
                       </tr>
@@ -99,6 +100,7 @@
                         <th>Nama Pelanggan</th>
                         <th>Tanggal Pesanan</th>
                          <th>Pembayaran</th>
+                        <th style='display:none;'>Status</th>
                         <th style='display:none;'>Status</th>
                         <th>Status</th>
                         <th>Aksi</th>
@@ -127,6 +129,7 @@
                             @endif
                         </td>
                         <td style='display:none;'>{{ $row->status_bayar }}</td>
+                        <td style='display:none;'>{{ $row->status_alat }}</td>
                          <td>
                             @if($row->status_pesanan == 0)
                             <a href="#" class="btn btn-success " data-toggle="tooltip" data-placement="top" title="Pesanan Selesai"><i class="fa fa-check"></i> </a>
@@ -214,7 +217,11 @@
                if (data[5] == 1) {
                  alertBayar();
                   return false;
+               } else if (data[6] == 1) {
+                    alertAlat();
+                  return false;
                }
+
 
         });
 
@@ -256,6 +263,15 @@
               type: 'error',
               title: 'Oops...',
               text: 'Pesanan Ini Belum Lunas!',
+
+            });
+          }
+
+           function alertAlat() {
+          swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Peralatan Belum di Konfirmasi Manajer Operasional!',
 
             });
           }

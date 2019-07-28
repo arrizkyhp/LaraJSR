@@ -73,8 +73,8 @@
                         <th>Nama Peralatan</th>
                          @if (auth()->user()->role == 1 )
                         <th>Stock</th>
-                        <th>Keluar</th>
                         <th>Tersedia</th>
+                        <th>Keluar</th>
                         @endif
                         <th>Satuan</th>
                         <th>Harga Sewa</th>
@@ -91,8 +91,8 @@
                         <th>Nama Peralatan</th>
                         @if (auth()->user()->role == 1 )
                         <th>Stock</th>
-                        <th>Keluar</th>
                         <th>Tersedia</th>
+                        <th>Keluar</th>
                         @endif
                         <th>Satuan</th>
                         <th>Harga Sewa</th>
@@ -111,8 +111,8 @@
                         <td>{{ $row->nama_peralatan }}</td>
                          @if (auth()->user()->role == 1 )
                         <td>{{ $row->stocks->stock }}</td>
-                        <td>{{ $row->stocks->keluar }}</td>
                         <td>{{ $row->stocks->tersedia }}</td>
+                        <td> {{ $row->stocks->keluar }}</td>
                         @endif
                         <td>{{ $row->satuan->nama_satuan }}</td>
                         <td>Rp.{{ number_format($row->harga_sewa,0,',', '.') }}</td>

@@ -66,7 +66,7 @@
                         <div class="form-row">
 
                            <div class="form-group col-lg-6">
-                             <label for="">Tanggal</label>
+                             <label for="">Tanggal Input</label>
                              <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             <input type="" id="tanggal_penyewaan" class="form-control" name="tanggal" value="{{ date('d-m-Y') }}">
@@ -154,7 +154,7 @@
                           <div class="form-group col-lg-12">
                             {{-- <button type="button" class="btn btn-primary hasil-pesanan" style="float:right;">Hasil</button> --}}
                             <button type="submit" class="btn btn-primary btn-submit" id="btn-submit" style="float:right;" disabled>Simpan</button>
-                            <button type="button" class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Pilih Menu</button>
+                            <button type="button" class="btn btn-warning" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Pilih Menu</button>
                           </div>
 
                         </div>
@@ -201,7 +201,13 @@
                           <tr class="sc-product-item">
                             <td>{{ $no++ }}</td>
                             <td style="display:none;">{{ $row->id_menu }}</td>
-                            <td >{{ $row->nama_menu }}</td>
+                            <td >{{ $row->nama_menu }}
+
+                              @if ($row->status_peralatan == 1)
+                                 <i class="fa fa-cutlery">
+                              @endif
+
+                            </td>
                             <td >{{ $row->jenis_pesanan->nama_jenis_pesanan }}</td>
                             <td>
                         @foreach ($row->detail_menu as $detail)
@@ -251,8 +257,8 @@
                     </div>
                      <div class="form-group">
 											<label for="">Qty</label>
-                        <input type="number" id="quantity" class="form-control col-lg-4" min="35" style="float:right;" readonly><br>
-                          <small id="emailHelp" class="form-text text-muted" >*minimal order 35.</small>
+                        <input type="number" id="quantity" class="form-control col-lg-4" min="0" style="float:right;" readonly><br>
+
                     </div>
                        <div class="form-group" style="text-align:right">
 											<span >Harga </span><h2>Rp.<b><span id="harga">{{ number_format('0') }}</span></b></h2>
@@ -377,7 +383,7 @@
         }else if (bayar == '') {
           alertSubmit3();
           return false;
-        }else if (bayar != raw ) {
+        }else if (parseInt(bayar) < parseInt(raw) ) {
           alertSubmit5();
           return false;
         }else if ((statusAlat == 1) && (peralatan == 1)) {
@@ -389,6 +395,16 @@
 
 
       });
+
+       $('#harga_menu').on('change', function(){
+              var qty = $(this).val();
+          //  Ketika Quantity diisi -1
+            if (qty < 0) {
+            qty=0;
+            $('#harga_menu').val(qty);
+
+        }
+            });
 
        $('#jenis_pesanan').on('change', function(){
               setCode();
@@ -445,8 +461,8 @@
     $('#quantity').on('change',function(){
      var qty = $(this).val();
     //  Ketika Quantity diisi -1
-     if (qty<35) {
-      qty=35;
+     if (qty<0) {
+      qty=1;
       $('#quantity').val(qty);
 
     }
@@ -512,6 +528,7 @@
 
 
 
+
       // Mengisi Form Pesanan berdasarkan Row yang di pilih
       $('#id_menu').val(col2);
       $('#nama_menu').val(col3);
@@ -520,9 +537,6 @@
       $('#subtotal').html(col6*35);
       $('#status_peralatan').val(col7);
       $('#quantity').val('35');
-
-
-
 
       // alert(result);
 
@@ -559,7 +573,7 @@
             var quantity = $("#quantity").val();
             var status = $("#status_peralatan").val();
             var harga = $("#harga").html();
-            var markup = "<tr><td style='display:none;'><input type='hidden' class='id_peralatan' name='id_menu[]' value='"+id_menu+"'><div class='id-menu'>"+ id_menu +"</div></td><td style='display:none;'><input type='hidden' name='status_peralatan[]' value='"+status+"'><div class='id-menu'>"+ status +"</div></td><td><input type='hidden' name='nama_menu[]' value='"+nama_menu+"'><div class='nama-menu'>"+ nama_menu +"</div></td><td><input type='hidden' name='jenis_pesanan[]' value='"+jenis+"'>" + jenis + "</td><td><input type='hidden' name='quantity[]' value='"+quantity+"'><div class='qty'>" + quantity  + "</div></td><td><input type='hidden' name='harga[]' value='"+harga+"'><div class='harga'>"+ harga +"</div></td><td><input type='hidden' name='subtotal[]' value='"+subtotal+"'><div class='subtotal'>"+ subtotal +"</div></td><td><button type='button' class='btn btn-danger btnDelete'>Delete</button></td></tr>";
+            var markup = "<tr><td style='display:none;'><input type='hidden' class='id_peralatan' name='id_menu[]' value='"+id_menu+"'><div class='id-menu'>"+ id_menu +"</div></td><td style='display:none;'><input type='hidden' name='status_peralatan[]' value='"+status+"'><div class='id-menu'>"+ status +"</div></td><td><input type='hidden' name='nama_menu[]' value='"+nama_menu+"'><div class='nama-menu'>"+ nama_menu +"</div></td><td><input type='hidden' name='jenis_pesanan[]' value='"+jenis+"'>" + jenis + "</td><td><input type='hidden' name='quantity[]' class='quantityInput' value='"+quantity+"'><div class='qty'>" + quantity  + "</div></td><td><input type='hidden' name='harga[]' value='"+harga+"'><div class='harga'>"+ harga +"</div></td><td><input type='hidden' name='subtotal[]' class='subtotalInput' value='"+subtotal+"'><div class='subtotal'>"+ subtotal +"</div></td><td><button type='button' class='btn btn-danger btnDelete'>Delete</button></td></tr>";
             var rowCount = $('#tabel-pesanan tr').length;
             var sama = 0;
 
@@ -584,7 +598,9 @@
                     var s = $(this).find(".subtotal").html();
 
                     $(this).find(".qty").html(parseInt(q) + parseInt(quantity));
+                    $(this).find(".quantityInput").val(parseInt(q) + parseInt(quantity));
                     $(this).find(".subtotal").html(parseInt(s) + parseInt(subtotal));
+                    $(this).find(".subtotalInput").val(parseInt(s) + parseInt(subtotal));
                     clearForm();
                     grandtotal();
 

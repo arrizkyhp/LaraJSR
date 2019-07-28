@@ -18,6 +18,6 @@ class Peralatan extends Model
     }
     public function satuan()
     {
-        return $this->hasOne('\App\Satuan', 'id_satuan');
+        return $this->hasOne('\App\Satuan', 'id_satuan', 'id_satuan');
     }
 }

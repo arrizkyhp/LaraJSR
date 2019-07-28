@@ -160,6 +160,10 @@
                                 <span >Total </span><h2>Rp.<b><span id="total">0</span></b></h2>
                                  <input type='hidden' name='total_harga' class="total_harga">
                             </div>
+                             <div class="form-group" style="text-align:right">
+                                <span >Uang Muka </span><h2>Rp.<b><span id="uang_muka">0</span></b></h2>
+                                 <input type='hidden' name='uang_muka' class="uang_muka">
+                            </div>
                             <div style="float:right;">
                                 <span>Bayar (Rp)</span>
                                 <input type="number" id="bayar" name="bayar" class="form-control col-lg-8" min="0" style="float:right;" readonly><br><br><br>
@@ -220,8 +224,25 @@
             }else{
 
             }
+
          });
 
+
+        $('#bayar').on('change', function () {
+            var stok = $(this).val();
+                 var total_harga = $(".total_harga").val();
+
+            if (parseInt(stok) > parseInt(total_harga)){
+
+            alert('hey');
+            $(this).val(total_harga);
+        }
+            if (stok < 0) {
+            $(this).val(0);
+            }else{
+
+            }
+         });
 
 
     // Button Simpan di Klik
@@ -229,6 +250,15 @@
         var tanggal_penyewaan = $("#tanggal_penyewaan").val();
         var tanggal_akhir = $("#tanggal_akhir").val();
         var nama_pelanggan = $("#pelanggan_select").val();
+        var uang_muka = $(".uang_muka").val();
+        var total_harga = $(".total_harga").val();
+        // alert(total_harga);
+        // return false;
+        var bayar = $("#bayar").val();
+
+
+
+
 
          if (tanggal_penyewaan == '') {
            swal.fire({
@@ -251,6 +281,14 @@
               type: 'error',
               title: 'Oops...',
               text: 'Nama Pelanggan Belum dipilih!',
+
+            });
+          return false;
+        }else if (parseInt(bayar) < parseInt(uang_muka)) {
+           swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Jumlah Bayar harus sesuai dengan uang muka!',
 
             });
           return false;
@@ -320,7 +358,7 @@
             var subtotal = stock * harga;
             var getSubtotal = $('#subtotal').val(subtotal);
             var sama = 0;
-            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' name='jumlah_sewa[]' value='"+stock+"'></td><td>"+harga+"<input type='hidden' name='harga[]' value='"+harga+"'></td><td><div class='subtotal'>"+subtotal+"</div><input type='hidden' name='subtotal[]' value='"+subtotal+"'></td><td><button type='button' class='btn btn-danger btnDelete'>x</button></td></tr>";
+            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' name='jumlah_sewa[]' class='jumlahStockSewa' value='"+stock+"'></td><td>"+harga+"<input type='hidden' name='harga[]' value='"+harga+"'></td><td><div class='subtotal'>"+subtotal+"</div><input type='hidden' name='subtotal[]' class='jumlahSubtotal' value='"+subtotal+"'></td><td><button type='button' class='btn btn-danger btnDelete'>x</button></td></tr>";
             var rowCount = $('#table-penyewaan tr').length;
 
 
@@ -339,7 +377,9 @@
                     var t = $(this).find(".subtotal").html();
 
                     $(this).find(".stock").html(parseInt(q) + parseInt(stock));
+                    $(this).find(".jumlahStockSewa").val(parseInt(q) + parseInt(stock));
                     $(this).find(".subtotal").html(parseInt(t) + parseInt(subtotal));
+                    $(this).find(".jumlahSubtotal").val(parseInt(t) + parseInt(subtotal));
                         formDisabled();
                         grandtotal();
 
@@ -412,9 +452,12 @@
             $('#total').html(sum).formatCurrency();
             var raw = $('#total').html().replace(/[^\d,-]/g, '');
             var raw = raw.replace(",", '');
+            var dp = 40/100*raw;
 
 
              $('.total_harga').val(raw);
+             $('.uang_muka').val(dp);
+             $('#uang_muka').html(dp).formatCurrency();
           }
 
     });

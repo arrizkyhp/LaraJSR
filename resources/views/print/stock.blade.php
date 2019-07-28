@@ -27,33 +27,35 @@
 
             <div class="table-responsive">
                     <table class="table table-striped table-bordered">
-                        <tr>
                             <thead>
+                                  <tr>
                                 <th>Tanggal</th>
                                 {{-- <th>Deskripsi</th> --}}
                                 <th>Stock Awal</th>
                                 <th>Tersedia</th>
                                 <th>Keluar</th>
                                 <th>Keterangan</th>
+                                  </tr>
                             </thead>
-                        </tr>
-                        <tr>
+
+
                             <tbody>
 
 
                                 @foreach ($stock as $stok)
+                                <tr>
                                 <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $stok->created_at)->format('d-m-Y') }}</td>
                                 {{-- <td>
                                 @foreach ($stok->menu->detail_menu as $detail_m)
                                     <label for="" class="badge badge-info">{{ $detail_m->list_makanan->nama_makanan }}</label>
                                 @endforeach</td> --}}
                                 <td>{{ $stok->stock}}</td>
-                                <td>{{  $stok->tersedia }}</td>
+                                <td>{{ $stok->tersedia }}</td>
                                 <td>{{ $stok->keluar }}</td>
                                 <td>{{ $stok->keterangan }}</td>
-
+                                </tr>
                             </tbody>
-                        </tr>
+
                         @endforeach
                     </table>
                 </div>

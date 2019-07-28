@@ -47,6 +47,12 @@ class PenyewaanController extends Controller
         ]);
 
 
+        //  Check apakah jumlah sewa melebihi stock ?
+        if ($request->jumlah_sewa > $request->stock) {
+            alert()->error('Error', 'Stock Peralatan tidak mencukupi')->persistent('Close');
+            return redirect('admin/penyewaan');
+        }
+
 
         $last_penyewaan = Penyewaan::latest()->first();
         // $last_penyewaan = Penyewaan::orderBy('id_penyewaan', 'asc')->first();
@@ -127,7 +133,7 @@ class PenyewaanController extends Controller
 
     public function listPenyewaan()
     {
-        $penyewaan = Penyewaan::all();
+        $penyewaan = Penyewaan::orderBy('created_at', 'DESC')->get();
         // $data = DB::table('t_pesanan')->join('t_detail_pesanan', 't_detail_pesanan.id_')
         $detail = DetailPenyewaan::all();
 

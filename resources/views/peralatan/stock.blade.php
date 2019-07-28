@@ -169,7 +169,6 @@
                         <td>{{ $row->tersedia }}</td>
                         <td>{{ $row->keluar }}</td>
                         <td>{{ $row->keterangan }}</td>
-
                       </tr>
                         @endforeach
 

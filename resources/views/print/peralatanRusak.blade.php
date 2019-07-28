@@ -27,19 +27,21 @@
 
             <div class="table-responsive">
                     <table class="table table-striped table-bordered">
-                        <tr>
+
                             <thead>
+                                 <tr>
                                 <th>Tanggal</th>
                                 <th>Kode Penyewaan</th>
                                 {{-- <th>Deskripsi</th> --}}
                                 <th>Nama Peralatan</th>
                                 <th>Jumlah</th>
                                 <th>Unit</th>
-
+                                     </tr>
                             </thead>
-                        </tr>
-                        <tr>
+
+
                             <tbody>
+                                <tr>
                                 <td style='display:none;'> {{ $total = 0 }}</td>
 
                                 @foreach ($peralatanRusak as $alatR)
@@ -54,9 +56,9 @@
                                 <td>{{ $alatR->jumlah_rusak }}</td>
                                 <td>{{ $alatR->peralatan->satuan->nama_satuan }}</td>
                                 {{-- <td>{{ $sewa->pengembalian->last()->bayar }}</td> --}}
-
+                                        </tr>
                             </tbody>
-                        </tr>
+
                         @endforeach
                     </table>
                 </div>
