@@ -16,10 +16,12 @@
 
                 <div id="data">
                     <span class="detailInfo"><b> Dari Tanggal : </b> {{ date('d/m/Y', strtotime($tanggalAwal)) }} </span><br>
-
+                    <span class="detailInfo"><b> jumlah Data : </b> {{ $hitung }}</span><br>
+                    <span id="desk"><b> di cetak oleh : </b> {{ auth()->user()->name  }}</span><br>
                 </div>
             <div id="tanggal">
-                    <span  ><b> Sampai Tanggal : </b> {{ date('d/m/Y', strtotime($tanggalAkhir)) }}</span><br><br><br>
+                    <span  ><b> Sampai Tanggal : </b> {{ date('d/m/Y', strtotime($tanggalAkhir)) }}</span><br>
+                    <span  ><b> Satuan : </b> {{ $peralatan->satuan->nama_satuan }}</span><br><br><br>
 
 
             </div>
@@ -44,7 +46,7 @@
 
                                 @foreach ($stock as $stok)
                                 <tr>
-                                <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $stok->created_at)->format('d-m-Y') }}</td>
+                                <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $stok->created_at)->format('d/m/Y') }}</td>
                                 {{-- <td>
                                 @foreach ($stok->menu->detail_menu as $detail_m)
                                     <label for="" class="badge badge-info">{{ $detail_m->list_makanan->nama_makanan }}</label>
@@ -60,11 +62,13 @@
                     </table>
                 </div>
                    <div class="col-md-4">
-                        <div id="tanggal">
-
-                        {{-- <span class="detailSpan" ><h5><b>Total Pembayaran :</b> Rp.{{ number_format($total,2,',', '.') }}</h5></span><br> --}}
-
-                    </div>
+                       <div id="data">
+                     <span id="desk"><b> Waktu cetak : </b> {{ $tglSekarang }}</span><br>
+                        </div>
+                          <div id="tanggal">
+                        <span class="detailInfo"><b> Manajer Operasional</b></span><br><br><br>
+                        <span class="detailInfo"><b> ................... </b></span><br>
+                             </div>
                     </div>
 
                     <br><br>

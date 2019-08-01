@@ -42,25 +42,26 @@
                         {{ csrf_field() }}
                         <input type="hidden" id="id_menu">
                         <div class="form-group col-md-4">
-                            <div class="form-group">
+                            <div class="form-group ">
                             <label for="">Stock</label>
-                            <input type="number" id="stockPenyesuaian" class="form-control" min="0"  name="stock" value="{{ $stockBaru->stock }}" >
+                            <input type="number" id="stockPenyesuaian" class="form-control" min="0"  name="stock" value="{{ $stockBaru->stock }}" readonly>
                             <input type="hidden" id="stock" class="form-control"  name="id_peralatan" value="{{ $peralatan->id_peralatan }}" >
                             </div>
+
 
                         </div>
 
                         <div class="form-group col-md-4">
                             <div class="form-group">
                             <label for="">Tersedia</label>
-                            <input type="number" id="tersediaPenyesuaian" class="form-control" min="0"  name="tersedia" value="{{ $stockBaru->tersedia }}" >
+                            <input type="number" id="tersediaPenyesuaian" class="form-control" min="0"  name="tersedia" value="{{ $stockBaru->tersedia }}" readonly>
                             </div>
 
                         </div>
                             <div class="form-group col-md-4">
                             <div class="form-group">
                             <label for="">Keluar</label>
-                            <input type="number" id="keluarPenyesuaian" class="form-control" min="0"   name="keluar" value="{{ $stockBaru->keluar }}" >
+                            <input type="number" id="keluarPenyesuaian" class="form-control" min="0"   name="keluar" value="{{ $stockBaru->keluar }}" readonly>
                             </div>
 
                         </div>
@@ -71,7 +72,14 @@
 
 
                         <div class="col-md-4">
-                               <button type="submit"  class="btn btn-primary update" style="float:right;"></i> Update </button></td>
+                          <div style="float:right;">
+                          <div class="btn-group" >
+                              <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-success " style="float:right;"></i> Tambah Stock </button></td>
+                          </div>
+                              <div class="btn-group" >
+                               <button type="submit"  class="btn btn-primary update" style="float:right;" disabled></i> Update </button></td>
+                              </div>
+                              </div>
                         </div>
                     </form>
                  </div>
@@ -187,6 +195,30 @@
         </div> <!-- .content -->
     </div><!-- /#right-panel -->
 
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Stock</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+          <label for="">Quantity</label>
+          <input type="number" id="tambah" class="form-control" min="0"  name="tambah" placeholder="Masukkan Jumlah Stock" >
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary btnModalTambah" data-dismiss="modal">Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     @endsection
 
     {{-------------------------------------------- SCRIPT MODAL ------------------------------------}}
@@ -217,6 +249,27 @@
               $('#stockPenyesuaian').val(qty);
             }
           });
+
+
+          $('#tambah').on('change',function(){
+            var qty = $(this).val();
+            //  Ketika Quantity diisi -1
+            if (qty<1) {
+              qty=0;
+              $('#tambah').val(qty);
+            }
+          });
+
+          $( ".btnModalTambah" ).click(function() {
+            var tambah = $('#tambah').val();
+            var stock = $('#stockPenyesuaian').val();
+            var tersedia = $('#tersediaPenyesuaian').val();
+
+            $('.update').attr('disabled', false);
+            $('#stockPenyesuaian').val(parseInt(stock) + parseInt(tambah));
+            $('#tersediaPenyesuaian').val(parseInt(tersedia) + parseInt(tambah));
+
+        });
 
            // Tersedia Penysuaian jika 0 == 1
 

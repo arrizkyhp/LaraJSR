@@ -88,7 +88,6 @@
                           <th>Nama Pelanggan</th>
                           <th>Tanggal Sewa</th>
                           <th>Tgl Akhir Sewa</th>
-                          <th>Pembayaran</th>
                           <th>Status</th>
                           <th>Aksi</th>
                         </tr>
@@ -100,7 +99,6 @@
                           <th>Nama Pelanggan</th>
                           <th>Tgl Sewa</th>
                           <th>Tgl Akhir Sewa</th>
-                          <th>Pembayaran</th>
                           <th>Status</th>
                           <th>Aksi</th>
                         </tr>
@@ -121,13 +119,13 @@
                               <span class="badge badge-danger" style="margin-right:5px;"> Belum Lunas </span>
                               @endif
                           </td>
-                            <td>
+                            {{-- <td>
                               @if($row->status_penyewaan == 0)
                               <a href="#" class="btn btn-success " data-toggle="tooltip" data-placement="top" title="Penyewaan Selesai"><i class="fa fa-check"></i> </a>
                               @elseif($row->status_penyewaan == 1)
                                 <a href="#"  class="btn btn-danger btnDetail" data-toggle="tooltip" data-placement="top" title="Belum Selesai"><i class="fa fa-times"></i> </a>
                               @endif
-                          </td>
+                          </td> --}}
 
                           <td>
 

@@ -16,10 +16,12 @@
 
                 <div id="data">
                     <span class="detailInfo"><b> Dari Tanggal : </b> {{ date('d/m/Y', strtotime($tanggalAwal )) }}</span><br>
+                    <span class="detailInfo"><b> jumlah Data : </b> {{ $hitung }}</span><br>
+                    <span class="detailInfo"><b> di cetak oleh : </b> {{ auth()->user()->name }}</span><br>
 
                 </div>
             <div id="tanggal">
-                    <span  ><b> Sampai Tanggal : </b> {{ date('d/m/Y', strtotime($tanggalAkhir)) }}</span><br><br><br>
+                    <span  ><b> Sampai Tanggal : </b> {{ date('d/m/Y', strtotime($tanggalAkhir)) }}</span><br><br><br><br>
 
 
             </div>
@@ -27,8 +29,9 @@
 
             <div class="table-responsive">
                     <table class="table table-striped table-bordered">
-                        <tr>
+
                             <thead>
+                                <tr>
                                 <th>Kode Penyewaan</th>
                                 {{-- <th>Deskripsi</th> --}}
                                 <th>Pelanggan</th>
@@ -38,13 +41,16 @@
                                 <th>Tanggal Kembali</th>
                                 <th>Total Bayar</th>
                                 {{-- <th>Jumlah Bayar</th> --}}
+                                 </tr>
                             </thead>
-                        </tr>
-                        <tr>
+
+
                             <tbody>
+
                                 <td style='display:none;'> {{ $total = 0 }}</td>
 
                                 @foreach ($penyewaan as $sewa)
+                                 <tr>
                                 <td style='display:none;'>{{ $total += $sewa->total_bayar}}</td>
                                 <td>{{ $sewa->id_penyewaan}}</td>
                                 {{-- <td>
@@ -53,18 +59,21 @@
                                 @endforeach</td> --}}
                                 <td>{{ $sewa->pelanggan->nama_pelanggan}}</td>
                                 <td>{{  $sewa->users->name }}</td>
-                                <td>{{ $sewa->tanggal_penyewaan }}</td>
-                                <td>{{ $sewa->tanggal_akhir }}</td>
-                                <td>{{ $sewa->pengembalian->last()->tanggal_kembali }}</td>
-                                <td>{{ $sewa->total_bayar }}</td>
+                                <td>{{ date('d/m/Y', strtotime($sewa->tanggal_penyewaan))  }}</td>
+                                <td>{{ date('d/m/Y', strtotime($sewa->tanggal_akhir))  }}</td>
+                                <td>{{ date('d/m/Y', strtotime($sewa->pengembalian->last()->tanggal_kembali))  }}</td>
+                                <td>Rp.{{ number_format( $sewa->total_bayar,0,',', '.')  }}</td>
                                 {{-- <td>{{ $sewa->pengembalian->last()->bayar }}</td> --}}
-
+                                 </tr>
                             </tbody>
-                        </tr>
+
                         @endforeach
                     </table>
                 </div>
                    <div class="col-md-4">
+                    <div id="data">
+                     <span id="desk"><b> Waktu cetak : </b> {{ $tglSekarang }}</span><br>
+                    </div>
                         <div id="tanggal">
 
                         <span class="detailSpan" ><h5><b>Total Pembayaran :</b> Rp.{{ number_format($total,2,',', '.') }}</h5></span><br>

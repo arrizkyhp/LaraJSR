@@ -22,6 +22,7 @@
 Auth::routes();
 Route::get('/', 'HomeController@index');
 Route::get('/pesanan/print/{id}', 'PesananController@printPDF')->name('pesanan.print');
+Route::get('/penyewaan/print/{id}', 'PenyewaanController@printPDF')->name('sewa.print');
 
 
 
@@ -57,6 +58,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/laporan_pesanan', 'PesananController@listPesananLaporan')->name('pesanan.laporan');
             // PDF
             Route::get('/pesanan/pdf', 'PesananController@laporan')->name('pesanan.laporanPrint');
+            // Email
+            Route::get('/kirimEmail/{id}', 'EmailController@kirimEmail')->name('pesanan.email');
 
             // Jenis Pesanan
             Route::resource('/jenis_pesanan', 'JenisPesananController');
@@ -102,10 +105,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/list_penyewaan', 'PenyewaanController@listPenyewaan');
         Route::get('/penyewaan/detail/{id}', 'PenyewaanController@detailPenyewaan');
         Route::get('/penyewaan/edit/{id}', 'PenyewaanController@edit');
+        // Email
+        Route::get('/kirimEmailSewa/{id}', 'EmailController@kirimEmailSewa')->name('sewa.email');
         // Pengembalian
         Route::patch('/penyewaan/pengembalian/{id}', 'PenyewaanController@pengembalian')->name('sewa.kembali');
         // PDF
-        Route::get('/penyewaan/print/{id}', 'PenyewaanController@printPDF')->name('sewa.print');
         Route::get('/penyewaan/pdf', 'PenyewaanController@laporan')->name('sewa.laporanPrint');
 
 
@@ -120,6 +124,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/Stock/{id}', 'PeralatanController@Stock')->name('stock.peralatan');
         Route::get('/get_stock/{id}', 'PeralatanController@getStock')->name('stock.get');
         Route::get('/stockUpdate/{id}', 'PeralatanController@EditStock')->name('stock.update');
+        Route::get('/stock/print/{id}', 'PeralatanController@printPDF')->name('stock.print');
         Route::resource('/peralatan', 'PeralatanController');
 
         // Manajer Operasional

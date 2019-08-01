@@ -128,6 +128,7 @@
                             <label for="harga">Harga</label>
                                 <input type="number" id="harga" name="harga" class="form-control" placeholder="" readonly>
                                 <input type="hidden" id="subtotal"  class="form-control" readonly>
+                                <input type="hidden" id="satuan"  class="form-control" readonly>
                         </div>
                          <div class="form-group col-md-2">
                               <label for="harga"></label>
@@ -141,7 +142,8 @@
                                             <tr>
                                             <th>Nama Peralatan</th>
                                             <th>Jumlah Sewa</th>
-                                            <th>Harga Satuan</th>
+                                            <th>Satuan</th>
+                                            <th>Harga</th>
                                             <th>Subtotal</th>
                                             <th>Aksi</th>
                                             </tr>
@@ -316,6 +318,9 @@
                 $('#stock').val(response.stocks.tersedia);
                 $('#stock_gudang').html(response.stocks.tersedia);
                 $('#harga').val(response.harga_sewa);
+                $('#satuan').val(response.satuan.nama_satuan);
+
+
 
 
             }
@@ -355,10 +360,11 @@
             var stock = $('#stock').val();
             var stock_ghost = $('#stock_ghost').val();
             var harga = $('#harga').val();
+            var satuan = $('#satuan').val();
             var subtotal = stock * harga;
             var getSubtotal = $('#subtotal').val(subtotal);
             var sama = 0;
-            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' name='jumlah_sewa[]' class='jumlahStockSewa' value='"+stock+"'></td><td>"+harga+"<input type='hidden' name='harga[]' value='"+harga+"'></td><td><div class='subtotal'>"+subtotal+"</div><input type='hidden' name='subtotal[]' class='jumlahSubtotal' value='"+subtotal+"'></td><td><button type='button' class='btn btn-danger btnDelete'>x</button></td></tr>";
+            var row = "<tr><td style='display:none;'><input type='hidden' name='id_peralatan[]' value='"+id_peralatan+"'></td><td style='display:none;'><input type='hidden' name='stock[]' value='"+stock_ghost+"'></td><td><div class='nama-menu'>"+nama+"</div><input type='hidden' name='nama_peralatan[]' value='"+nama+"'></td><td><div class='stock'>"+stock+"</div><input type='hidden' name='jumlah_sewa[]' class='jumlahStockSewa' value='"+stock+"'></td><td>"+satuan+"<input type='hidden' name='satuan[]' value='"+satuan+"'></td><td>"+harga+"<input type='hidden' name='harga[]' value='"+harga+"'></td><td><div class='subtotal'>"+subtotal+"</div><input type='hidden' name='subtotal[]' class='jumlahSubtotal' value='"+subtotal+"'></td><td><button type='button' class='btn btn-danger btnDelete'>x</button></td></tr>";
             var rowCount = $('#table-penyewaan tr').length;
 
 
@@ -457,6 +463,7 @@
 
              $('.total_harga').val(raw);
              $('.uang_muka').val(dp);
+             $('#bayar').val(dp);
              $('#uang_muka').html(dp).formatCurrency();
           }
 

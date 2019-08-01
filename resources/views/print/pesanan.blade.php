@@ -15,11 +15,12 @@
 
 
                 <div id="data">
-                    <span class="detailInfo"><b> Dari Tanggal : </b> {{ $tanggalAwal }}</span><br>
-
+                    <span class="detailInfo"><b> Dari Tanggal : </b> {{ date('d/m/Y' , strtotime($tanggalAwal)) }}</span><br>
+                    <span class="detailInfo"><b> jumlah Data : </b> {{ $hitung }}</span><br>
+                    <span id="desk"><b> di cetak oleh : </b> {{ auth()->user()->name  }}</span><br>
                 </div>
             <div id="tanggal">
-                    <span  ><b> Sampai Tanggal : </b> {{ date('d/m/Y', strtotime($tanggalAkhir)) }}</span><br><br><br>
+                    <span  ><b> Sampai Tanggal : </b> {{ date('d/m/Y', strtotime($tanggalAkhir)) }}</span><br><br><br><br>
 
 
             </div>
@@ -42,10 +43,11 @@
                             </thead>
 
                             <tbody>
-                                <tr>
-                                <td style='display:none;'> {{ $total = 0 }}</td>
 
+                                <td style='display:none;'> {{ $total = 0 }}</td>
                                 @foreach ($pesanan as $pesan)
+                                 <tr>
+
                                 <td style='display:none;'>{{ $total += $pesan->bayar->last()->bayar }}</td>
                                 <td>{{ $pesan->id_pesanan}}</td>
                                 {{-- <td>
@@ -54,10 +56,10 @@
                                 @endforeach</td> --}}
                                 <td>{{ $pesan->pelanggan->nama_pelanggan}}</td>
                                 <td>{{  $pesan->user->name }}</td>
-                                <td>{{ $pesan->tanggal }}</td>
-                                <td>{{ $pesan->tanggal_pesanan }}</td>
-                                <td>{{ $pesan->bayar->last()->tanggal_bayar }}</td>
-                                <td>{{ $pesan->bayar->last()->bayar }}</td>
+                                <td>{{ date('d/m/Y', strtotime($pesan->tanggal)) }}</td>
+                                <td>{{ date('d/m/Y', strtotime($pesan->tanggal_pesanan)) }}</td>
+                                <td>{{ date('d/m/Y', strtotime($pesan->bayar->last()->tanggal_bayar)) }}</td>
+                                <td>Rp.{{ number_format( $pesan->bayar->last()->bayar,0,',', '.') }} </td>
 
                                     </tr>
                             </tbody>
@@ -65,6 +67,10 @@
 
                     </table>
                 </div>
+                  <div id="data">
+                     <span id="desk"><b> Waktu cetak : </b> {{ $tglSekarang }}</span><br>
+                </div>
+
                    <div class="col-md-4">
                         <div id="tanggal">
 

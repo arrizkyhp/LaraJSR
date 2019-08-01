@@ -55,7 +55,17 @@
         <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                         <a href="{{ route('sewa.print',$penyewaan->id_penyewaan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-print"></i> Print </a>
+                         <div style="float:right;">
+                            <div class="btn-group" >
+                            <a href="{{ route('sewa.email',$penyewaan->id_penyewaan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-envelope-o"></i> Email </a>
+                            </div>
+                            <div class="btn-group" >
+                            <a href="https://api.whatsapp.com/send?phone={{ $penyewaan->pelanggan->no_telepon }}&text=Assalamualaikum wr wb, Bapak/Ibu {{ $penyewaan->pelanggan->nama_pelanggan }} berikut ini merupakan Nota Penyewaan anda {{ route('sewa.print',$penyewaan->id_penyewaan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-whatsapp"></i> Whatsapp </a>
+                            </div>
+                            <div class="btn-group" >
+                            <a href="{{ route('sewa.print',$penyewaan->id_penyewaan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-print"></i> Print </a>
+                            </div>
+                            </div>
                     </div>
         <div class="card-body">
             <div class="form-group">
@@ -78,12 +88,13 @@
                     @endif
                      <input type="hidden" style="date" id="tanggal_akhir" value="{{ $penyewaan->tanggal_akhir }}" name="tanggal_akhir">
                     {{-- Status Pesanan --}}
-                    @if ($penyewaan->status_penyewaan == 0)
+                    {{-- @if ($penyewaan->status_penyewaan == 0)
                     <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Selesai </span></h3><br><br>
                     @elseif($penyewaan->status_penyewaan == 1)
                     <h3><span class="badge badge-danger" style="margin-right:5px; float:right;" > Belum Selesai </span></h3><br><br>
-                    @endif
+                    @endif --}}
                     {{-- Status Bayar --}}
+                    <br>
                     @if ($penyewaan->status_bayar == 0)
                     <h3><span class="badge badge-success" style="margin-right:5px; float:right;"> Lunas </span></h3><br><br>
                     @elseif($penyewaan->status_bayar == 1)
@@ -149,7 +160,9 @@
                                 @elseif  ($penyewaan->status_penyewaan == 1)
                                 <span class="detailSpan" ><h4><b>Subtotal :</b> Rp.{{ number_format($penyewaan->total_harga,0,',', '.') }}</h4></span>
                                 <input type="hidden" value="{{ $penyewaan->total_harga }}" id="subtotal" name="subtotal">
-                                <span class="detailSpan" ><h4><b>DP :</b> Rp.{{ number_format($penyewaan->bayar,0,',', '.') }}</h4></span>
+                                <span class="detailSpan" ><h4><b>Bayar :</b> Rp.{{ number_format($penyewaan->bayar,0,',', '.') }}</h4></span>
+                                <hr>
+                                <span class="detailSpan" ><h4><b>Sisa :</b> Rp.{{ number_format($penyewaan->total_harga - $penyewaan->bayar,0,',', '.') }}</h4></span>
 
                                 @endif
 
@@ -254,7 +267,7 @@
                                     <span class="detailSpan" ><h4><b>Nominal Bayar :</b> Rp.<span id="bayar_nominal">0</span></h4></span><br>
                                     <input type="hidden" value="{{ $penyewaan->id_penyewaan }}" name="id_penyewaan">
                                     <input type="hidden" value="{{ $penyewaan->bayar }}" name="bayar_dp">
-                                    <input type="number" name="bayar_lagi" id="bayar_lagi" class="form-control bayar"  placeholder="Masukkan Jumlah Bayar" ><br>
+                                    <input type="number" name="bayar_lagi" id="bayar_lagi" class="form-control bayar" value="{{ $penyewaan->total_harga-$penyewaan->bayar }}"  placeholder="Masukkan Jumlah Bayar" ><br>
                                     <button type="submit" value="submit" class="btn btn-primary btn_simpan_kembali" style="margin-right:5px; float:right;">Simpan</button>
 
                                 </div>
@@ -444,6 +457,7 @@
                         $('.denda_ganti').val(ganti);
                         $('.denda_telat').val(telat);
                         $('#total_bayar').html(grandtotal).formatCurrency();
+                        $('#bayar_lagi').val(grandtotal);
 
 
             }
@@ -479,6 +493,7 @@
                 $('.denda_ganti').val(ganti);
                 $('.denda_telat').val(telat);
                 $('#total_bayar').html(grandtotal).formatCurrency();
+                 $('#bayar_lagi').val(grandtotal);
 
 
                 //  $('.total_harga').val(raw);

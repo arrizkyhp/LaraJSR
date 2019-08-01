@@ -50,7 +50,7 @@
                           <div class="card-header">
                             <div style="float:right;">
                                 <div class="btn-group" >
-                                <a href="{{ route('pesanan.print',$pesanan->id_pesanan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-envelope-o"></i> Email </a>
+                                <a href="{{ route('pesanan.email',$pesanan->id_pesanan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-envelope-o"></i> Email </a>
                                 </div>
                                 <div class="btn-group" >
                                 <a href="https://api.whatsapp.com/send?phone={{ $pesanan->pelanggan->no_telepon }}&text=Assalamualaikum wr wb, Bapak/Ibu {{ $pesanan->pelanggan->nama_pelanggan }} berikut ini merupakan Nota Pesanan anda {{ route('pesanan.print',$pesanan->id_pesanan)  }}" class="btn btn-primary" style="float:right;"><i class="fa fa-whatsapp"></i> Whatsapp </a>
@@ -281,17 +281,17 @@
                         <div class="form-group">
                             Nominal
                             <div style="text-align: right;">
-                                <h2 >Rp.<b><span id="bayar_nominal">{{ number_format('0') }}</span></b></h2>
+                                <h2 >Rp.<b><span id="bayar_nominal">{{ number_format($pesanan->total_harga- $jumlahBayar,2,',', '.') }}</span></b></h2>
                             </div>
                             <input type="hidden" value="{{ $pesanan->id_pesanan }}" name="id_pesanan">
                             <input type="hidden" value="{{ $pesanan->total_harga }}" name="total_harga">
                             <label for="nama_pelanggan">Bayar</label>
-                            <input type="number" name="bayar_lagi" id="bayar_lagi" class="form-control bayar"  placeholder="Masukkan Jumlah Bayar" >
+                            <input type="number" name="bayar_lagi" id="bayar_lagi" class="form-control bayar" value="{{ $pesanan->total_harga- $jumlahBayar }}"  placeholder="Masukkan Jumlah Bayar" >
 
                         </div>
                         <div class="form-group">
                             <label>Keterangan</label>
-                            <textarea name="keterangan" class="form-control keteranganBayar"></textarea>
+                            <textarea name="keterangan" class="form-control keteranganBayar">Pelunasan</textarea>
                         </div>
                   </div>
             <div class="modal-footer">

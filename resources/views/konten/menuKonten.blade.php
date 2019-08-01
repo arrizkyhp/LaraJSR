@@ -34,9 +34,8 @@
                    @card
                    @slot('header')
                         Data <strong>Konten</strong>
-                        <button class="btn btn-primary" style="float:right;" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus-square"></i> Tambah </button>
                    @endslot
-                      <table id="tabel-data" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
+                      <table id="" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
                     <thead>
                       <tr>
                         <th>#</th>

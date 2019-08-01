@@ -19,8 +19,16 @@
     </div>
 
     <div class="form-group">
-      <label for="no_telepon">No Telepon</label>
-      <input type="number" name="no_telepon" id="no_telepon "  class="form-control" type="number" id="number" min="0" placeholder="Masukkan No Telepon Pelanggan">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email " class="form-control"  placeholder="Masukkan Email Pelanggan" required>
+    </div>
+
+     <div class="form-group">
+    <label for="no_telepon">No Telepon</label>
+    <div class="input-group">
+      <div class="input-group-addon">+62</div>
+      <input type="number" name="no_telepon" id="no_telepon "  class="form-control" type="number" id="number" min="0" placeholder="Masukkan No Telepon Pelanggan" required>
+    </div>
     </div>
 
 

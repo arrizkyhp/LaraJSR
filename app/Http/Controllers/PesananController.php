@@ -471,8 +471,10 @@ class PesananController extends Controller
     public function laporan(Request $request)
     {
         // dd($request->all());
+
         $data['tanggalAwal']  = $request->tanggal_penyewaan;
         $data['tanggalAkhir'] = $request->tanggal_akhir;
+        $data['tglSekarang'] = Carbon::now('Asia/Jakarta')->format('l, d F Y H:i:s');
 
         $time = strtotime($request->tanggal_penyewaan);
         $waktu = strtotime($request->tanggal_akhir);
@@ -482,6 +484,7 @@ class PesananController extends Controller
         // dd($data['tanggalAkhir']);
 
         $data['pesanan'] = Pesanan::with('bayar')->where('status_pesanan', 0)->whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir])->get();
+        $data['hitung'] = Pesanan::with('bayar')->where('status_pesanan', 0)->whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir])->count();
 
 
         $pdf = PDF::loadview('print.pesanan', $data);

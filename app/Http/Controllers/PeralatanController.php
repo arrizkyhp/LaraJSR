@@ -8,6 +8,7 @@ use App\Satuan;
 use App\Stock;
 use App\PeralatanRusak;
 use PDF;
+use Carbon\Carbon;
 
 class PeralatanController extends Controller
 {
@@ -169,7 +170,9 @@ class PeralatanController extends Controller
         // dd($request->all());
         $data['tanggalAwal']  = $request->tanggal_penyewaan;
         $data['tanggalAkhir'] = $request->tanggal_akhir;
+        $data['tglSekarang'] = Carbon::now('Asia/Jakarta')->format('l, d F Y H:i:s');
         $data['peralatan'] = Peralatan::findOrFail($id);
+
 
         $time = strtotime($request->tanggal_penyewaan);
         $waktu = strtotime($request->tanggal_akhir);
@@ -179,6 +182,7 @@ class PeralatanController extends Controller
         // dd($data['tanggalAkhir']);
 
         $data['stock'] = Stock::where('id_peralatan', $id)->whereBetween('created_at', [$tanggalAwal, $tanggalAkhir])->get();
+        $data['hitung'] = Stock::where('id_peralatan', $id)->whereBetween('created_at', [$tanggalAwal, $tanggalAkhir])->count();
         // dd($data['stock']);
 
 

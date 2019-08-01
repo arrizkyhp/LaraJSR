@@ -27,7 +27,7 @@ class PenyewaanController extends Controller
 
     public function getPeralatan($id)
     {
-        $peralatan = Peralatan::with('stocks')->find($id);
+        $peralatan = Peralatan::with('stocks', 'satuan')->find($id);
         return response()->json($peralatan);
     }
 
@@ -479,6 +479,7 @@ class PenyewaanController extends Controller
         // dd($request->all());
         $data['tanggalAwal']  = $request->tanggal_penyewaan;
         $data['tanggalAkhir'] = $request->tanggal_akhir;
+        $data['tglSekarang'] = Carbon::now('Asia/Jakarta')->format('l, d F Y H:i:s');
 
         $time = strtotime($request->tanggal_penyewaan);
         $waktu = strtotime($request->tanggal_akhir);
@@ -488,6 +489,7 @@ class PenyewaanController extends Controller
         // dd($data['tanggalAkhir']);
 
         $data['penyewaan'] = Penyewaan::where('status_penyewaan', 0)->whereBetween('tanggal_penyewaan', [$tanggalAwal, $tanggalAkhir])->get();
+        $data['hitung'] = Penyewaan::where('status_penyewaan', 0)->whereBetween('tanggal_penyewaan', [$tanggalAwal, $tanggalAkhir])->count();
 
 
         $pdf = PDF::loadview('print.penyewaan', $data);
