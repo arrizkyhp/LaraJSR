@@ -11,7 +11,7 @@ class PelangganController extends Controller
 
     public function index()
     {
-        $pelanggan = Pelanggan::orderBy('nama_pelanggan','ASC')->get();
+        $pelanggan = Pelanggan::orderBy('nama_pelanggan', 'ASC')->get();
         return view('pelanggan.index', compact('pelanggan'));
     }
 

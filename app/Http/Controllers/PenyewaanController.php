@@ -64,11 +64,22 @@ class PenyewaanController extends Controller
         }
 
         $digit = substr($tests, -3);
-
         $kode = str_pad($digit + 1, 3, 0, STR_PAD_LEFT);
+        $kodeBaru = 'SW-' . Carbon::now()->format('dmY') . '-' . $kode;
+
+        $bulan = substr($tests, 6, 2);
+        $bulanBaru = substr($kodeBaru, 6, 2);
+
+        if ($bulan != $bulanBaru) {
+            $tigaDigit = 000;
+        } else {
+            $tigaDigit = $last_pesanan->id_pesanan;
+        }
+        $digitBaru = substr($tigaDigit, -3);
+        $kodeAnyar = str_pad($digitBaru + 1, 3, 0, STR_PAD_LEFT);
 
 
-        $inputPenyewaan['id_penyewaan'] = 'SW-' . Carbon::now()->format('dmY') . '-' . $kode;
+        $inputPenyewaan['id_penyewaan'] = 'SW-' . Carbon::now()->format('dmY') . '-' . $kodeAnyar;
         // dd($inputPenyewaan['id_penyewaan']);
         $inputPenyewaan['id_pelanggan'] = $request->id_pelanggan;
         $inputPenyewaan['id_users'] = Auth::user()->id_users;
@@ -479,7 +490,7 @@ class PenyewaanController extends Controller
         // dd($request->all());
         $data['tanggalAwal']  = $request->tanggal_penyewaan;
         $data['tanggalAkhir'] = $request->tanggal_akhir;
-        $data['tglSekarang'] = Carbon::now('Asia/Jakarta')->format('l, d F Y H:i:s');
+        $data['tglSekarang'] = Carbon::now('Asia/Jakarta')->format('d F Y H:i:s');
 
         $time = strtotime($request->tanggal_penyewaan);
         $waktu = strtotime($request->tanggal_akhir);

@@ -170,7 +170,7 @@ class PeralatanController extends Controller
         // dd($request->all());
         $data['tanggalAwal']  = $request->tanggal_penyewaan;
         $data['tanggalAkhir'] = $request->tanggal_akhir;
-        $data['tglSekarang'] = Carbon::now('Asia/Jakarta')->format('l, d F Y H:i:s');
+        $data['tglSekarang'] = Carbon::now('Asia/Jakarta')->format('d F Y H:i:s');
         $data['peralatan'] = Peralatan::findOrFail($id);
 
 
